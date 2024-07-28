@@ -12,7 +12,7 @@ setup(
     install_requires=read_requirements(),
     entry_points={
         "console_scripts": [
-            "proposaltools=ProposalTools.main:main",  # Replace with the actual path to your main function
+            "CheckProposal=ProposalTools.main:main",  # Replace with the actual path to your main function
         ],
     },
 )
