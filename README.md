@@ -47,7 +47,7 @@ Before using ProposalsTool, you need to configure the following environment vari
 To run the tool, use the command line:
 
 ```sh
-proposalstool --customer "CustomerName" --proposal_address "EthereumContractAddress"
+CheckProposal --customer "CustomerName" --proposal_address "EthereumContractAddress"
 ```
 
 Replace `CustomerName` with the customer identifier and `EthereumContractAddress` with the smart contract's Ethereum address.
