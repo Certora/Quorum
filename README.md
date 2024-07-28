@@ -38,12 +38,12 @@ Before using ProposalsTool, you need to configure the following environment vari
 
   Replace `your_etherscan_api_key` with the actual API key provided by Etherscan.
 
-- **ProposalsToolArtifactsPath:** This is the path where the repositories and diffs will be saved. Ensure this directory exists and is writable.
+- **ProposalToolsArtifactsPath:** This is the path where the repositories and diffs will be saved. Ensure this directory exists and is writable.
 
   Set the environment variable in your shell:
 
   ```sh
-  export ProposalsToolArtifactsPath="/path/to/artifacts"
+  export ProposalToolsArtifactsPath="/path/to/artifacts"
   ```
 
   Replace `/path/to/artifacts` with the path where you want the tool to save cloned repositories and diff files.
