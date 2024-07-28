@@ -1,6 +1,7 @@
 import argparse
 import difflib
 from pathlib import Path
+from datetime import datetime
 
 from ProposalTools.GIT.GitManager import GitManager
 from ProposalTools.APIs.AbsSourceCode import SourceCodeInterface, SourceCode
@@ -48,7 +49,7 @@ def find_diffs(customer: str, source_codes: list[SourceCode]) -> None:
         source_codes (list[SourceCode]): List of source code objects from the remote repository.
     """
     target_repo = config.MAIN_PATH / customer
-    diffs_folder = target_repo / "diffs"
+    diffs_folder = target_repo / f"diffs_{datetime.now()}"
     diffs_folder.mkdir(parents=True, exist_ok=True)
 
     for source_code in source_codes:
