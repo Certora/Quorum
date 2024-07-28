@@ -15,5 +15,4 @@ setup(
             "proposaltools=ProposalTools.main:main",  # Replace with the actual path to your main function
         ],
     },
-    include_package_data=True,
 )
