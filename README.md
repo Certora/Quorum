@@ -18,6 +18,12 @@ You can install ProposalTools directly from GitHub using pip:
 pip install git+ssh://git@github.com/Certora/ProposalTools.git
 ```
 
+Or clone:
+
+```sh
+git clone git@github.com:Certora/ProposalTools.git
+```
+
 ### Environment Variables
 
 Before using ProposalsTool, you need to configure the following environment variables:
@@ -49,6 +55,14 @@ To run the tool, use the command line:
 ```sh
 CheckProposal --customer "CustomerName" --proposal_address "EthereumContractAddress"
 ```
+
+OR
+
+```sh
+python3 ProposalTools/main.py   --customer CustomerName --proposal_address EthereumContractAddress
+```
+
+
 
 Replace `CustomerName` with the customer identifier and `EthereumContractAddress` with the smart contract's Ethereum address.
 
