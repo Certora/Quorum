@@ -22,6 +22,7 @@ class GitManager:
             customer (str): The name or identifier of the customer.
         """
         self.customer = customer
+        self.customer_path = config.MAIN_PATH / self.customer
         self.repos = self._load_repos()
 
     def _load_repos(self) -> dict:
@@ -42,25 +43,11 @@ class GitManager:
         If the repository already exists locally, it will be skipped.
         """
         for repo_name, repo_url in self.repos.items():
-            target_path = config.MAIN_PATH / self.customer / repo_name
-            if target_path.exists():
-                print(f"Repository {repo_name} already exists at {target_path}. Update repo instead of cloning.")
-                self.update_repos()
-                continue
-            print(f"Cloning {repo_name} from URL: {repo_url} to {target_path}...")
-            Repo.clone_from(repo_url, target_path, multi_options=["--recurse-submodule"])
-
-    def update_repos(self) -> None:
-        """
-        Update the repositories by pulling the latest changes.
-
-        If a repository does not exist locally, it will be skipped.
-        """
-        for repo_name in self.repos:
-            repo_path = config.MAIN_PATH / self.customer / repo_name
+            repo_path = self.customer_path / repo_name
             if repo_path.exists():
-                print(f"Updating {repo_name} at {repo_path}...")
+                print(f"Repository {repo_name} already exists at {repo_path}. Update repo instead of cloning.")
                 repo = Repo(repo_path)
                 repo.git.pull()
             else:
-                print(f"Repository {repo_name} does not exist at {repo_path}. Skipping update.")
+                print(f"Cloning {repo_name} from URL: {repo_url} to {repo_path}...")
+                Repo.clone_from(repo_url, repo_path, multi_options=["--recurse-submodule"])

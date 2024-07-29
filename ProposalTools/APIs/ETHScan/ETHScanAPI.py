@@ -55,7 +55,6 @@ class ETHScanAPI(SourceCodeInterface):
         except json.JSONDecodeError:
             # Handle cases where the source code is not properly formatted JSON
             try:
-                print("Error parsing source code JSON, attempting to fix prefix and suffix.")
                 json_data = json.loads(result.removeprefix("{").removesuffix("}"))
             except json.JSONDecodeError:
                 raise ValueError("Failed to parse source code JSON after attempting fixes.")

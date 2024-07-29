@@ -81,4 +81,17 @@ And should be located under PRP_TOOL_PATH.
 }
 ```
 
+For Example:
+
+```json
+{
+    "Aave": [
+        "https://github.com/bgd-labs/aave-helpers",
+        "https://github.com/bgd-labs/aave-address-book",
+        "https://github.com/aave-dao/aave-v3-origin"
+    ]
+}
+```
+
+
 This configuration is used by the tool to manage the repositories.
