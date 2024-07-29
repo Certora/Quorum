@@ -40,14 +40,17 @@ class GitManager:
         """
         Clone the repositories for the customer.
 
-        If the repository already exists locally, it will be skipped.
+        If the repository already exists locally, it will update the repository and its submodules.
+        Otherwise, it will clone the repository and initialize submodules.
         """
         for repo_name, repo_url in self.repos.items():
             repo_path = self.customer_path / repo_name
             if repo_path.exists():
-                print(f"Repository {repo_name} already exists at {repo_path}. Update repo instead of cloning.")
+                print(f"Repository {repo_name} already exists at {repo_path}. Updating repo and submodules.")
                 repo = Repo(repo_path)
                 repo.git.pull()
+                repo.git.submodule('update', '--init', '--recursive')
             else:
                 print(f"Cloning {repo_name} from URL: {repo_url} to {repo_path}...")
-                Repo.clone_from(repo_url, repo_path, multi_options=["--recurse-submodule"])
+                Repo.clone_from(repo_url, repo_path, multi_options=["--recurse-submodules"])
+
