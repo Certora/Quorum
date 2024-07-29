@@ -81,7 +81,7 @@ And should be located under PRP_TOOL_PATH.
 }
 ```
 
-For Example:
+If not found the following default `repos.json` configuration will be created under the PRP_TOOL_PATH:
 
 ```json
 {
