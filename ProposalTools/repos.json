@@ -1,0 +1,7 @@
+{
+    "Aave": [
+        "https://github.com/bgd-labs/aave-helpers",
+        "https://github.com/bgd-labs/aave-address-book",
+        "https://github.com/aave-dao/aave-v3-origin"
+    ]
+}
