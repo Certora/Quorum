@@ -7,6 +7,7 @@ from ProposalTools.GIT.GitManager import GitManager
 from ProposalTools.APIs.AbsSourceCode import SourceCodeInterface, SourceCode
 from ProposalTools.APIs.ETHScan.ETHScanAPI import ETHScanAPI
 import ProposalTools.config as config
+import ProposalTools.Utils.PrettyPrinter as pp
 
 
 def parse_args() -> tuple[str, str]:
@@ -40,7 +41,7 @@ def find_most_common_path(source_path: Path, repo: Path) -> Path | None:
             return local_files[0]
     return None
 
-def find_diffs(customer: str, source_codes: list[SourceCode]) -> None:
+def find_diffs(customer: str, source_codes: list[SourceCode]) -> tuple[list[str], list[str]]:
     """
     Find and save differences between local and remote source codes.
 
@@ -48,14 +49,19 @@ def find_diffs(customer: str, source_codes: list[SourceCode]) -> None:
         customer (str): The customer name or identifier.
         source_codes (list[SourceCode]): List of source code objects from the remote repository.
     """
-    target_repo = config.MAIN_PATH / customer
-    diffs_folder = target_repo / f"diffs_{datetime.now()}"
+    missing_files = []
+    files_with_diffs = []
+    
+    customer_folder = config.MAIN_PATH / customer
+    target_repo = customer_folder / "modules"
+    diffs_folder = customer_folder/ "checks" / f"diffs_{datetime.now()}"
     diffs_folder.mkdir(parents=True, exist_ok=True)
 
+    
     for source_code in source_codes:
         local_file = find_most_common_path(Path(source_code.file_name), target_repo)
         if not local_file:
-            print(f"No local file found for {source_code.file_name}. Check it!")
+            missing_files.append(source_code.file_name)
             continue
 
         local_content = local_file.read_text().splitlines()
@@ -66,10 +72,13 @@ def find_diffs(customer: str, source_codes: list[SourceCode]) -> None:
 
         if not diff_text:
             continue
+        files_with_diffs.append(source_code.file_name)
         
         diff_file_path = diffs_folder / f"{local_file.stem}.patch"
         with open(diff_file_path, "w") as diff_file:
             diff_file.write(diff_text)
+    
+    return missing_files, files_with_diffs
 
 def main() -> None:
     """
@@ -85,9 +94,27 @@ def main() -> None:
 
     api: SourceCodeInterface = ETHScanAPI()
     source_codes = api.get_source_code(proposal_address)
-    print(f"Fetched {len(source_codes)} source files for comparison.")
 
-    find_diffs(customer, source_codes)
+    missing_files, files_with_diffs = find_diffs(customer, source_codes)
+
+    total_number_of_files = len(source_codes)
+    number_of_missing_files = len(missing_files)
+    number_of_files_with_diffs = len(files_with_diffs)
+
+    msg = f"Compared {total_number_of_files - missing_files}/{total_number_of_files}"
+    if number_of_missing_files == 0:
+        pp.pretty_print(msg, pp.Colors.SUCCESS)
+    else:
+        pp.pretty_print(msg, pp.Colors.WARNING)
+    
+    if number_of_files_with_diffs == 0:
+        pp.pretty_print("No differences found.", pp.Colors.SUCCESS)
+    else:
+        pp.pretty_print(f"Found differences in {number_of_files_with_diffs} files", pp.Colors.FAILURE)
+        for file_name in files_with_diffs:
+            pp.pretty_print(f"Found differences in {file_name}", pp.Colors.FAILURE)
+
+
 
 if __name__ == "__main__":
     main()
