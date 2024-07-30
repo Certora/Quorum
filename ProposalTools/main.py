@@ -48,6 +48,9 @@ def find_diffs(customer: str, source_codes: list[SourceCode]) -> tuple[list[str]
     Args:
         customer (str): The customer name or identifier.
         source_codes (list[SourceCode]): List of source code objects from the remote repository.
+
+    Returns:
+        tuple[list[str], list[str]]: A tuple containing lists of missing files and files with differences.
     """
     missing_files = []
     files_with_diffs = []
