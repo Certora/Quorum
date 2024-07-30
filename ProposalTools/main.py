@@ -104,11 +104,13 @@ def main() -> None:
     number_of_missing_files = len(missing_files)
     number_of_files_with_diffs = len(files_with_diffs)
 
-    msg = f"Compared {total_number_of_files - missing_files}/{total_number_of_files}"
+    msg = f"Compared {total_number_of_files - number_of_missing_files}/{total_number_of_files} files"
     if number_of_missing_files == 0:
         pp.pretty_print(msg, pp.Colors.SUCCESS)
     else:
         pp.pretty_print(msg, pp.Colors.WARNING)
+        for file_name in missing_files:
+            pp.pretty_print(f"Missing file: {file_name} in local repo", pp.Colors.WARNING)
     
     if number_of_files_with_diffs == 0:
         pp.pretty_print("No differences found.", pp.Colors.SUCCESS)
