@@ -59,7 +59,6 @@ def find_diffs(customer: str, source_codes: list[SourceCode]) -> tuple[list[str]
     target_repo = customer_folder / "modules"
     diffs_folder = customer_folder/ "checks" / f"diffs_{datetime.now()}"
     diffs_folder.mkdir(parents=True, exist_ok=True)
-
     
     for source_code in source_codes:
         local_file = find_most_common_path(Path(source_code.file_name), target_repo)
