@@ -3,6 +3,7 @@ from pathlib import Path
 from git import Repo
 
 import ProposalTools.config as config
+import ProposalTools.Utils.PrettyPrinter as pp
 
 
 class GitManager:
@@ -22,7 +23,10 @@ class GitManager:
             customer (str): The name or identifier of the customer.
         """
         self.customer = customer
-        self.customer_path = config.MAIN_PATH / self.customer
+        
+        self.customer_path = config.MAIN_PATH / self.customer / "modules"
+        self.customer_path.mkdir(parents=True, exist_ok=True)
+        
         self.repos = self._load_repos()
 
     def _load_repos(self) -> dict:
@@ -44,13 +48,13 @@ class GitManager:
         Otherwise, it will clone the repository and initialize submodules.
         """
         for repo_name, repo_url in self.repos.items():
-            repo_path = self.customer_path / repo_name
+            repo_path: Path = self.customer_path / repo_name
             if repo_path.exists():
-                print(f"Repository {repo_name} already exists at {repo_path}. Updating repo and submodules.")
+                pp.pretty_print(f"Repository {repo_name} already exists at {repo_path}. Updating repo and submodules.", pp.Colors.INFO)
                 repo = Repo(repo_path)
                 repo.git.pull()
                 repo.git.submodule('update', '--init', '--recursive')
             else:
-                print(f"Cloning {repo_name} from URL: {repo_url} to {repo_path}...")
+                pp.pretty_print(f"Cloning {repo_name} from URL: {repo_url} to {repo_path}...", pp.Colors.INFO)
                 Repo.clone_from(repo_url, repo_path, multi_options=["--recurse-submodules"])
 
