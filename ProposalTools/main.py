@@ -15,6 +15,7 @@ import ProposalTools.Utils.PrettyPrinter as pp
 class Compared:
     local_file: str
     proposal_file: str
+    diff: str
 
 def parse_args() -> tuple[str, str]:
     """
@@ -80,8 +81,8 @@ def find_diffs(customer: str, source_codes: list[SourceCode]) -> tuple[list[str]
         diff_text = '\n'.join(diff)
 
         if diff_text:
-            files_with_diffs.append(Compared(str(local_file), source_code.file_name))
             diff_file_path = diffs_folder / f"{local_file.stem}.patch"
+            files_with_diffs.append(Compared(str(local_file), source_code.file_name, str(diff_file_path)))
             with open(diff_file_path, "w") as diff_file:
                 diff_file.write(diff_text)
     
@@ -121,7 +122,7 @@ def main() -> None:
     else:
         pp.pretty_print(f"Found differences in {number_of_files_with_diffs} files", pp.Colors.FAILURE)
         for compared_pair in files_with_diffs:
-            pp.pretty_print(f"Differences between:\nLocal: {compared_pair.local_file}\nProposal: {compared_pair.proposal_file}", pp.Colors.FAILURE)
+            pp.pretty_print(f"Local: {compared_pair.local_file}\nProposal: {compared_pair.proposal_file}\nDiff: {compared_pair.diff}", pp.Colors.FAILURE)
 
 if __name__ == "__main__":
     main()

@@ -8,7 +8,7 @@ ProposalTools is a Python-based utility designed to fetch and compare smart cont
 - **Automated Repository Management:** Clone or update repositories based on customer configurations.
 
 ### Prerequisites
-- Python 3.6 or higher
+- Python 3.11 or higher
 
 ### Installation
 
