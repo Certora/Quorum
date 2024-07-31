@@ -6,8 +6,7 @@ from dataclasses import dataclass
 
 
 from ProposalTools.GIT.GitManager import GitManager
-from ProposalTools.APIs.AbsSourceCode import SourceCodeInterface, SourceCode
-from ProposalTools.APIs.ETHScan.ETHScanAPI import ETHScanAPI
+from ProposalTools.API.APIManager import APIManager, Chain, SourceCode
 import ProposalTools.config as config
 import ProposalTools.Utils.PrettyPrinter as pp
 
@@ -17,18 +16,19 @@ class Compared:
     proposal_file: str
     diff: str
 
-def parse_args() -> tuple[str, str]:
+def parse_args() -> tuple[str, Chain, str]:
     """
     Parse command line arguments for customer and proposal address.
 
     Returns:
-        tuple[str, str]: A tuple containing the customer name and proposal address.
+        tuple[str, Chain, str]: A tuple containing the customer name, blockchain chain and proposal address.
     """
     parser = argparse.ArgumentParser(description="Fetch and compare smart contract source code.")
     parser.add_argument('--customer', type=str, required=True, help="Customer name or identifier.")
+    parser.add_argument('--chain', type=Chain, choices=[chain.value for chain in Chain], default=Chain.ETH.value, help="Blockchain chain.")
     parser.add_argument('--proposal_address', type=str, required=True, help="Ethereum proposal address.")
     args = parser.parse_args()
-    return args.customer, args.proposal_address
+    return args.customer, args.chain, args.proposal_address
 
 def find_most_common_path(source_path: Path, repo: Path) -> Path | None:
     """
@@ -95,12 +95,12 @@ def main() -> None:
     This function initializes the Git manager, fetches the source codes
     from the Etherscan API, and finds differences between the local and remote source codes.
     """
-    customer, proposal_address = parse_args()
+    customer, chain, proposal_address = parse_args()
 
     git_manager = GitManager(customer)
     git_manager.clone_or_update()
 
-    api: SourceCodeInterface = ETHScanAPI()
+    api = APIManager(chain)
     source_codes = api.get_source_code(proposal_address)
 
     missing_files, files_with_diffs = find_diffs(customer, source_codes)
