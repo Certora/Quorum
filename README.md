@@ -1,9 +1,9 @@
 ## ProposalTools
 
-ProposalTools is a Python-based utility designed to fetch and compare smart contract source codes. It helps users to identify and analyze differences between local and remote versions of smart contract code.
+ProposalTools is a Python-based utility designed to fetch and compare smart contract source codes. It helps users identify and analyze differences between local and remote versions of smart contract code.
 
 ### Features
-- **Fetch Smart Contract Source Codes:** Retrieve source code directly from Etherscan using a contract address.
+- **Fetch Smart Contract Source Codes:** Retrieve source code directly from various blockchains using contract addresses.
 - **Compare Local and Remote Codes:** Generate unified diffs to highlight differences between local and remote source codes.
 - **Automated Repository Management:** Clone or update repositories based on customer configurations.
 
@@ -18,7 +18,7 @@ You can install ProposalTools directly from GitHub using pip:
 pip install git+ssh://git@github.com/Certora/ProposalTools.git
 ```
 
-Or clone:
+Or clone the repository:
 
 ```sh
 git clone git@github.com:Certora/ProposalTools.git
@@ -26,62 +26,91 @@ git clone git@github.com:Certora/ProposalTools.git
 
 ### Environment Variables
 
-Before using ProposalsTool, you need to configure the following environment variables:
+Before using ProposalTools, you need to configure the following environment variables for API keys corresponding to each blockchain. These keys are necessary to access the respective blockchain explorers:
 
-- **ETHSCAN_API_KEY:** This is the API key used to access the Etherscan API. You can obtain an API key by registering on the Etherscan website.
+- **ETHSCAN_API_KEY:** API key for Etherscan (Ethereum).
+- **ARBSCAN_API_KEY:** API key for Arbiscan (Arbitrum).
+- **AVAXSCAN_API_KEY:** API key for AvaScan (Avalanche). Defaults to "FREE" if not set.
+- **BASESCAN_API_KEY:** API key for BaseScan (Base).
+- **BSCSCAN_API_KEY:** API key for BscScan (Binance Smart Chain).
+- **GNOSCAN_API_KEY:** API key for GnoScan (Gnosis Chain).
+- **METSCAN_API_KEY:** API key for MetScan (Meter). Defaults to "FREE" if not set.
+- **OPTSCAN_API_KEY:** API key for OptScan (Optimism).
+- **POLYSCAN_API_KEY:** API key for PolygonScan (Polygon).
+- **SCRSCAN_API_KEY:** API key for ScrollScan (Scroll).
 
-  Set the environment variable in your shell:
+You can set these environment variables in your shell:
 
-  ```sh
-  export ETHSCAN_API_KEY="your_etherscan_api_key"
-  ```
+```sh
+export ETHSCAN_API_KEY="your_etherscan_api_key"
+export ARBSCAN_API_KEY="your_arbiscan_api_key"
+export AVAXSCAN_API_KEY="your_avaxscan_api_key"
+export BASESCAN_API_KEY="your_basescan_api_key"
+export BSCSCAN_API_KEY="your_bscscan_api_key"
+export GNOSCAN_API_KEY="your_gnoscan_api_key"
+export METSCAN_API_KEY="your_metscan_api_key"
+export OPTSCAN_API_KEY="your_optscan_api_key"
+export POLYSCAN_API_KEY="your_polyscan_api_key"
+export SCRSCAN_API_KEY="your_scrscan_api_key"
+```
 
-  Replace `your_etherscan_api_key` with the actual API key provided by Etherscan.
+Replace `your_etherscan_api_key`, `your_arbiscan_api_key`, etc., with the actual API keys provided by the respective blockchain explorers.
 
-- **PRP_TOOL_PATH:** This is the path where the repositories and diffs will be saved. Ensure this directory exists and is writable.
+Additionally, set the `PRP_TOOL_PATH` environment variable to specify where the repositories and diffs will be saved:
 
-  Set the environment variable in your shell:
+```sh
+export PRP_TOOL_PATH="/path/to/artifacts"
+```
 
-  ```sh
-  export PRP_TOOL_PATH="/path/to/artifacts"
-  ```
-
-  Replace `/path/to/artifacts` with the path where you want the tool to save cloned repositories and diff files.
+Replace `/path/to/artifacts` with the path where you want the tool to save cloned repositories and diff files.
 
 ### Usage
 
 To run the tool, use the command line:
 
 ```sh
-CheckProposal --customer "CustomerName" --proposal_address "EthereumContractAddress"
+CheckProposal --customer "CustomerName" --chain "ChainName" --proposal_address "Address"
 ```
 
 OR
 
 ```sh
-python3 ProposalTools/main.py   --customer CustomerName --proposal_address EthereumContractAddress
+python3 ProposalTools/main.py --customer "CustomerName" --chain "ChainName" --proposal_address "Address"
 ```
 
+Replace `CustomerName` with the customer identifier, `ChainName` with the blockchain chain (e.g., "ETH", "AVAX"), and `Address` with the proposal address.
 
+#### Example Usage with Config File
 
-Replace `CustomerName` with the customer identifier and `EthereumContractAddress` with the smart contract's Ethereum address.
+You can also execute multiple tasks using a configuration file:
 
-### Configuration
-
-The `repos.json` file defines the repositories for each customer. The structure is as follows:
-
-And should be located under PRP_TOOL_PATH.
+Example config file `config.json`:
 
 ```json
 {
-    "CustomerName": [
-        "https://github.com/path/to/repo1",
-        "https://github.com/path/to/repo2"
-    ]
+    "Aave": {
+        "AVAX": {
+            "Proposals": ["0x564Dfd09eBB63F7e468401AffE2d8c2cDD08D68D"]
+        },
+        "ETH": {
+            "Proposals": ["0x683FdF51d5898F92317F870B25a6A4dF67dC58Ab", "0x065DF1F9d0aeDEa11E6d059ce29e91d2Abed59fA"]
+        },
+        "GNO": {
+            "Proposals": ["0xF0221Fc5a2F825bbF6F994f30743aD5AAC66cd4E"]
+        }
+    }
 }
 ```
 
-If not found the following default `repos.json` configuration will be created under the PRP_TOOL_PATH:
+To run using the config file:
+
+```sh
+python3 ProposalTools/main.py --config path/to/config.json
+```
+
+### Configuration
+
+The `repos.json` file defines the repositories for each customer. It should be located under the `PRP_TOOL_PATH`. If not found, the following default `repos.json` configuration will be created:
 
 ```json
 {
@@ -92,6 +121,5 @@ If not found the following default `repos.json` configuration will be created un
     ]
 }
 ```
-
 
 This configuration is used by the tool to manage the repositories.
