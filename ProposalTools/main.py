@@ -3,11 +3,11 @@ import difflib
 from pathlib import Path
 from datetime import datetime
 from dataclasses import dataclass
-
+from typing import Any, Optional
+import json
 
 from ProposalTools.GIT.GitManager import GitManager
-from ProposalTools.APIs.AbsSourceCode import SourceCodeInterface, SourceCode
-from ProposalTools.APIs.ETHScan.ETHScanAPI import ETHScanAPI
+from ProposalTools.API.APIManager import APIManager, Chain, SourceCode
 import ProposalTools.config as config
 import ProposalTools.Utils.PrettyPrinter as pp
 
@@ -17,20 +17,42 @@ class Compared:
     proposal_file: str
     diff: str
 
-def parse_args() -> tuple[str, str]:
+def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
     """
-    Parse command line arguments for customer and proposal address.
+    Parse command line arguments for JSON configuration file or individual task parameters.
 
     Returns:
-        tuple[str, str]: A tuple containing the customer name and proposal address.
+        tuple[Optional[str], Optional[str], Optional[str], Optional[str]]: 
+        A tuple containing the path to the JSON configuration file, customer name, chain name, and proposal address.
     """
     parser = argparse.ArgumentParser(description="Fetch and compare smart contract source code.")
-    parser.add_argument('--customer', type=str, required=True, help="Customer name or identifier.")
-    parser.add_argument('--proposal_address', type=str, required=True, help="Ethereum proposal address.")
+    parser.add_argument('--config', type=load_config, help="Path to JSON configuration file.")
+    parser.add_argument('--customer', type=str, help="Customer name or identifier.")
+    parser.add_argument('--chain', type=str, choices=[chain.value for chain in Chain], help="Blockchain chain.")
+    parser.add_argument('--proposal_address', type=str, help="Ethereum proposal address.")
     args = parser.parse_args()
-    return args.customer, args.proposal_address
 
-def find_most_common_path(source_path: Path, repo: Path) -> Path | None:
+    return args.config, args.customer, args.chain, args.proposal_address
+
+def load_config(config_path: str) -> dict[str, Any] | None:
+    """
+    Load and parse the JSON configuration file.
+
+    Args:
+        config_path (str): Path to the JSON configuration file.
+
+    Returns:
+        dict[str, Any]: Parsed JSON data.
+    """
+    try:
+        with open(config_path, 'r') as file:
+            config_data = json.load(file)
+        return config_data
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        pp.pretty_print(f"No execution config supplied, will execute in single Task mode", pp.Colors.INFO)
+        return None
+
+def find_most_common_path(source_path: Path, repo: Path) -> Optional[Path]:
     """
     Find the most common file path between a source path and a repository.
 
@@ -39,7 +61,7 @@ def find_most_common_path(source_path: Path, repo: Path) -> Path | None:
         repo (Path): The local repository path.
 
     Returns:
-        Path | None: The most common file path if found, otherwise None.
+        Optional[Path]: The most common file path if found, otherwise None.
     """
     for i in range(len(source_path.parts)):
         current_source_path = Path(*source_path.parts[i:])
@@ -48,13 +70,14 @@ def find_most_common_path(source_path: Path, repo: Path) -> Path | None:
             return local_files[0]
     return None
 
-def find_diffs(customer: str, source_codes: list[SourceCode]) -> tuple[list[str], list[Compared]]:
+def find_diffs(customer: str, source_codes: list[SourceCode], proposal_address: str) -> tuple[list[str], list[Compared]]:
     """
     Find and save differences between local and remote source codes.
 
     Args:
         customer (str): The customer name or identifier.
         source_codes (list[SourceCode]): List of source code objects from the remote repository.
+        proposal_address (str): The Ethereum proposal address (for diff path structure).
 
     Returns:
         tuple[list[str], list[Compared]]: A tuple containing lists of missing files and files with differences.
@@ -64,7 +87,7 @@ def find_diffs(customer: str, source_codes: list[SourceCode]) -> tuple[list[str]
     
     customer_folder = config.MAIN_PATH / customer
     target_repo = customer_folder / "modules"
-    diffs_folder = customer_folder / "checks" / f"diffs_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    diffs_folder = customer_folder / "checks" / proposal_address / f"diffs_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     diffs_folder.mkdir(parents=True, exist_ok=True)
     pp.pretty_print(f"Created differences folder:\n{diffs_folder}", pp.Colors.INFO)
     
@@ -88,41 +111,64 @@ def find_diffs(customer: str, source_codes: list[SourceCode]) -> tuple[list[str]
     
     return missing_files, files_with_diffs
 
-def main() -> None:
+def process_task(customer: str, chain_name: str, proposal_addresses: list[str]) -> None:
     """
-    Main function to fetch and compare smart contract source codes.
+    Process the task for a given customer, chain, and list of proposal addresses.
 
-    This function initializes the Git manager, fetches the source codes
-    from the Etherscan API, and finds differences between the local and remote source codes.
+    Args:
+        customer (str): The customer name or identifier.
+        chain_name (str): The blockchain chain name.
+        proposal_addresses (list[str]): List of proposal addresses.
     """
-    customer, proposal_address = parse_args()
-
+    chain = Chain[chain_name.upper()]
     git_manager = GitManager(customer)
     git_manager.clone_or_update()
 
-    api: SourceCodeInterface = ETHScanAPI()
-    source_codes = api.get_source_code(proposal_address)
+    api = APIManager(chain)
+    for proposal_address in proposal_addresses:
+        pp.pretty_print(f"Processing proposal {proposal_address}", pp.Colors.INFO)
+        source_codes = api.get_source_code(proposal_address)
+        missing_files, files_with_diffs = find_diffs(customer, source_codes, proposal_address)
 
-    missing_files, files_with_diffs = find_diffs(customer, source_codes)
+        total_number_of_files = len(source_codes)
+        number_of_missing_files = len(missing_files)
+        number_of_files_with_diffs = len(files_with_diffs)
 
-    total_number_of_files = len(source_codes)
-    number_of_missing_files = len(missing_files)
-    number_of_files_with_diffs = len(files_with_diffs)
+        msg = f"Compared {total_number_of_files - number_of_missing_files}/{total_number_of_files} files for proposal {proposal_address}"
+        if number_of_missing_files == 0:
+            pp.pretty_print(msg, pp.Colors.SUCCESS)
+        else:
+            pp.pretty_print(msg, pp.Colors.WARNING)
+            for file_name in missing_files:
+                pp.pretty_print(f"Missing file: {file_name} in local repo", pp.Colors.WARNING)
+        
+        if number_of_files_with_diffs == 0:
+            pp.pretty_print("No differences found.", pp.Colors.SUCCESS)
+        else:
+            pp.pretty_print(f"Found differences in {number_of_files_with_diffs} files", pp.Colors.FAILURE)
+            for compared_pair in files_with_diffs:
+                pp.pretty_print(f"Local: {compared_pair.local_file}\nProposal: {compared_pair.proposal_file}\nDiff: {compared_pair.diff}", pp.Colors.FAILURE)
 
-    msg = f"Compared {total_number_of_files - number_of_missing_files}/{total_number_of_files} files"
-    if number_of_missing_files == 0:
-        pp.pretty_print(msg, pp.Colors.SUCCESS)
+def main() -> None:
+    """
+    Main function to execute tasks based on command line arguments or JSON configuration.
+
+    This function determines whether to run in single-task mode using command line arguments
+    or multi-task mode using a JSON configuration file.
+    """
+    config_data, customer, chain_name, proposal_address = parse_args()
+
+    if config_data:
+        # Multi-task mode using JSON configuration
+        for customer, chain_info in config_data.items():
+            for chain_name, proposals in chain_info.items():
+                if proposals["Proposals"]: 
+                    process_task(customer, chain_name, proposals["Proposals"])
     else:
-        pp.pretty_print(msg, pp.Colors.WARNING)
-        for file_name in missing_files:
-            pp.pretty_print(f"Missing file: {file_name} in local repo", pp.Colors.WARNING)
-    
-    if number_of_files_with_diffs == 0:
-        pp.pretty_print("No differences found.", pp.Colors.SUCCESS)
-    else:
-        pp.pretty_print(f"Found differences in {number_of_files_with_diffs} files", pp.Colors.FAILURE)
-        for compared_pair in files_with_diffs:
-            pp.pretty_print(f"Local: {compared_pair.local_file}\nProposal: {compared_pair.proposal_file}\nDiff: {compared_pair.diff}", pp.Colors.FAILURE)
+        # Single-task mode using command line arguments
+        if not (customer and chain_name and proposal_address):
+            raise ValueError("Customer, chain, and proposal_address must be specified if not using a config file.")
+        process_task(customer, chain_name, [proposal_address])
 
 if __name__ == "__main__":
     main()
