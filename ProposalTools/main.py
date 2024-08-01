@@ -70,13 +70,14 @@ def find_most_common_path(source_path: Path, repo: Path) -> Optional[Path]:
             return local_files[0]
     return None
 
-def find_diffs(customer: str, source_codes: list[SourceCode]) -> tuple[list[str], list[Compared]]:
+def find_diffs(customer: str, source_codes: list[SourceCode], proposal_address: str) -> tuple[list[str], list[Compared]]:
     """
     Find and save differences between local and remote source codes.
 
     Args:
         customer (str): The customer name or identifier.
         source_codes (list[SourceCode]): List of source code objects from the remote repository.
+        proposal_address (str): The Ethereum proposal address (for diff path structure).
 
     Returns:
         tuple[list[str], list[Compared]]: A tuple containing lists of missing files and files with differences.
@@ -86,7 +87,7 @@ def find_diffs(customer: str, source_codes: list[SourceCode]) -> tuple[list[str]
     
     customer_folder = config.MAIN_PATH / customer
     target_repo = customer_folder / "modules"
-    diffs_folder = customer_folder / "checks" / f"diffs_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    diffs_folder = customer_folder / "checks" / proposal_address / f"diffs_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     diffs_folder.mkdir(parents=True, exist_ok=True)
     pp.pretty_print(f"Created differences folder:\n{diffs_folder}", pp.Colors.INFO)
     
@@ -127,7 +128,7 @@ def process_task(customer: str, chain_name: str, proposal_addresses: list[str]) 
     for proposal_address in proposal_addresses:
         pp.pretty_print(f"Processing proposal {proposal_address}", pp.Colors.INFO)
         source_codes = api.get_source_code(proposal_address)
-        missing_files, files_with_diffs = find_diffs(customer, source_codes)
+        missing_files, files_with_diffs = find_diffs(customer, source_codes, proposal_address)
 
         total_number_of_files = len(source_codes)
         number_of_missing_files = len(missing_files)

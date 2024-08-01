@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 import requests
 from typing import List, Callable
-from enum import Enum
+from enum import StrEnum
 import os
 import json
 
-class Chain(Enum):
+class Chain(StrEnum):
     """
     Enumeration for supported blockchain networks.
     """
