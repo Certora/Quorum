@@ -146,3 +146,67 @@ The `repos.json` file defines the repositories for each customer. It should be l
 ```
 
 This configuration is used by the tool to manage the repositories.
+
+## Artifacts Structure
+
+ProposalTools generates and organizes artifacts in a structured manner under the `PRP_TOOL_PATH` directory. Here is a general overview of the structure:
+
+### Directory Structure
+
+```
+PRP_TOOL_PATH/
+├── CustomerName/
+│   ├── checks/
+│   │   ├── ProposalAddress1/
+            ├── diffs_datetime/
+                ├── file.patch
+│   │   ├── ProposalAddress2/
+            |- ...
+│   │   ├── ...
+│   ├── modules/
+│   │   ├── repository1/
+│   │   ├── repository2/
+│   │   ├── ...
+│   ├── execution.json
+│   ├── repos.json
+```
+
+### Description
+
+- **CustomerName/**: This directory is named after the customer, representing the context or organization for which the analysis is performed. Each customer has its own directory.
+
+  - **checks/**: Contains the diffs generated for each smart contract address analyzed. Each subdirectory is named after the contract's address and contains patch files highlighting differences between local and remote source codes.
+
+  - **modules/**: This directory stores the cloned repositories for the customer. Each subdirectory corresponds to a specific repository associated with the customer, containing the source code and related files.
+
+  - **execution.json**: This file stores the configuration and results of the last execution, including details like which proposals were checked and any findings or issues encountered.
+
+  - **repos.json**: A configuration file specifying the repositories to be managed for the customer. This file can be customized to include the URLs of the repositories related to the customer.
+
+### Example
+
+For instance, the structure under the `PRP_TOOL_PATH/Aave/` directory might look like:
+
+```
+Aave/
+├── checks/
+│   ├── 0x065DF1F9d0aeDEa11E6d059ce29e91d2Abed59fA/
+        ├── diffs_20240801_105150/
+            ├── AaveV3Ethereum.patch
+│   ├── 0x564Dfd09eBB63F7e468401AffE2d8c2cDD08D68D/
+        ├── ...
+│   ├── 0x683FdF51d5898F92317F870B25a6A4dF67dC58Ab/
+        ├── ...
+│   ├── 0xF0221Fc5a2F825bbF6F994f30743aD5AAC66cd4E/
+        ├── ...
+├── modules/
+│   ├── aave-address-book/
+│   ├── aave-helpers/
+│   ├── aave-v3-origin/
+├── execution.json
+├── repos.json
+```
+
+In this example, each proposal address under the `checks/` directory contains diff files that highlight the differences between the local and fetched source codes. The `modules/` directory contains the repositories relevant to the customer "Aave," and the `execution.json` and `repos.json` files hold metadata and configuration details.
+
+This structured organization ensures that all artifacts are easily accessible and organized, making it straightforward to review the outputs and manage the repositories and configurations.
