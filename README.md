@@ -1,16 +1,16 @@
-## ProposalTools
+# ProposalTools
 
 ProposalTools is a Python-based utility designed to fetch and compare smart contract source codes. It helps users identify and analyze differences between local and remote versions of smart contract code.
 
-### Features
+## Features
 - **Fetch Smart Contract Source Codes:** Retrieve source code directly from various blockchains using contract addresses.
 - **Compare Local and Remote Codes:** Generate unified diffs to highlight differences between local and remote source codes.
 - **Automated Repository Management:** Clone or update repositories based on customer configurations.
 
-### Prerequisites
+## Prerequisites
 - Python 3.11 or higher
 
-### Installation
+## Installation
 
 You can install ProposalTools directly from GitHub using pip:
 
@@ -24,7 +24,7 @@ Or clone the repository:
 git clone git@github.com:Certora/ProposalTools.git
 ```
 
-### Environment Variables
+## Environment Variables
 
 Before using ProposalTools, you need to configure the following environment variables for API keys corresponding to each blockchain. These keys are necessary to access the respective blockchain explorers:
 
@@ -64,7 +64,7 @@ export PRP_TOOL_PATH="/path/to/artifacts"
 
 Replace `/path/to/artifacts` with the path where you want the tool to save cloned repositories and diff files.
 
-### Usage
+## Usage
 
 To run the tool, use the command line:
 
@@ -80,7 +80,7 @@ python3 ProposalTools/main.py --customer "CustomerName" --chain "ChainName" --pr
 
 Replace `CustomerName` with the customer identifier, `ChainName` with the blockchain chain (e.g., "ETH", "AVAX"), and `Address` with the proposal address.
 
-#### Example Usage with Config File
+### Example Usage with Config File
 
 You can also execute multiple tasks using a configuration file:
 
@@ -97,6 +97,27 @@ Example config file `config.json`:
         },
         "GNO": {
             "Proposals": ["0xF0221Fc5a2F825bbF6F994f30743aD5AAC66cd4E"]
+        },
+        "ARB": {
+            "Proposals": []
+        },
+        "BASE": {
+            "Proposals": []
+        },
+        "BSC": {
+            "Proposals": []
+        },
+        "MET": {
+            "Proposals": []
+        },
+        "OPT": {
+            "Proposals": []
+        },
+        "POLY": {
+            "Proposals": []
+        },
+        "SCR": {
+            "Proposals": []
         }
     }
 }
@@ -108,7 +129,9 @@ To run using the config file:
 python3 ProposalTools/main.py --config path/to/config.json
 ```
 
-### Configuration
+**Note:** If the "Proposals" list for a particular chain is empty, the task for that chain will be skipped. This allows you to include or exclude chains from processing without modifying the code.
+
+## Configuration
 
 The `repos.json` file defines the repositories for each customer. It should be located under the `PRP_TOOL_PATH`. If not found, the following default `repos.json` configuration will be created:
 

@@ -125,6 +125,7 @@ def process_task(customer: str, chain_name: str, proposal_addresses: list[str]) 
 
     api = APIManager(chain)
     for proposal_address in proposal_addresses:
+        pp.pretty_print(f"Processing proposal {proposal_address}", pp.Colors.INFO)
         source_codes = api.get_source_code(proposal_address)
         missing_files, files_with_diffs = find_diffs(customer, source_codes)
 
@@ -160,7 +161,8 @@ def main() -> None:
         # Multi-task mode using JSON configuration
         for customer, chain_info in config_data.items():
             for chain_name, proposals in chain_info.items():
-                process_task(customer, chain_name, proposals["Proposals"])
+                if proposals["Proposals"]: 
+                    process_task(customer, chain_name, proposals["Proposals"])
     else:
         # Single-task mode using command line arguments
         if not (customer and chain_name and proposal_address):
