@@ -34,6 +34,7 @@ def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[
 
     return args.config, args.customer, args.chain, args.proposal_address
 
+
 def load_config(config_path: str) -> dict[str, Any] | None:
     """
     Load and parse the JSON configuration file.
@@ -52,6 +53,7 @@ def load_config(config_path: str) -> dict[str, Any] | None:
         pp.pretty_print(f"No execution config supplied, will execute in single Task mode", pp.Colors.INFO)
         return None
 
+
 def find_most_common_path(source_path: Path, repo: Path) -> Optional[Path]:
     """
     Find the most common file path between a source path and a repository.
@@ -69,6 +71,7 @@ def find_most_common_path(source_path: Path, repo: Path) -> Optional[Path]:
         if len(local_files) == 1:
             return local_files[0]
     return None
+
 
 def find_diffs(customer: str, source_codes: list[SourceCode], proposal_address: str) -> tuple[list[str], list[Compared]]:
     """
@@ -111,6 +114,7 @@ def find_diffs(customer: str, source_codes: list[SourceCode], proposal_address: 
     
     return missing_files, files_with_diffs
 
+
 def process_task(customer: str, chain_name: str, proposal_addresses: list[str]) -> None:
     """
     Process the task for a given customer, chain, and list of proposal addresses.
@@ -121,8 +125,6 @@ def process_task(customer: str, chain_name: str, proposal_addresses: list[str]) 
         proposal_addresses (list[str]): List of proposal addresses.
     """
     chain = Chain[chain_name.upper()]
-    git_manager = GitManager(customer)
-    git_manager.clone_or_update()
 
     api = APIManager(chain)
     for proposal_address in proposal_addresses:
@@ -149,6 +151,7 @@ def process_task(customer: str, chain_name: str, proposal_addresses: list[str]) 
             for compared_pair in files_with_diffs:
                 pp.pretty_print(f"Local: {compared_pair.local_file}\nProposal: {compared_pair.proposal_file}\nDiff: {compared_pair.diff}", pp.Colors.FAILURE)
 
+
 def main() -> None:
     """
     Main function to execute tasks based on command line arguments or JSON configuration.
@@ -161,6 +164,7 @@ def main() -> None:
     if config_data:
         # Multi-task mode using JSON configuration
         for customer, chain_info in config_data.items():
+            GitManager(customer).clone_or_update()
             for chain_name, proposals in chain_info.items():
                 if proposals["Proposals"]: 
                     process_task(customer, chain_name, proposals["Proposals"])
@@ -168,7 +172,10 @@ def main() -> None:
         # Single-task mode using command line arguments
         if not (customer and chain_name and proposal_address):
             raise ValueError("Customer, chain, and proposal_address must be specified if not using a config file.")
+        
+        GitManager(customer).clone_or_update()    
         process_task(customer, chain_name, [proposal_address])
+
 
 if __name__ == "__main__":
     main()
