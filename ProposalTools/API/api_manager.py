@@ -105,7 +105,7 @@ class APIManager:
         data = response.json()
         
         if data['status'] != '1':
-            raise ValueError(f"Error fetching source code: {data.get('message', 'Unknown error')}")
+            raise ValueError(f"Error fetching source code: {data.get('message', 'Unknown error')}\n{data.get('result')}")
         
         result = data['result'][0]["SourceCode"]
         try:

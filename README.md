@@ -5,6 +5,7 @@ ProposalTools is a Python-based utility designed to fetch and compare smart cont
 ## Features
 - **Fetch Smart Contract Source Codes:** Retrieve source code directly from various blockchains using contract addresses.
 - **Compare Local and Remote Codes:** Generate unified diffs to highlight differences between local and remote source codes.
+- **Global Variable Check:** Ensure all global variables in unmatched contracts are either constant or immutable.
 - **Automated Repository Management:** Clone or update repositories based on customer configurations.
 
 ## Prerequisites
@@ -158,10 +159,12 @@ PRP_TOOL_PATH/
 ├── CustomerName/
 │   ├── checks/
 │   │   ├── ProposalAddress1/
-            ├── diffs_datetime/
-                ├── file.patch
+│   │   │   ├── diffs_datetime/
+│   │   │   │   ├── file.patch
+│   │   │   ├── global_check_datetime/
+│   │   │   │   ├── file.json
 │   │   ├── ProposalAddress2/
-            |- ...
+│   │   │   ├── ...
 │   │   ├── ...
 │   ├── modules/
 │   │   ├── repository1/
@@ -175,7 +178,7 @@ PRP_TOOL_PATH/
 
 - **CustomerName/**: This directory is named after the customer, representing the context or organization for which the analysis is performed. Each customer has its own directory.
 
-  - **checks/**: Contains the diffs generated for each smart contract address analyzed. Each subdirectory is named after the contract's address and contains patch files highlighting differences between local and remote source codes.
+  - **checks/**: Contains the diffs and global variable checks generated for each smart contract address analyzed. Each subdirectory is named after the contract's address and contains patch files highlighting differences between local and remote source codes, as well as JSON files documenting any global variables that are not constant or immutable.
 
   - **modules/**: This directory stores the cloned repositories for the customer. Each subdirectory corresponds to a specific repository associated with the customer, containing the source code and related files.
 
@@ -191,14 +194,16 @@ For instance, the structure under the `PRP_TOOL_PATH/Aave/` directory might look
 Aave/
 ├── checks/
 │   ├── 0x065DF1F9d0aeDEa11E6d059ce29e91d2Abed59fA/
-        ├── diffs_20240801_105150/
-            ├── AaveV3Ethereum.patch
+│   │   ├── diffs_20240801_105150/
+│   │   │   ├── AaveV3Ethereum.patch
+│   │   ├── global_check_20240801_105150/
+│   │   │   ├── AaveV3Ethereum.json
 │   ├── 0x564Dfd09eBB63F7e468401AffE2d8c2cDD08D68D/
-        ├── ...
+│   │   ├── ...
 │   ├── 0x683FdF51d5898F92317F870B25a6A4dF67dC58Ab/
-        ├── ...
+│   │   ├── ...
 │   ├── 0xF0221Fc5a2F825bbF6F994f30743aD5AAC66cd4E/
-        ├── ...
+│   │   ├── ...
 ├── modules/
 │   ├── aave-address-book/
 │   ├── aave-helpers/
@@ -207,6 +212,4 @@ Aave/
 ├── repos.json
 ```
 
-In this example, each proposal address under the `checks/` directory contains diff files that highlight the differences between the local and fetched source codes. The `modules/` directory contains the repositories relevant to the customer "Aave," and the `execution.json` and `repos.json` files hold metadata and configuration details.
-
-This structured organization ensures that all artifacts are easily accessible and organized, making it straightforward to review the outputs and manage the repositories and configurations.
+In this example, each proposal address under the `checks/` directory contains diff files that highlight the differences between the local and fetched source codes, as well as global variable check results. The `modules/` directory contains the repositories relevant to the customer "Aave," and the `execution.json` and `repos.json` files hold metadata and configuration details.
