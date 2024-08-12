@@ -14,11 +14,3 @@ class Check(ABC):
         self.customer_folder = config.MAIN_PATH / customer
         self.check_folder = self.customer_folder / "checks" / proposal_address / f"{self.__class__.__name__}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         self.check_folder.mkdir(parents=True, exist_ok=True)
-
-    @abstractmethod
-    def execute_check(self):
-        """
-        Abstract method to execute the specific check.
-        Must be overridden by subclasses.
-        """
-        pass

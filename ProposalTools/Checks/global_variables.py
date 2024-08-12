@@ -15,29 +15,12 @@ class GlobalVariableCheck(Check):
     This class checks if global variables in source codes files are either constant or immutable.
     """
 
-    def execute_check(self) -> dict[str, list[Node]]:
-        """
-        Execute the global variable check to ensure they are either constant or immutable.
-
-        This method checks the global variables in the missing files and processes the results.
-
-        Returns:
-            dict[str, list[Node]]: A dictionary mapping file names to lists of violated variable nodes.
-        """
-        source_code_to_violated_variables = self.__check_global_variables()
-
-        self.__process_results(source_code_to_violated_variables)
-        return source_code_to_violated_variables
-
-    def __check_global_variables(self) -> dict[str, list[Node]]:
+    def check_global_variables(self) -> None:
         """
         Checks global variables in the source code to ensure they are either constant or immutable.
 
         This method parses the Solidity source code and checks for variables that do not meet the constant
         or immutable criteria.
-
-        Returns:
-            dict[str, list[Node]]: A dictionary mapping file names to lists of violated variable nodes.
         """
         source_code_to_violated_variables = {}
         for source_code in self.source_codes:
@@ -49,8 +32,8 @@ class GlobalVariableCheck(Check):
 
             if violated_variables:
                 source_code_to_violated_variables[source_code.file_name] = violated_variables
-
-        return source_code_to_violated_variables
+        
+        self.__process_results(source_code_to_violated_variables)
 
     def __check_const(self, ast_node: Node) -> list[Node]:
         """

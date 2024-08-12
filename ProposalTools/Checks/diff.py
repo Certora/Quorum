@@ -31,20 +31,6 @@ class DiffCheck(Check):
     identifying differences and generating patch files.
     """
 
-    def execute_check(self) -> tuple[list[SourceCode], list[Compared]]:
-        """
-        Execute the diff check between local and remote source codes.
-
-        This method identifies missing files, compares existing files, and prints the results.
-
-        Returns:
-            tuple[list[SourceCode], list[Compared]]: A tuple containing a list of missing files
-                                                     and a list of files with differences.
-        """
-        missing_files, files_with_diffs = self.__find_diffs()
-        self.__print_diffs_results(missing_files, files_with_diffs)
-        return missing_files, files_with_diffs
-
     def __find_most_common_path(self, source_path: Path, repo: Path) -> Optional[Path]:
         """
         Find the most common file path between a source path and a repository.
@@ -65,7 +51,7 @@ class DiffCheck(Check):
                 return local_files[0]
         return None
 
-    def __find_diffs(self) -> tuple[list[SourceCode], list[Compared]]:
+    def find_diffs(self) -> list[SourceCode]:
         """
         Find and save differences between local and remote source codes.
 
@@ -73,8 +59,7 @@ class DiffCheck(Check):
         for any differences found.
 
         Returns:
-            tuple[list[SourceCode], list[Compared]]: A tuple containing a list of missing files
-                                                     and a list of files with differences.
+            list[Compared]: list of missing files.
         """
         missing_files = []
         files_with_diffs = []
@@ -98,8 +83,9 @@ class DiffCheck(Check):
                 files_with_diffs.append(Compared(str(local_file), source_code.file_name, str(diff_file_path)))
                 with open(diff_file_path, "w") as diff_file:
                     diff_file.write(diff_text)
-
-        return missing_files, files_with_diffs
+        
+        self.__print_diffs_results(missing_files, files_with_diffs)
+        return missing_files
 
     def __print_diffs_results(self, missing_files: list[SourceCode], files_with_diffs: list[Compared]):
         """

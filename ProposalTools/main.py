@@ -58,17 +58,16 @@ def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str
     chain = Chain[chain_name.upper()]
     api = APIManager(chain)
     
-    
     pp.pretty_print(f"Processing customer {customer}, for chain: {chain}", pp.Colors.INFO)
     for proposal_address in proposal_addresses:
         pp.pretty_print(f"Processing proposal {proposal_address}", pp.Colors.INFO)
         source_codes = api.get_source_code(proposal_address)
 
         # Diff check
-        missing_files, _ = Checks.DiffCheck(customer, proposal_address, source_codes).execute_check()
+        missing_files = Checks.DiffCheck(customer, proposal_address, source_codes).find_diffs()
 
         # Global variables check
-        Checks.GlobalVariableCheck(customer, proposal_address, missing_files).execute_check()
+        Checks.GlobalVariableCheck(customer, proposal_address, missing_files).check_global_variables()
         
 
 
