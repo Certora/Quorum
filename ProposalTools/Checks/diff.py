@@ -40,8 +40,7 @@ class DiffCheck(Check):
             proposal_address (str): The Ethereum proposal address.
             source_codes (list[SourceCode]): A list of SourceCode objects representing the remote source codes.
         """
-        super().__init__(customer, proposal_address)
-        self.source_codes = source_codes
+        super().__init__(customer, proposal_address, source_codes)
 
     def execute_check(self) -> tuple[list[SourceCode], list[Compared]]:
         """
