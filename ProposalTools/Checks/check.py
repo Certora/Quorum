@@ -10,9 +10,9 @@ class Check(ABC):
         self.customer = customer
         self.proposal_address = proposal_address
         self.source_codes = source_codes
-        
+
         self.customer_folder = config.MAIN_PATH / customer
-        self.check_folder = self.customer_folder / "checks" / proposal_address / f"{self.get_check_name()}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        self.check_folder = self.customer_folder / "checks" / proposal_address / f"{self.__class__.__name__}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         self.check_folder.mkdir(parents=True, exist_ok=True)
 
     @abstractmethod
@@ -20,13 +20,5 @@ class Check(ABC):
         """
         Abstract method to execute the specific check.
         Must be overridden by subclasses.
-        """
-        pass
-    
-    @abstractmethod
-    def get_check_name(self) -> str:
-        """
-        Returns the name of the check to be used in folder creation.
-        Should be overridden by subclasses to provide specific check name.
         """
         pass

@@ -15,17 +15,6 @@ class GlobalVariableCheck(Check):
     This class checks if global variables in source codes files are either constant or immutable.
     """
 
-    def __init__(self, customer: str, proposal_address: str, source_codes: list[SourceCode]):
-        """
-        Initialize the GlobalVariableCheck object.
-
-        Args:
-            customer (str): The customer name or identifier.
-            proposal_address (str): The Ethereum proposal address.
-            source_codes (list[SourceCode]): A list of SourceCode objects.
-        """
-        super().__init__(customer, proposal_address, source_codes)
-
     def execute_check(self) -> dict[str, list[Node]]:
         """
         Execute the global variable check to ensure they are either constant or immutable.
@@ -39,17 +28,6 @@ class GlobalVariableCheck(Check):
 
         self.__process_results(source_code_to_violated_variables)
         return source_code_to_violated_variables
-
-    def get_check_name(self) -> str:
-        """
-        Get the name of the check.
-
-        This name is used for naming folders or files associated with the check.
-
-        Returns:
-            str: The name of the check, "global_check".
-        """
-        return "global_check"
 
     def __check_global_variables(self) -> dict[str, list[Node]]:
         """

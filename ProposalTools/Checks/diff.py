@@ -31,17 +31,6 @@ class DiffCheck(Check):
     identifying differences and generating patch files.
     """
 
-    def __init__(self, customer: str, proposal_address: str, source_codes: list[SourceCode]):
-        """
-        Initialize the DiffCheck object.
-
-        Args:
-            customer (str): The customer name or identifier.
-            proposal_address (str): The Ethereum proposal address.
-            source_codes (list[SourceCode]): A list of SourceCode objects representing the remote source codes.
-        """
-        super().__init__(customer, proposal_address, source_codes)
-
     def execute_check(self) -> tuple[list[SourceCode], list[Compared]]:
         """
         Execute the diff check between local and remote source codes.
@@ -55,17 +44,6 @@ class DiffCheck(Check):
         missing_files, files_with_diffs = self.__find_diffs()
         self.__print_diffs_results(missing_files, files_with_diffs)
         return missing_files, files_with_diffs
-
-    def get_check_name(self) -> str:
-        """
-        Get the name of the check.
-
-        This name is used for naming folders or files associated with the check.
-
-        Returns:
-            str: The name of the check, "diffs".
-        """
-        return "diffs"
 
     def __find_most_common_path(self, source_path: Path, repo: Path) -> Optional[Path]:
         """
