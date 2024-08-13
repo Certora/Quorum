@@ -11,7 +11,6 @@ import ProposalTools.Utils.pretty_printer as pp
 import ProposalTools.Checks as Checks
 
 
-
 def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
     """
     Parse command line arguments for JSON configuration file or individual task parameters.
@@ -46,8 +45,6 @@ def load_config(config_path: str) -> dict[str, Any] | None:
         return config_data
     except (FileNotFoundError, json.JSONDecodeError) as e:
         pp.pretty_print(f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE)
-
-
 
 
 def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str]) -> None:
