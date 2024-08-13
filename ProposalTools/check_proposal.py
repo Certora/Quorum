@@ -6,8 +6,6 @@ from ProposalTools.Utils.chain_enum import Chain
 import ProposalTools.Utils.pretty_printer as pp
 from ProposalTools.GIT.git_manager import GitManager
 from ProposalTools.API.api_manager import APIManager
-from ProposalTools.Utils.chain_enum import Chain
-import ProposalTools.Utils.pretty_printer as pp
 import ProposalTools.Checks as Checks
 
 
