@@ -22,25 +22,6 @@ class Docs(BaseModel):
     quoteAsset: Optional[str]
     quoteAssetClic: Optional[str]
 
-    def __str__(self) -> str:
-        fields = [
-            f"  Asset Class: {self.assetClass}" if self.assetClass else "",
-            f"  Asset Name: {self.assetName}" if self.assetName else "",
-            f"  Base Asset: {self.baseAsset}" if self.baseAsset else "",
-            f"  Base Asset CLIC: {self.baseAssetClic}" if self.baseAssetClic else "",
-            f"  Blockchain Name: {self.blockchainName}" if self.blockchainName else "",
-            f"  CLIC Product Name: {self.clicProductName}" if self.clicProductName else "",
-            f"  Delivery Channel Code: {self.deliveryChannelCode}" if self.deliveryChannelCode else "",
-            f"  Feed Type: {self.feedType}" if self.feedType else "",
-            f"  Hidden: {self.hidden}" if self.hidden is not None else "",
-            f"  Market Hours: {self.marketHours}" if self.marketHours else "",
-            f"  Product Sub-Type: {self.productSubType}" if self.productSubType else "",
-            f"  Product Type: {self.productType}" if self.productType else "",
-            f"  Product Type Code: {self.productTypeCode}" if self.productTypeCode else "",
-            f"  Quote Asset: {self.quoteAsset}" if self.quoteAsset else "",
-            f"  Quote Asset CLIC: {self.quoteAssetClic}" if self.quoteAssetClic else ""
-        ]
-        return "\n".join(filter(None, fields))
 
 class PriceFeedData(BaseModel):
     compareOffchain: Optional[str]
@@ -65,34 +46,6 @@ class PriceFeedData(BaseModel):
     feedType: Optional[str]
     docs: Optional[Docs]
     decimals: Optional[int]
-
-    def __str__(self) -> str:
-        pair_str = ", ".join([str(p) for p in self.pair]) if self.pair else "None"
-        fields = [
-            f"  Compare Offchain: {self.compareOffchain}" if self.compareOffchain else "",
-            f"  Contract Address: {self.contractAddress}",
-            f"  Contract Type: {self.contractType}" if self.contractType else "",
-            f"  Contract Version: {self.contractVersion}" if self.contractVersion is not None else "",
-            f"  Decimal Places: {self.decimalPlaces}" if self.decimalPlaces is not None else "",
-            f"  ENS: {self.ens}" if self.ens else "",
-            f"  Format Decimal Places: {self.formatDecimalPlaces}" if self.formatDecimalPlaces is not None else "",
-            f"  Health Price: {self.healthPrice}" if self.healthPrice else "",
-            f"  Heartbeat: {self.heartbeat}" if self.heartbeat is not None else "",
-            f"  History: {self.history}" if self.history else "",
-            f"  Multiply: {self.multiply}" if self.multiply else "",
-            f"  Name: {self.name}" if self.name else "",
-            f"  Pair: {pair_str}" if pair_str != ", " else "",
-            f"  Path: {self.path}" if self.path else "",
-            f"  Proxy Address: {self.proxyAddress}" if self.proxyAddress else "",
-            f"  Threshold: {self.threshold}" if self.threshold is not None else "",
-            f"  Value Prefix: {self.valuePrefix}" if self.valuePrefix else "",
-            f"  Asset Name: {self.assetName}" if self.assetName else "",
-            f"  Feed Category: {self.feedCategory}" if self.feedCategory else "",
-            f"  Feed Type: {self.feedType}" if self.feedType else "",
-            f"  Docs: \n{str(self.docs) if self.docs else 'None'}" if self.docs else "",
-            f"  Decimals: {self.decimals}" if self.decimals is not None else ""
-        ]
-        return "PriceFeedData:\n" + "\n".join(filter(None, fields))
 
 
 class ChainLinkAPI:
