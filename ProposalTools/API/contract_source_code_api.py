@@ -16,7 +16,7 @@ class APIinfo:
     base_url: str
     api_key: Callable[[], str]
 
-class APIManager:
+class ContractSourceCodeAPI():
     """
     Manages interactions with blockchain explorer APIs to fetch smart contract source codes.
 

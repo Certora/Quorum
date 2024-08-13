@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 from ProposalTools.Utils.chain_enum import Chain
-
+from ProposalTools.Utils.singleton import Singleton
 
 class Docs(BaseModel):
     assetClass: Optional[str]
@@ -48,7 +48,7 @@ class PriceFeedData(BaseModel):
     decimals: Optional[int]
 
 
-class ChainLinkAPI:
+class ChainLinkAPI(metaclass=Singleton):
     """
     ChainLinkAPI is a class designed to interact with the Chainlink data feed API.
     It fetches and stores price feed data for various blockchain networks supported by Chainlink.
