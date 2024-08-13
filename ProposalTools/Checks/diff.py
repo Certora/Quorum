@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Optional
 from dataclasses import dataclass
 
-from ProposalTools.API.api_manager import SourceCode
+from ProposalTools.Utils.source_code import SourceCode
 from ProposalTools.Checks.check import Check
 import ProposalTools.Utils.pretty_printer as pp
 

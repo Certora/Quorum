@@ -1,10 +1,10 @@
 import re
 import json
-from solidity_parser import parser
 from solidity_parser.parser import Node
 
-from ProposalTools.API.api_manager import SourceCode
+
 from ProposalTools.Checks.check import Check
+from ProposalTools.Utils.source_code import SourceCode
 import ProposalTools.Utils.pretty_printer as pp
 
 
@@ -24,45 +24,29 @@ class GlobalVariableCheck(Check):
         """
         source_code_to_violated_variables = {}
         for source_code in self.source_codes:
-            source_code_str = "\n".join(source_code.file_content)
-            ast = parser.parse(source_code_str)
-
-            violated_variables = self.__check_const(ast)
-            violated_variables = self.__check_immutable(violated_variables, source_code.file_content)
+            violated_variables = self.__check_const(source_code)
+            violated_variables = self.__check_immutable(violated_variables, source_code)
 
             if violated_variables:
                 source_code_to_violated_variables[source_code.file_name] = violated_variables
         
         self.__process_results(source_code_to_violated_variables)
 
-    def __check_const(self, ast_node: Node) -> list[Node]:
+    def __check_const(self, source_code: SourceCode) -> list[Node]:
         """
-        Recursively checks the AST for state variables that are not declared as constant.
-
-        This method traverses the AST to identify state variables that lack the 'constant' declaration.
+        Checks a source code for variables that are not declared as constant.
 
         Args:
-            ast_node (Node): The root AST node to start checking from.
+            source_code (SourceCode): The Solidity source code obj.
 
         Returns:
             list[Node]: A list of AST nodes representing variables that are not constant.
         """
-        violated_variables = []
-
-        if ast_node.get('type') == 'StateVariableDeclaration':
-            for variable in ast_node.get('variables', []):
-                if not variable.get('isDeclaredConst', False):
-                    violated_variables.append(variable)
-
-        for child in ast_node.values():
-            if isinstance(child, dict):
-                violated_variables.extend(self.__check_const(child))
-            elif isinstance(child, list):
-                for item in child:
-                    if isinstance(item, dict):
-                        violated_variables.extend(self.__check_const(item))
-
-        return violated_variables
+        state_variables = source_code.get_state_variables()
+        return [
+            v for v in state_variables.values() 
+            if not v.get("isDeclaredConst", False)
+        ]
 
     def __check_immutable(self, variables: list[Node], source_code: list[str]) -> list[Node]:
         """

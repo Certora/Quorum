@@ -2,10 +2,14 @@ import argparse
 import json
 from typing import Any, Optional
 
+from ProposalTools.Utils.chain_enum import Chain
+import ProposalTools.Utils.pretty_printer as pp
 from ProposalTools.GIT.git_manager import GitManager
-from ProposalTools.API.api_manager import APIManager, Chain
+from ProposalTools.API.api_manager import APIManager
+from ProposalTools.Utils.chain_enum import Chain
 import ProposalTools.Utils.pretty_printer as pp
 import ProposalTools.Checks as Checks
+
 
 
 def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
@@ -44,6 +48,8 @@ def load_config(config_path: str) -> dict[str, Any] | None:
         pp.pretty_print(f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE)
 
 
+
+
 def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str]) -> None:
     """
     Check and compare source code files for given proposals.
@@ -64,12 +70,14 @@ def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str
         source_codes = api.get_source_code(proposal_address)
 
         # Diff check
-        missing_files = Checks.DiffCheck(customer, proposal_address, source_codes).find_diffs()
+        missing_files = Checks.DiffCheck(customer, chain, proposal_address, source_codes).find_diffs()
 
         # Global variables check
-        Checks.GlobalVariableCheck(customer, proposal_address, missing_files).check_global_variables()
-        
+        Checks.GlobalVariableCheck(customer, chain, proposal_address, missing_files).check_global_variables()
 
+        # Feed price check
+        Checks.FeedPriceCheck(customer, chain, proposal_address, source_codes).verify_feed_price()
+        
 
 def main() -> None:
     """

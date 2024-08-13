@@ -15,7 +15,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "CheckProposal=ProposalTools.main:main",  # Replace with the actual path to your main function
+            "CheckProposal=ProposalTools.check_proposal:main",  # Replace with the actual path to your main function
         ],
     },
 )
