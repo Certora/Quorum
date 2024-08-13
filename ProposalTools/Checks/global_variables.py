@@ -97,9 +97,7 @@ class GlobalVariableCheck(Check):
             pp.pretty_print("Global variable checks failed:", pp.Colors.FAILURE)
             pp.pretty_print(f"Customer: {self.customer}, Proposal: {self.proposal_address}", pp.Colors.FAILURE)
             for file_name, violated_variables in source_code_to_violated_variables.items():
-                file_path = self.check_folder / file_name
                 pp.pretty_print(f"File {file_name} contains variables that are not constant or immutable:"
-                                f" Violated variables can be found here: {file_path}",
-                                pp.Colors.FAILURE)
-                with open(file_path, 'a') as f:
-                    json.dump(violated_variables, f)
+                                ,pp.Colors.FAILURE)
+                self._write_to_file(file_name, violated_variables)
+       

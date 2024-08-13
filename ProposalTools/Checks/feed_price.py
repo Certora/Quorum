@@ -45,8 +45,8 @@ class FeedPriceCheck(Check):
 
         # Iterate through each source code file to find and verify address variables
         for source_code in self.source_codes:
-            verified_sources_path = self.check_folder / Path(source_code.file_name).stem.removesuffix(".sol") / "verified_sources.json"
-            unverified_sources_path = self.check_folder / Path(source_code.file_name).stem.removesuffix(".sol") / "unverified_sources.json"
+            verified_sources_path = f"{Path(source_code.file_name).stem.removesuffix('.sol')}/verified_sources.json"
+            unverified_sources_path = f"{Path(source_code.file_name).stem.removesuffix('.sol')}/unverified_sources.json"
     
             state_variables = source_code.get_state_variables()
             if state_variables:
@@ -76,21 +76,3 @@ class FeedPriceCheck(Check):
             else:
                 pp.pretty_print(f"No price feed addresses found in the source code for file {source_code.file_name}", pp.Colors.INFO)
                     
-                    
-    def _write_to_file(self, path: Path, data: dict[Any, Any]) -> None:
-        """
-        Writes the provided data to the specified JSON file.
-
-        This helper method is responsible for appending JSON-formatted data to a file, ensuring
-        that the information about verified or violated addresses is properly logged.
-
-        Args:
-            path (Path): The file path to write the data to.
-            data (dict): The data to be written, in dictionary format.
-        """
-        if not path.exists():
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.touch()
-        with open(path, "a") as f:
-            json.dump(data, f, indent=4)
-            f.write("\n")
