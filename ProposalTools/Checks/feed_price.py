@@ -73,8 +73,8 @@ class FeedPriceCheck(Check):
                             )
                     else:
                         pp.pretty_print(f"No address found for {variable}", pp.Colors.WARNING)
-        else:
-            pp.pretty_print(f"No price feed addresses found in the source code for file {source_code.file_name}", pp.Colors.INFO)
+            else:
+                pp.pretty_print(f"No price feed addresses found in the source code for file {source_code.file_name}", pp.Colors.INFO)
                     
                     
     def _write_to_file(self, path: Path, data: dict[Any, Any]) -> None:
