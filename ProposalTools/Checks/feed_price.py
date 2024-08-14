@@ -46,8 +46,11 @@ class FeedPriceCheck(Check):
         # Iterate through each source code file to find and verify address variables
         for source_code in self.source_codes:
             verified_sources_path = f"{Path(source_code.file_name).stem.removesuffix('.sol')}/verified_sources.json"
+            verified_variables = []
+            
             unverified_sources_path = f"{Path(source_code.file_name).stem.removesuffix('.sol')}/unverified_sources.json"
-    
+            unverified_variables = []
+
             state_variables = source_code.get_state_variables()
             if state_variables:
                 address_variables = [
@@ -61,18 +64,12 @@ class FeedPriceCheck(Check):
                         if address in price_feeds_dict:
                             pp.pretty_print(f"Found {address} on Chainlink", pp.Colors.SUCCESS)
                             feed = price_feeds_dict[address]
-                            self._write_to_file(
-                                verified_sources_path,
-                                feed.__dict__
-                            )
+                            verified_variables.append(feed.__dict__)
                         else:
                             pp.pretty_print(f"Could not find {address} on Chainlink", pp.Colors.FAILURE)
-                            self._write_to_file(
-                                unverified_sources_path,
-                                dict(variable)
-                            )
-                    else:
-                        pp.pretty_print(f"No address found for {variable}", pp.Colors.WARNING)
-            else:
-                pp.pretty_print(f"No price feed addresses found in the source code for file {source_code.file_name}", pp.Colors.INFO)
-                    
+                            unverified_variables.append(dict(variable))
+            
+            if verified_variables:
+                self._write_to_file(verified_sources_path, verified_variables)
+            if unverified_variables:
+                self._write_to_file(unverified_sources_path, unverified_variables)

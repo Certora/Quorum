@@ -35,5 +35,5 @@ class Check(ABC):
             full_file_path.touch()
 
         with open(full_file_path, "a") as f:
-             json.dump(data, f, indent=4) if isinstance(data, dict) else f.write(data)
+             json.dump(data, f, indent=4) if isinstance(data, dict) or isinstance(data, list) else f.write(data)
              f.write("\n")

@@ -25,7 +25,7 @@ class GlobalVariableCheck(Check):
         source_code_to_violated_variables = {}
         for source_code in self.source_codes:
             violated_variables = self.__check_const(source_code)
-            violated_variables = self.__check_immutable(violated_variables, source_code)
+            violated_variables = self.__check_immutable(violated_variables, source_code.file_content)
 
             if violated_variables:
                 source_code_to_violated_variables[source_code.file_name] = violated_variables
@@ -43,10 +43,12 @@ class GlobalVariableCheck(Check):
             list[Node]: A list of AST nodes representing variables that are not constant.
         """
         state_variables = source_code.get_state_variables()
-        return [
-            v for v in state_variables.values() 
-            if not v.get("isDeclaredConst", False)
-        ]
+        if state_variables:
+            return [
+                v for v in state_variables.values() 
+                if not v.get("isDeclaredConst", False)
+            ]
+        return []
 
     def __check_immutable(self, variables: list[Node], source_code: list[str]) -> list[Node]:
         """
@@ -95,9 +97,8 @@ class GlobalVariableCheck(Check):
             pp.pretty_print("All global variables are constant or immutable.", pp.Colors.SUCCESS)
         else:
             pp.pretty_print("Global variable checks failed:", pp.Colors.FAILURE)
-            pp.pretty_print(f"Customer: {self.customer}, Proposal: {self.proposal_address}", pp.Colors.FAILURE)
             for file_name, violated_variables in source_code_to_violated_variables.items():
-                pp.pretty_print(f"File {file_name} contains variables that are not constant or immutable:"
+                pp.pretty_print(f"File {file_name} contains variables that are not constant or immutable"
                                 ,pp.Colors.FAILURE)
                 self._write_to_file(file_name, violated_variables)
        
