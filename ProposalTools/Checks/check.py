@@ -34,12 +34,6 @@ class Check(ABC):
             full_file_path.parent.mkdir(parents=True, exist_ok=True)
             full_file_path.touch()
 
-        # Write data to the file based on its extension
-        if full_file_path.suffix == ".json":
-            with open(full_file_path, "a") as f:
-                json.dump(data, f, indent=4)
-                f.write("\n")
-        else:
-            with open(full_file_path, "a") as f:
-                f.write(data)
-                f.write("\n")
+        with open(full_file_path, "a") as f:
+             json.dump(data, f, indent=4) if isinstance(data, dict) else f.write(data)
+             f.write("\n")
