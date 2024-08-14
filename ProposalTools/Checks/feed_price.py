@@ -31,6 +31,12 @@ class FeedPriceCheck(Check):
         super().__init__(customer, chain, proposal_address, source_codes)
         self.api = ChainLinkAPI()
         self.address_pattern = r'0x[a-fA-F0-9]{40}'
+
+        # Retrieve price feeds from Chainlink API and map them by contract address
+        price_feeds = self.api.get_price_feeds_info(self.chain)
+        self.price_feeds_dict = {feed.contractAddress: feed for feed in price_feeds}
+        self.price_feeds_dict.update({feed.proxyAddress: feed for feed in price_feeds if feed.proxyAddress})
+
     
     def verify_feed_price(self) -> None:
         """
@@ -39,10 +45,6 @@ class FeedPriceCheck(Check):
         This method retrieves price feeds from the Chainlink API, compares them against the addresses
         found in the source code, and then categorizes them into verified or violated based on the comparison.
         """
-        # Retrieve price feeds from Chainlink API and map them by contract address
-        price_feeds = self.api.get_price_feeds_info(self.chain)
-        price_feeds_dict = {feed.contractAddress: feed for feed in price_feeds}
-
         # Iterate through each source code file to find and verify address variables
         for source_code in self.source_codes:
             verified_sources_path = f"{Path(source_code.file_name).stem.removesuffix('.sol')}/verified_sources.json"
@@ -51,13 +53,13 @@ class FeedPriceCheck(Check):
             contract_text = '\n'.join(source_code.file_content)
             addresses = re.findall(self.address_pattern, contract_text)
             for address in addresses:
-                if address in price_feeds_dict:
-                    feed = price_feeds_dict[address]
+                if address in self.price_feeds_dict:
+                    feed = self.price_feeds_dict[address]
                     pp.pretty_print(
                         f"Found {address} on Chainlink\nname:{feed.name} Decimals:{feed.decimals}",
                         pp.Colors.SUCCESS
                     )
-                    verified_variables.append(feed.__dict__)
+                    verified_variables.append(feed.dict())
             
             if verified_variables:
                 self._write_to_file(verified_sources_path, verified_variables)
