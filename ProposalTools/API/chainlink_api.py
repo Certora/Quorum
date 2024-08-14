@@ -6,46 +6,46 @@ from ProposalTools.Utils.chain_enum import Chain
 from ProposalTools.Utils.singleton import Singleton
 
 class Docs(BaseModel):
-    assetClass: Optional[str]
-    assetName: Optional[str]
-    baseAsset: Optional[str]
-    baseAssetClic: Optional[str]
-    blockchainName: Optional[str]
-    clicProductName: Optional[str]
-    deliveryChannelCode: Optional[str]
-    feedType: Optional[str]
-    hidden: Optional[bool]
-    marketHours: Optional[str]
-    productSubType: Optional[str]
-    productType: Optional[str]
-    productTypeCode: Optional[str]
-    quoteAsset: Optional[str]
-    quoteAssetClic: Optional[str]
+    assetClass: Optional[str] = None 
+    assetName: Optional[str] = None
+    baseAsset: Optional[str] = None
+    baseAssetClic: Optional[str] = None
+    blockchainName: Optional[str] = None
+    clicProductName: Optional[str] = None
+    deliveryChannelCode: Optional[str] = None
+    feedType: Optional[str] = None
+    hidden: Optional[bool] = None
+    marketHours: Optional[str] = None
+    productSubType: Optional[str] = None
+    productType: Optional[str] = None
+    productTypeCode: Optional[str] = None
+    quoteAsset: Optional[str] = None
+    quoteAssetClic: Optional[str] = None
 
 
 class PriceFeedData(BaseModel):
-    compareOffchain: Optional[str]
+    compareOffchain: Optional[str] = None
     contractAddress: str
-    contractType: Optional[str]
-    contractVersion: Optional[int]
-    decimalPlaces: Optional[int]
-    ens: Optional[str]
-    formatDecimalPlaces: Optional[int]
-    healthPrice: Optional[str]
-    heartbeat: Optional[int]
-    history: Optional[str]
-    multiply: Optional[str]
-    name: Optional[str]
-    pair: Optional[list[Optional[str]]]
-    path: Optional[str]
-    proxyAddress: Optional[str]
-    threshold: Optional[int]
-    valuePrefix: Optional[str]
-    assetName: Optional[str]
-    feedCategory: Optional[str]
-    feedType: Optional[str]
-    docs: Optional[Docs]
-    decimals: Optional[int]
+    contractType: Optional[str] = None
+    contractVersion: Optional[int] = None
+    decimalPlaces: Optional[int] = None
+    ens: Optional[str] = None
+    formatDecimalPlaces: Optional[int] = None
+    healthPrice: Optional[str] = None
+    heartbeat: Optional[int] = None
+    history: Optional[str] = None
+    multiply: Optional[str] = None
+    name: Optional[str] = None
+    pair: Optional[list[Optional[str]]] = None
+    path: Optional[str] = None
+    proxyAddress: Optional[str] = None
+    threshold: Optional[int] = None
+    valuePrefix: Optional[str] = None
+    assetName: Optional[str] = None
+    feedCategory: Optional[str] = None
+    feedType: Optional[str] = None
+    docs: Optional[Docs] = None
+    decimals: Optional[int] = None
 
 
 class ChainLinkAPI(metaclass=Singleton):
