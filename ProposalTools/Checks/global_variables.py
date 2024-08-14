@@ -1,5 +1,5 @@
 import re
-import json
+from pathlib import Path
 from solidity_parser.parser import Node
 
 
@@ -100,5 +100,5 @@ class GlobalVariableCheck(Check):
             for file_name, violated_variables in source_code_to_violated_variables.items():
                 pp.pretty_print(f"File {file_name} contains variables that are not constant or immutable"
                                 ,pp.Colors.FAILURE)
-                self._write_to_file(file_name, violated_variables)
+                self._write_to_file(Path(file_name).stem.removesuffix(".sol"), violated_variables)
        
