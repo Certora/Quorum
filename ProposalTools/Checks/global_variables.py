@@ -67,7 +67,7 @@ class GlobalVariableCheck(Check):
 
         for variable in variables:
             variable_name = variable.get('name')
-            var_type = variable.get('typeName').get('name')
+            var_type = variable.get('typeName').get('name', variable.get("namePath", ""))
             pattern = rf".*{var_type}.*{variable_name}.*"
 
             found = False
