@@ -71,7 +71,7 @@ def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str
         Checks.GlobalVariableCheck(customer, chain, proposal_address, missing_files).check_global_variables()
 
         # Feed price check
-        Checks.FeedPriceCheck(customer, chain, proposal_address, source_codes).verify_feed_price()
+        Checks.FeedPriceCheck(customer, chain, proposal_address, missing_files).verify_feed_price()
         
 
 def main() -> None:

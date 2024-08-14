@@ -1,6 +1,5 @@
-import json
 from pathlib import Path
-from typing import Any
+import re
 
 from ProposalTools.API.chainlink_api import ChainLinkAPI
 from ProposalTools.Utils.chain_enum import Chain
@@ -31,6 +30,7 @@ class FeedPriceCheck(Check):
         """
         super().__init__(customer, chain, proposal_address, source_codes)
         self.api = ChainLinkAPI()
+        self.address_pattern = r'0x[a-fA-F0-9]{40}'
     
     def verify_feed_price(self) -> None:
         """
@@ -47,29 +47,19 @@ class FeedPriceCheck(Check):
         for source_code in self.source_codes:
             verified_sources_path = f"{Path(source_code.file_name).stem.removesuffix('.sol')}/verified_sources.json"
             verified_variables = []
-            
-            unverified_sources_path = f"{Path(source_code.file_name).stem.removesuffix('.sol')}/unverified_sources.json"
-            unverified_variables = []
 
-            state_variables = source_code.get_state_variables()
-            if state_variables:
-                address_variables = [
-                    v for v in state_variables.values()
-                    if v.get("typeName").get("name") == "address"
-                ]
-                # Check each address variable against the Chainlink data
-                for variable in address_variables:
-                    address = variable.get("expression").get("number")
-                    if address:
-                        if address in price_feeds_dict:
-                            pp.pretty_print(f"Found {address} on Chainlink", pp.Colors.SUCCESS)
-                            feed = price_feeds_dict[address]
-                            verified_variables.append(feed.__dict__)
-                        else:
-                            pp.pretty_print(f"Could not find {address} on Chainlink", pp.Colors.FAILURE)
-                            unverified_variables.append(dict(variable))
+            contract_text = '\n'.join(source_code.file_content)
+            addresses = re.findall(self.address_pattern, contract_text)
+            for address in addresses:
+                if address in price_feeds_dict:
+                    feed = price_feeds_dict[address]
+                    pp.pretty_print(
+                        f"Found {address} on Chainlink\nname:{feed.name} Decimals:{feed.decimals}",
+                        pp.Colors.SUCCESS
+                    )
+                    verified_variables.append(feed.__dict__)
             
             if verified_variables:
                 self._write_to_file(verified_sources_path, verified_variables)
-            if unverified_variables:
-                self._write_to_file(unverified_sources_path, unverified_variables)
+            else:
+                pp.pretty_print(f"No address related to chain link found in {Path(source_code.file_name).stem}", pp.Colors.INFO)
