@@ -1,0 +1,51 @@
+{
+    "SparkDAO": {
+        "ETH" :{
+            "Proposals": [
+                "0x85042d44894E08f81D70A2Ae568C09f907297dcb"
+            ]
+        }
+    },
+    "Aave": {
+        "AVAX": {
+            "Proposals": [
+                "0x96cecD5D7A4b740f6a8eF2787fe88E0Bd480d79f"
+            ]
+        },
+        "ETH": {
+            "Proposals": [
+                "0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637"
+            ]
+        },
+        "GNO": {
+            "Proposals": []
+        },
+        "ARB": {
+            "Proposals": [
+                "0x22ca2Dd3063189F9E7e76fA3078E2d916B3998b7"
+            ]
+        },
+        "BASE": {
+            "Proposals": [
+                "0x6B96B41a531713a141F6EcBbae80715601d0e456"
+            ]
+        },
+        "BSC": {
+            "Proposals": ["0xb4F2786984093eaE1D6Be2B4F8c8e3c2cb018b54"]
+        },
+        "MET": {
+            "Proposals": []
+        },
+        "OPT": {
+            "Proposals": []
+        },
+        "POLY": {
+            "Proposals": [
+                "0x2dbBe7E30CD959A192FeFCEd9A5ae681d540deB4",
+            ]
+        },
+        "SCR": {
+            "Proposals": []
+        }
+    }
+}

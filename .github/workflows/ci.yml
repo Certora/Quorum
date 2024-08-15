@@ -36,7 +36,7 @@ jobs:
 
     - name: Execute Regression Tests
       run: |
-        CheckProposal --customer "SparkDAO" --chain "ETH" --proposal_address "0x85042d44894E08f81D70A2Ae568C09f907297dcb"
+        CheckProposal --config execution.json
 
   
   Update-Version:
