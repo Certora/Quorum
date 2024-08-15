@@ -39,7 +39,7 @@ class PriceFeedData(BaseModel):
     pair: Optional[list[Optional[str]]] = None
     path: Optional[str] = None
     proxyAddress: Optional[str] = None
-    threshold: Optional[int] = None
+    threshold: Optional[float] = None
     valuePrefix: Optional[str] = None
     assetName: Optional[str] = None
     feedCategory: Optional[str] = None
