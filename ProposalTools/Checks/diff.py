@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Optional
 from dataclasses import dataclass
 
-from ProposalTools.API.api_manager import SourceCode
+from ProposalTools.Utils.source_code import SourceCode
 from ProposalTools.Checks.check import Check
 import ProposalTools.Utils.pretty_printer as pp
 
@@ -79,10 +79,15 @@ class DiffCheck(Check):
             diff_text = '\n'.join(diff)
 
             if diff_text:
-                diff_file_path = self.check_folder / f"{local_file.stem}.patch"
-                files_with_diffs.append(Compared(str(local_file), source_code.file_name, str(diff_file_path)))
-                with open(diff_file_path, "w") as diff_file:
-                    diff_file.write(diff_text)
+                diff_file = f"{local_file.stem}.patch"
+                files_with_diffs.append(
+                    Compared(
+                        str(local_file),
+                        source_code.file_name,
+                        str(self.check_folder / diff_file)
+                    )
+                )
+                self._write_to_file(diff_file, diff_text)
         
         self.__print_diffs_results(missing_files, files_with_diffs)
         return missing_files

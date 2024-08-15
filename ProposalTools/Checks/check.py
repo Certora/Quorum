@@ -1,16 +1,39 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from datetime import datetime
+import json
+from pathlib import Path
 
 import ProposalTools.config as config
-from ProposalTools.API.api_manager import SourceCode
+from ProposalTools.Utils.source_code import SourceCode
+from ProposalTools.Utils.chain_enum import Chain
 
 
 class Check(ABC):
-    def __init__(self, customer: str, proposal_address: str, source_codes: list[SourceCode]):
+    def __init__(self, customer: str, chain: Chain, proposal_address: str, source_codes: list[SourceCode]):
         self.customer = customer
+        self.chain = chain
         self.proposal_address = proposal_address
         self.source_codes = source_codes
-
         self.customer_folder = config.MAIN_PATH / customer
-        self.check_folder = self.customer_folder / "checks" / proposal_address / f"{self.__class__.__name__}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        self.check_folder = self.customer_folder / "checks" / chain / proposal_address / f"{self.__class__.__name__}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         self.check_folder.mkdir(parents=True, exist_ok=True)
+
+    
+    def _write_to_file(self, path: str | Path, data: dict | str) -> None:
+        """
+        Writes data to a specified file, creating the file and its parent directories if they do not exist.
+
+        Args:
+            path (str | Path): The relative path to the file where the data will be written.
+            data (Any): The data to be written to the file. This can be a dictionary for JSON files or a string for text files.
+        """
+        full_file_path = self.check_folder / path
+
+        # Ensure the directory exists; if not, create it
+        if not full_file_path.exists():
+            full_file_path.parent.mkdir(parents=True, exist_ok=True)
+            full_file_path.touch()
+
+        with open(full_file_path, "a") as f:
+             json.dump(data, f, indent=4) if isinstance(data, dict) or isinstance(data, list) else f.write(data)
+             f.write("\n")

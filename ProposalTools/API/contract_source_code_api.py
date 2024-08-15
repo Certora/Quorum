@@ -1,24 +1,12 @@
 from dataclasses import dataclass
 import requests
 from typing import List, Callable
-from enum import StrEnum
 import os
 import json
 
-class Chain(StrEnum):
-    """
-    Enumeration for supported blockchain networks.
-    """
-    ETH = 'ETH'
-    ARB = 'ARB'
-    AVAX = 'AVAX'
-    BASE = 'BASE'
-    BSC = 'BSC'
-    GNO = 'GNO'
-    MET = 'MET'
-    OPT = 'OPT'
-    POLY = 'POLY'
-    SCR = 'SCR'
+from ProposalTools.Utils.chain_enum import Chain
+from ProposalTools.Utils.source_code import SourceCode
+
 
 @dataclass
 class APIinfo:
@@ -28,15 +16,7 @@ class APIinfo:
     base_url: str
     api_key: Callable[[], str]
 
-@dataclass
-class SourceCode:
-    """
-    Data class representing source code information.
-    """
-    file_name: str
-    file_content: List[str]
-
-class APIManager:
+class ContractSourceCodeAPI():
     """
     Manages interactions with blockchain explorer APIs to fetch smart contract source codes.
 

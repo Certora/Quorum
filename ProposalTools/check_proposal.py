@@ -2,9 +2,10 @@ import argparse
 import json
 from typing import Any, Optional
 
-from ProposalTools.GIT.git_manager import GitManager
-from ProposalTools.API.api_manager import APIManager, Chain
+from ProposalTools.Utils.chain_enum import Chain
 import ProposalTools.Utils.pretty_printer as pp
+from ProposalTools.GIT.git_manager import GitManager
+from ProposalTools.API.contract_source_code_api import ContractSourceCodeAPI
 import ProposalTools.Checks as Checks
 
 
@@ -56,7 +57,7 @@ def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str
         proposal_addresses (list[str]): List of proposal addresses.
     """
     chain = Chain[chain_name.upper()]
-    api = APIManager(chain)
+    api = ContractSourceCodeAPI(chain)
     
     pp.pretty_print(f"Processing customer {customer}, for chain: {chain}", pp.Colors.INFO)
     for proposal_address in proposal_addresses:
@@ -64,12 +65,14 @@ def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str
         source_codes = api.get_source_code(proposal_address)
 
         # Diff check
-        missing_files = Checks.DiffCheck(customer, proposal_address, source_codes).find_diffs()
+        missing_files = Checks.DiffCheck(customer, chain, proposal_address, source_codes).find_diffs()
 
         # Global variables check
-        Checks.GlobalVariableCheck(customer, proposal_address, missing_files).check_global_variables()
-        
+        Checks.GlobalVariableCheck(customer, chain, proposal_address, missing_files).check_global_variables()
 
+        # Feed price check
+        Checks.FeedPriceCheck(customer, chain, proposal_address, missing_files).verify_feed_price()
+        
 
 def main() -> None:
     """
