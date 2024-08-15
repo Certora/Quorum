@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Regression:
+    runs-on: ubuntu-latest
+    
+    container:
+      image: public.ecr.aws/certora/cvt-image:2024.06.13-3755-0351582
+    
+    env:
+      ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
+      POLYSCAN_API_KEY: ${{ secrets.POLYSCAN_API_KEY }}
+      OPTSCAN_API_KEY: ${{ secrets.OPTSCAN_API_KEY }}
+      ARBSCAN_API_KEY: ${{ secrets.ARBSCAN_API_KEY }}
+      BASESCAN_API_KEY: ${{ secrets.BASESCAN_API_KEY }}
+      GNOSCAN_API_KEY: ${{ secrets.GNOSCAN_API_KEY }}
+      SCRSCAN_API_KEY: ${{ secrets.SCRSCAN_API_KEY }}
+      BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
+      PRP_TOOL_PATH: "."
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Proposal Repo
+      run: pip3.11 install .
+
+    - name: Execute Regression Tests
+      run: |
+        CheckProposal --customer "SparkDAO" --chain "ETH" --proposal_address "0x85042d44894E08f81D70A2Ae568C09f907297dcb"
+
+  
+  Update-Version:
+    needs: Regression
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      actions: write
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Change version
+        run: python3 -c "from datetime import datetime; print(datetime.now().strftime('%Y%m%d.%H%M%S.%f'))" > version
+      
+      - name: Configure Git
+        run: |
+          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config --global user.name "$GITHUB_ACTOR"
+
+      - name: Commit and push version change
+        run: |
+          git add .
+          git commit -m "Auto change version."
+          git push origin HEAD:$GITHUB_HEAD_REF -f
