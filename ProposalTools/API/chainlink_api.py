@@ -33,7 +33,7 @@ class PriceFeedData(BaseModel):
     formatDecimalPlaces: Optional[int] = None
     healthPrice: Optional[str] = None
     heartbeat: Optional[int] = None
-    history: Optional[str] = None
+    history: Optional[str | bool] = None
     multiply: Optional[str] = None
     name: Optional[str] = None
     pair: Optional[list[Optional[str]]] = None
