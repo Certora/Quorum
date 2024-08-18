@@ -3,10 +3,14 @@ from setuptools import setup, find_packages
 def read_requirements():
     with open('requirements.txt') as f:
         return f.read().splitlines()
+    
+def read_version() -> str:
+    with open('version') as f:
+        return f.read()
 
 setup(
     name="ProposalTools",
-    version="0.1.0",
+    version=read_version(),
     packages=find_packages(),
     install_requires=read_requirements(),
     include_package_data=True,
@@ -15,7 +19,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "CheckProposal=ProposalTools.check_proposal:main",  # Replace with the actual path to your main function
+            "CheckProposal=ProposalTools.check_proposal:main",
         ],
     },
 )
