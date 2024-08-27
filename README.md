@@ -39,6 +39,7 @@ Before using ProposalTools, you need to configure the following environment vari
 - **OPTSCAN_API_KEY:** API key for OptScan (Optimism).
 - **POLYSCAN_API_KEY:** API key for PolygonScan (Polygon).
 - **SCRSCAN_API_KEY:** API key for ScrollScan (Scroll).
+- **ZKSCAN_API_KEY:** API key for ZKScan (ZKsync).
 
 You can set these environment variables in your shell:
 
@@ -53,6 +54,7 @@ export METSCAN_API_KEY="your_metscan_api_key"
 export OPTSCAN_API_KEY="your_optscan_api_key"
 export POLYSCAN_API_KEY="your_polyscan_api_key"
 export SCRSCAN_API_KEY="your_scrscan_api_key"
+export ZKSCAN_API_KEY="your_zkscan_api_key"
 ```
 
 Replace `your_etherscan_api_key`, `your_arbiscan_api_key`, etc., with the actual API keys provided by the respective blockchain explorers.
