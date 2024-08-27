@@ -37,7 +37,12 @@ class GitManager:
             dict: A dictionary mapping repository names to their URLs.
         """
         with open(config.REPOS_PATH) as f:
-            repos = json.load(f).get(self.customer, [])
+            repos_data = json.load(f)
+        
+        # Normalize the customer name to handle case differences
+        normalized_customer = self.customer.lower()
+        repos = next((repos for key, repos in repos_data.items() if key.lower() == normalized_customer), [])
+        
         return {Path(r).stem: r for r in repos}
 
     def clone_or_update(self) -> None:
