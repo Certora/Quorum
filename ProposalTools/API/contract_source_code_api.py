@@ -43,7 +43,10 @@ class ContractSourceCodeAPI():
         Chain.POLY: APIinfo(base_url="https://api.polygonscan.com/api",
                             api_key=lambda: os.getenv('POLYSCAN_API_KEY')),
         Chain.SCR: APIinfo(base_url="https://api.scrollscan.com/api",
-                           api_key=lambda: os.getenv('SCRSCAN_API_KEY'))
+                           api_key=lambda: os.getenv('SCRSCAN_API_KEY')),
+        Chain.ZK: APIinfo(base_url="https://api-era.zksync.network/api",
+                          api_key=lambda: os.getenv('ZKSCAN_API_KEY'))
+
     }
     
     def __init__(self, chain: Chain) -> None:
