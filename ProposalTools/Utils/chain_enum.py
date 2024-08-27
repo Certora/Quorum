@@ -15,3 +15,4 @@ class Chain(StrEnum):
     OPT = 'OPT'
     POLY = 'POLY'
     SCR = 'SCR'
+    ZK = 'ZK'
