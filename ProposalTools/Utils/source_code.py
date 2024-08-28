@@ -76,12 +76,12 @@ class SourceCode:
             return self._parsed_contract.events
         return None
 
-    def get_functions(self) -> list | None:
+    def get_functions(self) -> dict | None:
         """
         Retrieves the functions from the Solidity contract.
 
         Returns:
-            (list | None): List of functions or None if not found.
+            (dict | None): List of functions or None if not found.
         """
         if self._parsed_contract:
             return self._parsed_contract.functions
