@@ -44,7 +44,7 @@ class NewListingCheck(Check):
         """
         functions = {}
         for source_code in self.source_codes:
-            functions.update(source_code.get_functions())
+            functions.update(source_code.get_functions() if source_code.get_functions() else {})
         return functions
 
     def _handle_new_listings(self, functions: dict) -> None:
