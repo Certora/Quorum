@@ -29,7 +29,7 @@ class SourceCode:
             self._parsed_contract = ast_obj.contracts[contract_name]
         except Exception as e:
             pp.pretty_print(f"Error parsing source code for {self.file_name}: {e}\n"
-                            f"global const or immutable check wont apply to this contract!!!",
+                            f"Some of the checks will not apply to this contract!!!",
                             pp.Colors.FAILURE)
 
     def get_constructor(self) -> dict | None:
