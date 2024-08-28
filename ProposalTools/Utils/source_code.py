@@ -29,7 +29,7 @@ class SourceCode:
             self._parsed_contract = ast_obj.contracts[contract_name]
         except Exception as e:
             pp.pretty_print(f"Error parsing source code for {self.file_name}: {e}\n"
-                            f"global const or immutable check wont apply to this contract!!!",
+                            f"Some of the checks will not apply to this contract!!!",
                             pp.Colors.FAILURE)
 
     def get_constructor(self) -> dict | None:
@@ -76,12 +76,12 @@ class SourceCode:
             return self._parsed_contract.events
         return None
 
-    def get_functions(self) -> list | None:
+    def get_functions(self) -> dict | None:
         """
         Retrieves the functions from the Solidity contract.
 
         Returns:
-            (list | None): List of functions or None if not found.
+            (dict | None): List of functions or None if not found.
         """
         if self._parsed_contract:
             return self._parsed_contract.functions

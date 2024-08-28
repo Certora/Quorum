@@ -72,7 +72,9 @@ def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str
 
         # Feed price check
         Checks.FeedPriceCheck(customer, chain, proposal_address, missing_files).verify_feed_price()
-        
+
+        # New listing check
+        Checks.NewListingCheck(customer, chain, proposal_address, missing_files).new_listing_check()
 
 def main() -> None:
     """
