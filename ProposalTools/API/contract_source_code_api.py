@@ -46,7 +46,6 @@ class ContractSourceCodeAPI():
                            api_key=lambda: os.getenv('SCRSCAN_API_KEY')),
         Chain.ZK: APIinfo(base_url="https://api-era.zksync.network/api",
                           api_key=lambda: os.getenv('ZKSCAN_API_KEY'))
-
     }
     
     def __init__(self, chain: Chain) -> None:
@@ -67,7 +66,7 @@ class ContractSourceCodeAPI():
         if not self.api_key:
             raise ValueError(f"{chain}SCAN_API_KEY environment variable is not set.")
         
-        self.base_url = f"{api_info.base_url}?module=contract&action=getsourcecode&apikey={self.api_key}"
+        self.base_url = f"{api_info.base_url}?module=contract&apikey={self.api_key}"
 
     def get_source_code(self, proposal_address: str) -> List[SourceCode]:
         """
@@ -82,7 +81,7 @@ class ContractSourceCodeAPI():
         Raises:
             ValueError: If there's an error fetching the source code.
         """
-        url = f"{self.base_url}&address={proposal_address}"
+        url = f"{self.base_url}&action=getsourcecode&address={proposal_address}"
         response = requests.get(url)
         response.raise_for_status()
         data = response.json()
@@ -103,3 +102,6 @@ class ContractSourceCodeAPI():
             for source_name, source_code in sources.items()
         ]
         return source_codes
+
+    def read_variable_value(self, address:str, variable_name:str) -> str:
+        # TODO: Implement this function based on the eth_getStorageAt api call

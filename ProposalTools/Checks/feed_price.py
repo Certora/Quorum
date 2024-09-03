@@ -2,8 +2,10 @@ from pathlib import Path
 import re
 
 from ProposalTools.API.chainlink_api import ChainLinkAPI
+from ProposalTools.API.contract_source_code_api import ContractSourceCodeAPI
 from ProposalTools.Utils.chain_enum import Chain
 from ProposalTools.Checks.check import Check
+from ProposalTools.Checks.diff import DiffCheck
 from ProposalTools.Utils.source_code import SourceCode
 import ProposalTools.Utils.pretty_printer as pp
 
@@ -60,8 +62,22 @@ class FeedPriceCheck(Check):
                         pp.Colors.SUCCESS
                     )
                     verified_variables.append(feed.dict())
+                else:
+                    pp.pretty_print(f"Address {address} not found on Chainlink, check for custom price feed", pp.Colors.INFO)
+                    verify_custom_price_feed(address)
             
             if verified_variables:
                 self._write_to_file(verified_sources_path, verified_variables)
             else:
                 pp.pretty_print(f"No address related to chain link found in {Path(source_code.file_name).stem}", pp.Colors.INFO)
+    
+    def verify_custom_price_feed(self, address: str) -> None:
+        """
+        Verifies the custom price feed for the given address.
+        """
+        source_code_api = ContractSourceCodeAPI(self.chain)
+        source_codes = source_code_api.get_source_code(address)
+        # Perform a diff check to see if the source code is different from the official source code
+        diff_check = DiffCheck(self.customer, self.chain, address, source_codes)
+        missing_files = diff_check.find_diffs()
+        # TODO: Implement the logic to verify the custom price feed
