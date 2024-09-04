@@ -81,7 +81,7 @@ class SourceCode:
         Retrieves the functions from the Solidity contract.
 
         Returns:
-            (dict | None): List of functions or None if not found.
+            (dict | None): Dictionary of functions or None if not found.
         """
         if self._parsed_contract:
             return self._parsed_contract.functions
