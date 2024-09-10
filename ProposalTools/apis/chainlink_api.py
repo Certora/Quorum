@@ -2,8 +2,8 @@ import requests
 from pydantic import BaseModel
 from typing import Optional
 
-from ProposalTools.Utils.chain_enum import Chain
-from ProposalTools.Utils.singleton import Singleton
+from ProposalTools.utils.chain_enum import Chain
+from ProposalTools.utils.singleton import Singleton
 
 class Docs(BaseModel):
     assetClass: Optional[str] = None 

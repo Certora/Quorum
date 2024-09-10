@@ -3,7 +3,7 @@ from pathlib import Path
 from git import Repo
 
 import ProposalTools.config as config
-import ProposalTools.Utils.pretty_printer as pp
+import ProposalTools.utils.pretty_printer as pp
 
 
 class GitManager:

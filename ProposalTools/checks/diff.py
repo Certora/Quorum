@@ -3,9 +3,9 @@ from pathlib import Path
 from typing import Optional
 from dataclasses import dataclass
 
-from ProposalTools.Utils.source_code import SourceCode
-from ProposalTools.Checks.check import Check
-import ProposalTools.Utils.pretty_printer as pp
+from ProposalTools.apis.contract_code.source_code import SourceCode
+from ProposalTools.checks.check import Check
+import ProposalTools.utils.pretty_printer as pp
 
 
 @dataclass
