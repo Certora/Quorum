@@ -19,7 +19,7 @@ class Check(ABC):
         self.check_folder.mkdir(parents=True, exist_ok=True)
 
     
-    def _write_to_file(self, path: str | Path, data: dict | str) -> None:
+    def _write_to_file(self, path: str | Path, data: dict | str | list) -> None:
         """
         Writes data to a specified file, creating the file and its parent directories if they do not exist.
 
