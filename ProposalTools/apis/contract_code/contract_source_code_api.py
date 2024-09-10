@@ -4,8 +4,8 @@ from typing import List, Callable
 import os
 import json
 
-from ProposalTools.Utils.chain_enum import Chain
-from ProposalTools.Utils.source_code import SourceCode
+from ProposalTools.utils.chain_enum import Chain
+from ProposalTools.apis.contract_code.source_code import SourceCode
 
 
 @dataclass
@@ -67,7 +67,7 @@ class ContractSourceCodeAPI():
         if not self.api_key:
             raise ValueError(f"{chain}SCAN_API_KEY environment variable is not set.")
         
-        self.base_url = f"{api_info.base_url}?module=contract&action=getsourcecode&apikey={self.api_key}"
+        self.base_url = f"{api_info.base_url}?module=contract&apikey={self.api_key}"
 
     def get_source_code(self, proposal_address: str) -> List[SourceCode]:
         """
@@ -82,7 +82,7 @@ class ContractSourceCodeAPI():
         Raises:
             ValueError: If there's an error fetching the source code.
         """
-        url = f"{self.base_url}&address={proposal_address}"
+        url = f"{self.base_url}&action=getsourcecode&address={proposal_address}"
         response = requests.get(url)
         response.raise_for_status()
         data = response.json()
@@ -103,3 +103,28 @@ class ContractSourceCodeAPI():
             for source_name, source_code in sources.items()
         ]
         return source_codes
+    
+    def get_contract_abi(self, contract_address: str) -> list[dict]:
+        """
+        Fetch the ABI of a smart contract from the blockchain explorer API.
+
+        Args:
+            contract_address (str): The address of the smart contract.
+
+        Returns:
+            list[dict]: The contract ABI as a list of dictionaries.
+
+        Raises:
+            ValueError: If there's an error fetching the ABI.
+        """
+        url = f"{self.base_url}?&action=getabi&address={contract_address}"
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+
+        if data['status'] != '1':
+            raise ValueError(f"Error fetching contract ABI: {data.get('message', 'Unknown error')}\n{data.get('result')}")
+        
+        abi = json.loads(data['result'])
+        return abi
+

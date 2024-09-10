@@ -2,11 +2,11 @@ import argparse
 import json
 from typing import Any, Optional
 
-from ProposalTools.Utils.chain_enum import Chain
-import ProposalTools.Utils.pretty_printer as pp
-from ProposalTools.GIT.git_manager import GitManager
-from ProposalTools.API.contract_source_code_api import ContractSourceCodeAPI
-import ProposalTools.Checks as Checks
+from ProposalTools.utils.chain_enum import Chain
+import ProposalTools.utils.pretty_printer as pp
+from ProposalTools.git.git_manager import GitManager
+from ProposalTools.apis.contract_code.contract_source_code_api import ContractSourceCodeAPI
+import ProposalTools.checks as Checks
 
 
 def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
