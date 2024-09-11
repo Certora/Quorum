@@ -1,11 +1,11 @@
 from pathlib import Path
 import re
 
-from ProposalTools.API.chainlink_api import ChainLinkAPI
-from ProposalTools.Utils.chain_enum import Chain
-from ProposalTools.Checks.check import Check
-from ProposalTools.Utils.source_code import SourceCode
-import ProposalTools.Utils.pretty_printer as pp
+from ProposalTools.apis.chainlink_api import ChainLinkAPI
+from ProposalTools.utils.chain_enum import Chain
+from ProposalTools.checks.check import Check
+from ProposalTools.apis.block_explorers.source_code import SourceCode
+import ProposalTools.utils.pretty_printer as pp
 
 
 class FeedPriceCheck(Check):
