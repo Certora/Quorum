@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 import ProposalTools.config as config
-from ProposalTools.apis.contract_code.source_code import SourceCode
+from ProposalTools.apis.block_explorers.source_code import SourceCode
 from ProposalTools.utils.chain_enum import Chain
 
 

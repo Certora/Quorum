@@ -4,7 +4,7 @@ from solidity_parser.parser import Node
 
 
 from ProposalTools.checks.check import Check
-from ProposalTools.apis.contract_code.source_code import SourceCode
+from ProposalTools.apis.block_explorers.source_code import SourceCode
 import ProposalTools.utils.pretty_printer as pp
 
 

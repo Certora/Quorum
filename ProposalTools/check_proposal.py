@@ -5,7 +5,7 @@ from typing import Any, Optional
 from ProposalTools.utils.chain_enum import Chain
 import ProposalTools.utils.pretty_printer as pp
 from ProposalTools.git.git_manager import GitManager
-from ProposalTools.apis.contract_code.contract_source_code_api import ContractSourceCodeAPI
+from ProposalTools.apis.block_explorers.chains_api import ChainAPI
 import ProposalTools.checks as Checks
 
 
@@ -57,7 +57,7 @@ def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str
         proposal_addresses (list[str]): List of proposal addresses.
     """
     chain = Chain[chain_name.upper()]
-    api = ContractSourceCodeAPI(chain)
+    api = ChainAPI(chain)
     
     pp.pretty_print(f"Processing customer {customer}, for chain: {chain}", pp.Colors.INFO)
     for proposal_address in proposal_addresses:
