@@ -1,7 +1,7 @@
 from solidity_parser import parser
 from dataclasses import dataclass
 
-import ProposalTools.Utils.pretty_printer as pp
+import ProposalTools.utils.pretty_printer as pp
 
 
 @dataclass
