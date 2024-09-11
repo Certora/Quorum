@@ -21,6 +21,7 @@ jobs:
       GNOSCAN_API_KEY: ${{ secrets.GNOSCAN_API_KEY }}
       SCRSCAN_API_KEY: ${{ secrets.SCRSCAN_API_KEY }}
       BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
+      ETH_MAINNET_API: ${{ secrets.ETH_MAINNET_API }}
       PRP_TOOL_PATH: "."
 
     permissions:

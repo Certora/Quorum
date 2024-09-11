@@ -30,7 +30,7 @@ class Web3API:
             ValueError: If the Infura API key is not set or invalid.
             ConnectionError: If the connection to the Infura API fails.
         """
-        self.api_key = api_key or os.getenv("INFURA_API_KEY")
+        self.api_key = api_key or os.getenv("ETH_MAINNET_API")
         if self.api_key is None:
             raise ValueError("Infura API key is required. Set it in the 'INFURA_API_KEY' environment variable or pass it as an argument.")
 
