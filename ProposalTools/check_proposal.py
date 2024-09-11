@@ -2,11 +2,11 @@ import argparse
 import json
 from typing import Any, Optional
 
-from ProposalTools.Utils.chain_enum import Chain
-import ProposalTools.Utils.pretty_printer as pp
-from ProposalTools.GIT.git_manager import GitManager
-from ProposalTools.API.contract_source_code_api import ContractSourceCodeAPI
-import ProposalTools.Checks as Checks
+from ProposalTools.utils.chain_enum import Chain
+import ProposalTools.utils.pretty_printer as pp
+from ProposalTools.git.git_manager import GitManager
+from ProposalTools.apis.block_explorers.chains_api import ChainAPI
+import ProposalTools.checks as Checks
 
 
 def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
@@ -57,7 +57,7 @@ def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str
         proposal_addresses (list[str]): List of proposal addresses.
     """
     chain = Chain[chain_name.upper()]
-    api = ContractSourceCodeAPI(chain)
+    api = ChainAPI(chain)
     
     pp.pretty_print(f"Processing customer {customer}, for chain: {chain}", pp.Colors.INFO)
     for proposal_address in proposal_addresses:

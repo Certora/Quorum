@@ -3,9 +3,9 @@ from pathlib import Path
 from solidity_parser.parser import Node
 
 
-from ProposalTools.Checks.check import Check
-from ProposalTools.Utils.source_code import SourceCode
-import ProposalTools.Utils.pretty_printer as pp
+from ProposalTools.checks.check import Check
+from ProposalTools.apis.block_explorers.source_code import SourceCode
+import ProposalTools.utils.pretty_printer as pp
 
 
 class GlobalVariableCheck(Check):
