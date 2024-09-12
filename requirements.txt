@@ -4,3 +4,4 @@ solidity-parser
 pydantic
 eth-abi
 eth-utils
+pytest
