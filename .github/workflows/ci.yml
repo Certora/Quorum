@@ -36,7 +36,6 @@ jobs:
 
     - name: Execute Regression Tests
       run: |
-        ls -l
         pytest ProposalTools/tests --maxfail=1 --disable-warnings --tb=short
         CheckProposal --config ProposalTools/execution.json
 

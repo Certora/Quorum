@@ -5,3 +5,4 @@ pydantic
 eth-abi
 eth-utils
 pytest
+eth-hash[pycryptodome]
