@@ -4,8 +4,8 @@ import json
 from pathlib import Path
 
 import ProposalTools.config as config
-from ProposalTools.Utils.source_code import SourceCode
-from ProposalTools.Utils.chain_enum import Chain
+from ProposalTools.apis.block_explorers.source_code import SourceCode
+from ProposalTools.utils.chain_enum import Chain
 
 
 class Check(ABC):

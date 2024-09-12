@@ -1,8 +1,8 @@
 from solidity_parser.parser import Node
 from pydantic import BaseModel
 
-from ProposalTools.Checks.check import Check
-import ProposalTools.Utils.pretty_printer as pp
+from ProposalTools.checks.check import Check
+import ProposalTools.utils.pretty_printer as pp
 
 
 class ListingDetails(BaseModel):
@@ -21,7 +21,6 @@ class NewListingCheck(Check):
     def new_listing_check(self) -> None:
         """
         Checks if the proposal address is a new listing on the blockchain.
-
         This method retrieves functions from the source codes and checks if there are any new listings.
         If new listings are detected, it handles them accordingly. Otherwise, it prints a message indicating
         no new listings were found.
@@ -36,9 +35,7 @@ class NewListingCheck(Check):
     def _get_functions_from_source_codes(self) -> dict:
         """
         Retrieves functions from the source codes.
-
         This method iterates over the source codes and collects all functions defined in them.
-
         Returns:
             dict: A dictionary where keys are function names and values are function nodes.
         """
@@ -50,10 +47,8 @@ class NewListingCheck(Check):
     def _handle_new_listings(self, functions: dict) -> None:
         """
         Handles new listings detected in the functions.
-
         This method extracts listings from the function node and checks for approval and supply calls
         related to the listings. It prints messages indicating the status of these calls.
-
         Args:
             functions (dict): A dictionary of functions retrieved from the source codes.
         """
@@ -78,10 +73,8 @@ class NewListingCheck(Check):
     def _check_listing_calls(self, listing: ListingDetails, approval_calls: dict, supply_calls: dict) -> None:
         """
         Checks the approval and supply calls for a given listing.
-
         This method verifies if there are approval and supply calls for the given listing and prints
         messages indicating the status of these calls.
-
         Args:
             listing (ListingDetails): The details of the listing to check.
             approval_calls (dict): A dictionary of approval calls.
@@ -104,13 +97,10 @@ class NewListingCheck(Check):
     def __extract_listings_from_function(self, function_node: Node) -> list[ListingDetails]:
         """
         Extracts new listings information from the function node.
-
         This method simplifies the extraction of new listings by checking the function node for
         variable declarations related to listings and extracting the relevant details.
-
         Args:
             function_node (Node): The function node to extract listings from.
-
         Returns:
             list[ListingDetails]: A list of ListingDetails objects representing the new listings.
         """
@@ -128,13 +118,10 @@ class NewListingCheck(Check):
     def _extract_listings_from_statements(self, function_node: Node) -> list[ListingDetails]:
         """
         Extracts listings from the statements in the function node.
-
         This method iterates over the statements in the function node and extracts listing details
         from the relevant expressions.
-
         Args:
             function_node (Node): The function node to extract listings from.
-
         Returns:
             list[ListingDetails]: A list of ListingDetails objects representing the new listings.
         """
@@ -153,13 +140,10 @@ class NewListingCheck(Check):
     def __extract_listing_details(self, arguments: list[Node]) -> ListingDetails:
         """
         Extracts listing details from function arguments.
-
         This method extracts the asset, asset symbol, and price feed address from the function arguments
         and returns a ListingDetails object.
-
         Args:
             arguments (list[Node]): The list of function arguments to extract details from.
-
         Returns:
             ListingDetails: An object containing the extracted listing details.
         """
@@ -173,13 +157,10 @@ class NewListingCheck(Check):
     def __extract_approval_and_supply_calls(self, function_node: Node) -> tuple[list[FunctionCallDetails], list[FunctionCallDetails]]:
         """
         Extracts approval and supply calls from the function node.
-
         This method iterates over the statements in the function node and extracts details of approval
         and supply calls.
-
         Args:
             function_node (Node): The function node to extract calls from.
-
         Returns:
             tuple[list[FunctionCallDetails], list[FunctionCallDetails]]: Two lists containing the details
             of approval and supply calls respectively.
@@ -199,13 +180,10 @@ class NewListingCheck(Check):
     def _extract_function_call_details(self, expression: dict) -> FunctionCallDetails:
         """
         Extracts details of a function call.
-
         This method extracts the pool, asset, and asset seed from the function call expression
         and returns a FunctionCallDetails object.
-
         Args:
             expression (dict): The function call expression to extract details from.
-
         Returns:
             FunctionCallDetails: An object containing the extracted function call details.
         """

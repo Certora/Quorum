@@ -2,3 +2,7 @@ requests
 GitPython
 solidity-parser
 pydantic
+eth-abi
+eth-utils
+pytest
+eth-hash[pycryptodome]
