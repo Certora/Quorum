@@ -1,6 +1,6 @@
 # ProposalTools
 
-ProposalTools is a Python-based utility designed to fetch and compare smart contract source codes. It helps users identify and analyze differences between local and remote versions of smart contract code.
+ProposalTools is an open-source Python utility designed to verify the integrity of smart contracts deployed on blockchains. It fetches contract code directly from the blockchain and compares it with the official version provided by developers or customers in their GitHub repositories. This process helps identify discrepancies between the on-chain and official code, ensuring the contract deployed on the blockchain matches the intended version. By automating code comparison and streamlining the review of governance proposals, ProposalTools enhances the security and trustworthiness of smart contracts, helping users quickly detect unauthorized changes or errors.
 
 ## Features
 - **Fetch Smart Contract Source Codes:** Retrieve source code directly from various blockchains using contract addresses.
@@ -121,6 +121,9 @@ Example config file `config.json`:
         },
         "SCR": {
             "Proposals": []
+        },
+        "ZK": {
+            "Proposals": []
         }
     }
 }
@@ -132,11 +135,19 @@ To run using the config file:
 python3 ProposalTools/main.py --config path/to/config.json
 ```
 
+Or if you used the pip installation:
+
+```sh
+CheckProposal --config path/to/config.json
+```
+
 **Note:** If the "Proposals" list for a particular chain is empty, the task for that chain will be skipped. This allows you to include or exclude chains from processing without modifying the code.
 
 ## Configuration
 
-The `repos.json` file defines the repositories for each customer. It should be located under the `PRP_TOOL_PATH`. If not found, the following default `repos.json` configuration will be created:
+The `repos.json` file defines the repositories for each customer. It should be located under the `PRP_TOOL_PATH`. If not found, a default `repos.json` configuration will be created.
+
+Example `repos.json`:
 
 ```json
 {
@@ -158,22 +169,31 @@ ProposalTools generates and organizes artifacts in a structured manner under the
 
 ```
 PRP_TOOL_PATH/
+├── repos.json
 ├── CustomerName/
-│   ├── checks/
-│   │   ├── ProposalAddress1/
-│   │   │   ├── diffs_datetime/
-│   │   │   │   ├── file.patch
-│   │   │   ├── global_check_datetime/
-│   │   │   │   ├── file.json
-│   │   ├── ProposalAddress2/
-│   │   │   ├── ...
-│   │   ├── ...
-│   ├── modules/
-│   │   ├── repository1/
-│   │   ├── repository2/
-│   │   ├── ...
-│   ├── execution.json
-│   ├── repos.json
+|     ├── modules/
+|     │   ├── repository1/
+|     │   ├── repository2/
+|     │   ├── ...
+|     ├── checks/
+|     |   ├── ChainName/
+|     |   │   ├── ProposalAddress1/
+|     |   │   │   ├── DiffCheck_datetime/
+|     |   │   │   │   ├── file1.patch
+|     |   │   │   │   ├── file2.patch
+|     |   │   │   ├── FeedPriceCheck_datetime/
+|     |   │   │   │   ├── file1.json
+|     |   │   │   ├── GlobalVariableCheck_datetime/
+|     |   │   │   │   ├── file1.json
+|     |   │   │   │   ├── ...
+|     |   │   │   ├── NewListingCheck_datetime/
+|     |   │   │   │   ├── file1.json
+|     |   │   │   ├── ...
+|     |   │   ├── ProposalAddress2/
+|     |   |   ├── ...
+|     |   ├── ...
+|     |   ├── ProposalAddressN/
+|     |   |   ├── ...
 ```
 
 ### Description
@@ -215,3 +235,15 @@ Aave/
 ```
 
 In this example, each proposal address under the `checks/` directory contains diff files that highlight the differences between the local and fetched source codes, as well as global variable check results. The `modules/` directory contains the repositories relevant to the customer "Aave," and the `execution.json` and `repos.json` files hold metadata and configuration details.
+
+## License
+
+ProposalTools is released under the [MIT License](LICENSE).
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request on GitHub.
+
+## Acknowledgments
+
+- Thanks to all contributors and the open-source community.
