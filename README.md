@@ -1,6 +1,6 @@
 # ProposalTools
 
-ProposalTools is an open-source Python utility designed to fetch and compare smart contract source codes. It helps users identify and analyze differences between local and remote versions of smart contract code, making it easier to review changes and ensure code integrity.
+ProposalTools is an open-source Python utility designed to verify the integrity of smart contracts deployed on blockchains. It fetches contract code directly from the blockchain and compares it with the official version provided by developers or customers in their GitHub repositories. This process helps identify discrepancies between the on-chain and official code, ensuring the contract deployed on the blockchain matches the intended version. By automating code comparison and streamlining the review of governance proposals, ProposalTools enhances the security and trustworthiness of smart contracts, helping users quickly detect unauthorized changes or errors.
 
 ## Features
 - **Fetch Smart Contract Source Codes:** Retrieve source code directly from various blockchains using contract addresses.
