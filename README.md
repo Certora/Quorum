@@ -1,5 +1,3 @@
-Here’s the updated version of the README, with the changes you requested:
-
 # ProposalTools
 
 ProposalTools is a Python-based utility designed to fetch and compare smart contract source codes. It helps users identify and analyze differences between local and remote versions of smart contract code.
