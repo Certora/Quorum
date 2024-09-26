@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 from ProposalTools.utils.chain_enum import Chain
 import ProposalTools.utils.pretty_printer as pp
-from ProposalTools.git.git_manager import GitManager
+from ProposalTools.git_api.git_manager import GitManager
 from ProposalTools.apis.block_explorers.chains_api import ChainAPI
 import ProposalTools.checks as Checks
 

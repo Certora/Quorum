@@ -57,6 +57,8 @@ export SCRSCAN_API_KEY="your_scrscan_api_key"
 export ZKSCAN_API_KEY="your_zkscan_api_key"
 ```
 
+Replace `your_etherscan_api_key`, `your_arbiscan_api_key`, etc., with the actual API keys provided by the respective blockchain explorers.
+
 Additionally, set the `PRP_TOOL_PATH` environment variable to specify where the repositories and diffs will be saved:
 
 ```sh
@@ -119,6 +121,9 @@ Example config file `config.json`:
         },
         "SCR": {
             "Proposals": []
+        },
+        "ZK": {
+            "Proposals": []
         }
     }
 }
@@ -158,21 +163,31 @@ ProposalTools generates and organizes artifacts in a structured manner under the
 
 ```
 PRP_TOOL_PATH/
+├── repos.json
 ├── CustomerName/
-    ├── checks/
-    │   ├── ProposalAddress1/
-    │   │   ├── diffs_datetime/
-    │   │   │   ├── file.patch
-    │   │   ├── global_check_datetime/
-    │   │   │   ├── file.json
-    │   ├── ProposalAddress2/
-    │   │   ├── ...
-    ├── modules/
-    │   ├── repository1/
-    │   ├── repository2/
-    │   ├── ...
-    ├── execution.json
-    ├── repos.json
+|     ├── modules/
+|     │   ├── repository1/
+|     │   ├── repository2/
+|     │   ├── ...
+|     ├── checks/
+|     |   ├── ChainName/
+|     |   │   ├── ProposalAddress1/
+|     |   │   │   ├── DiffCheck_datetime/
+|     |   │   │   │   ├── file1.patch
+|     |   │   │   │   ├── file2.patch
+|     |   │   │   ├── FeedPriceCheck_datetime/
+|     |   │   │   │   ├── file1.json
+|     |   │   │   ├── GlobalVariableCheck_datetime/
+|     |   │   │   │   ├── file1.json
+|     |   │   │   │   ├── ...
+|     |   │   │   ├── NewListingCheck_datetime/
+|     |   │   │   │   ├── file1.json
+|     |   │   │   ├── ...
+|     |   │   ├── ProposalAddress2/
+|     |   |   ├── ...
+|     |   ├── ...
+|     |   ├── ProposalAddressN/
+|     |   |   ├── ...
 ```
 
 ### Description
