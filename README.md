@@ -135,6 +135,12 @@ To run using the config file:
 python3 ProposalTools/main.py --config path/to/config.json
 ```
 
+Or if you used the pip installation:
+
+```sh
+CheckProposal --config path/to/config.json
+```
+
 **Note:** If the "Proposals" list for a particular chain is empty, the task for that chain will be skipped. This allows you to include or exclude chains from processing without modifying the code.
 
 ## Configuration
