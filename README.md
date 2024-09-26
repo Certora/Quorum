@@ -1,6 +1,6 @@
 # ProposalTools
 
-ProposalTools is a Python-based utility designed to fetch and compare smart contract source codes. It helps users identify and analyze differences between local and remote versions of smart contract code.
+ProposalTools is an open-source Python utility designed to fetch and compare smart contract source codes. It helps users identify and analyze differences between local and remote versions of smart contract code, making it easier to review changes and ensure code integrity.
 
 ## Features
 - **Fetch Smart Contract Source Codes:** Retrieve source code directly from various blockchains using contract addresses.
@@ -56,8 +56,6 @@ export POLYSCAN_API_KEY="your_polyscan_api_key"
 export SCRSCAN_API_KEY="your_scrscan_api_key"
 export ZKSCAN_API_KEY="your_zkscan_api_key"
 ```
-
-Replace `your_etherscan_api_key`, `your_arbiscan_api_key`, etc., with the actual API keys provided by the respective blockchain explorers.
 
 Additionally, set the `PRP_TOOL_PATH` environment variable to specify where the repositories and diffs will be saved:
 
@@ -136,7 +134,9 @@ python3 ProposalTools/main.py --config path/to/config.json
 
 ## Configuration
 
-The `repos.json` file defines the repositories for each customer. It should be located under the `PRP_TOOL_PATH`. If not found, the following default `repos.json` configuration will be created:
+The `repos.json` file defines the repositories for each customer. It should be located under the `PRP_TOOL_PATH`. If not found, a default `repos.json` configuration will be created.
+
+Example `repos.json`:
 
 ```json
 {
@@ -159,21 +159,20 @@ ProposalTools generates and organizes artifacts in a structured manner under the
 ```
 PRP_TOOL_PATH/
 ├── CustomerName/
-│   ├── checks/
-│   │   ├── ProposalAddress1/
-│   │   │   ├── diffs_datetime/
-│   │   │   │   ├── file.patch
-│   │   │   ├── global_check_datetime/
-│   │   │   │   ├── file.json
-│   │   ├── ProposalAddress2/
-│   │   │   ├── ...
-│   │   ├── ...
-│   ├── modules/
-│   │   ├── repository1/
-│   │   ├── repository2/
-│   │   ├── ...
-│   ├── execution.json
-│   ├── repos.json
+    ├── checks/
+    │   ├── ProposalAddress1/
+    │   │   ├── diffs_datetime/
+    │   │   │   ├── file.patch
+    │   │   ├── global_check_datetime/
+    │   │   │   ├── file.json
+    │   ├── ProposalAddress2/
+    │   │   ├── ...
+    ├── modules/
+    │   ├── repository1/
+    │   ├── repository2/
+    │   ├── ...
+    ├── execution.json
+    ├── repos.json
 ```
 
 ### Description
@@ -215,3 +214,15 @@ Aave/
 ```
 
 In this example, each proposal address under the `checks/` directory contains diff files that highlight the differences between the local and fetched source codes, as well as global variable check results. The `modules/` directory contains the repositories relevant to the customer "Aave," and the `execution.json` and `repos.json` files hold metadata and configuration details.
+
+## License
+
+ProposalTools is released under the [MIT License](LICENSE).
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request on GitHub.
+
+## Acknowledgments
+
+- Thanks to all contributors and the open-source community.
