@@ -247,3 +247,5 @@ Contributions are welcome! Please open an issue or submit a pull request on GitH
 ## Acknowledgments
 
 - Thanks to all contributors and the open-source community.
+
+Belongs to Niv Vaknin
