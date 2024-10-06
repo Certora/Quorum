@@ -7,8 +7,8 @@ import json
 from eth_abi import encode
 from eth_utils import keccak
 
-from ProposalTools.utils.chain_enum import Chain
-from ProposalTools.apis.block_explorers.source_code import SourceCode
+from Quorum.utils.chain_enum import Chain
+from Quorum.apis.block_explorers.source_code import SourceCode
 
 
 @dataclass

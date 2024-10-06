@@ -1,11 +1,11 @@
 from pathlib import Path
 import re
 
-from ProposalTools.apis.chainlink_api import ChainLinkAPI
-from ProposalTools.utils.chain_enum import Chain
-from ProposalTools.checks.check import Check
-from ProposalTools.apis.block_explorers.source_code import SourceCode
-import ProposalTools.utils.pretty_printer as pp
+from Quorum.apis.chainlink_api import ChainLinkAPI
+from Quorum.utils.chain_enum import Chain
+from Quorum.checks.check import Check
+from Quorum.apis.block_explorers.source_code import SourceCode
+import Quorum.utils.pretty_printer as pp
 
 
 class FeedPriceCheck(Check):
