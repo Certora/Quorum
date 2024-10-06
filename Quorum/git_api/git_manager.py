@@ -2,8 +2,8 @@ import json
 from pathlib import Path
 from git import Repo
 
-import ProposalTools.config as config
-import ProposalTools.utils.pretty_printer as pp
+import Quorum.config as config
+import Quorum.utils.pretty_printer as pp
 
 
 class GitManager:

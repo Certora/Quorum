@@ -2,11 +2,11 @@ import argparse
 import json
 from typing import Any, Optional
 
-from ProposalTools.utils.chain_enum import Chain
-import ProposalTools.utils.pretty_printer as pp
-from ProposalTools.git_api.git_manager import GitManager
-from ProposalTools.apis.block_explorers.chains_api import ChainAPI
-import ProposalTools.checks as Checks
+from Quorum.utils.chain_enum import Chain
+import Quorum.utils.pretty_printer as pp
+from Quorum.git_api.git_manager import GitManager
+from Quorum.apis.block_explorers.chains_api import ChainAPI
+import Quorum.checks as Checks
 
 
 def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:

@@ -3,9 +3,9 @@ from pathlib import Path
 from typing import Optional
 from dataclasses import dataclass
 
-from ProposalTools.apis.block_explorers.source_code import SourceCode
-from ProposalTools.checks.check import Check
-import ProposalTools.utils.pretty_printer as pp
+from Quorum.apis.block_explorers.source_code import SourceCode
+from Quorum.checks.check import Check
+import Quorum.utils.pretty_printer as pp
 
 
 @dataclass

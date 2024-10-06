@@ -22,7 +22,7 @@ jobs:
       SCRSCAN_API_KEY: ${{ secrets.SCRSCAN_API_KEY }}
       BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
       ZKSCAN_API_KEY: ${{ secrets.ZKSCAN_API_KEY }}
-      PRP_TOOL_PATH: "."
+      QUORUM_PATH: "."
 
     permissions:
       id-token: write
@@ -32,13 +32,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install Proposal Repo
+    - name: Install Quorum Repo
       run: pip3.11 install .
 
     - name: Execute Regression Tests
       run: |
-        pytest ProposalTools/tests --maxfail=1 --disable-warnings --tb=short
-        CheckProposal --config ProposalTools/execution.json
+        pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
+        CheckProposal --config Quorum/execution.json
 
   
   Update-Version:
