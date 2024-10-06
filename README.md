@@ -78,7 +78,7 @@ CheckProposal --customer "CustomerName" --chain "ChainName" --proposal_address "
 OR
 
 ```sh
-python3 Quorum/main.py --customer "CustomerName" --chain "ChainName" --proposal_address "Address"
+python3 Quorum/check_proposal.py --customer "CustomerName" --chain "ChainName" --proposal_address "Address"
 ```
 
 Replace `CustomerName` with the customer identifier, `ChainName` with the blockchain chain (e.g., "ETH", "AVAX"), and `Address` with the proposal address.
@@ -132,7 +132,7 @@ Example config file `config.json`:
 To run using the config file:
 
 ```sh
-python3 Quorum/main.py --config path/to/config.json
+python3 Quorum/check_proposal.py --config path/to/config.json
 ```
 
 Or if you used the pip installation:
