@@ -1,6 +1,6 @@
-# ProposalTools
+# Quorum
 
-ProposalTools is an open-source Python utility designed to verify the integrity of smart contracts deployed on blockchains. It fetches contract code directly from the blockchain and compares it with the official version provided by developers or customers in their GitHub repositories. This process helps identify discrepancies between the on-chain and official code, ensuring the contract deployed on the blockchain matches the intended version. By automating code comparison and streamlining the review of governance proposals, ProposalTools enhances the security and trustworthiness of smart contracts, helping users quickly detect unauthorized changes or errors.
+Quorum is an open-source Python utility designed to verify the integrity of smart contracts deployed on blockchains. It fetches contract code directly from the blockchain and compares it with the official version provided by developers or customers in their GitHub repositories. This process helps identify discrepancies between the on-chain and official code, ensuring the contract deployed on the blockchain matches the intended version. By automating code comparison and streamlining the review of governance proposals, Quorum enhances the security and trustworthiness of smart contracts, helping users quickly detect unauthorized changes or errors.
 
 ## Features
 - **Fetch Smart Contract Source Codes:** Retrieve source code directly from various blockchains using contract addresses.
@@ -13,21 +13,21 @@ ProposalTools is an open-source Python utility designed to verify the integrity 
 
 ## Installation
 
-You can install ProposalTools directly from GitHub using pip:
+You can install Quorum directly from GitHub using pip:
 
 ```sh
-pip install git+ssh://git@github.com/Certora/ProposalTools.git
+pip install git+ssh://git@github.com/Certora/Quorum.git
 ```
 
 Or clone the repository:
 
 ```sh
-git clone git@github.com:Certora/ProposalTools.git
+git clone git@github.com:Certora/Quorum.git
 ```
 
 ## Environment Variables
 
-Before using ProposalTools, you need to configure the following environment variables for API keys corresponding to each blockchain. These keys are necessary to access the respective blockchain explorers:
+Before using Quorum, you need to configure the following environment variables for API keys corresponding to each blockchain. These keys are necessary to access the respective blockchain explorers:
 
 - **ETHSCAN_API_KEY:** API key for Etherscan (Ethereum).
 - **ARBSCAN_API_KEY:** API key for Arbiscan (Arbitrum).
@@ -78,7 +78,7 @@ CheckProposal --customer "CustomerName" --chain "ChainName" --proposal_address "
 OR
 
 ```sh
-python3 ProposalTools/main.py --customer "CustomerName" --chain "ChainName" --proposal_address "Address"
+python3 Quorum/main.py --customer "CustomerName" --chain "ChainName" --proposal_address "Address"
 ```
 
 Replace `CustomerName` with the customer identifier, `ChainName` with the blockchain chain (e.g., "ETH", "AVAX"), and `Address` with the proposal address.
@@ -132,7 +132,7 @@ Example config file `config.json`:
 To run using the config file:
 
 ```sh
-python3 ProposalTools/main.py --config path/to/config.json
+python3 Quorum/main.py --config path/to/config.json
 ```
 
 Or if you used the pip installation:
@@ -163,7 +163,7 @@ This configuration is used by the tool to manage the repositories.
 
 ## Artifacts Structure
 
-ProposalTools generates and organizes artifacts in a structured manner under the `PRP_TOOL_PATH` directory. Here is a general overview of the structure:
+Quorum generates and organizes artifacts in a structured manner under the `PRP_TOOL_PATH` directory. Here is a general overview of the structure:
 
 ### Directory Structure
 
@@ -238,7 +238,7 @@ In this example, each proposal address under the `checks/` directory contains di
 
 ## License
 
-ProposalTools is released under the [MIT License](LICENSE).
+Quorum is released under the [MIT License](LICENSE).
 
 ## Contributing
 
