@@ -59,10 +59,10 @@ export ZKSCAN_API_KEY="your_zkscan_api_key"
 
 Replace `your_etherscan_api_key`, `your_arbiscan_api_key`, etc., with the actual API keys provided by the respective blockchain explorers.
 
-Additionally, set the `PRP_TOOL_PATH` environment variable to specify where the repositories and diffs will be saved:
+Additionally, set the `QUORUM_PATH` environment variable to specify where the repositories and diffs will be saved:
 
 ```sh
-export PRP_TOOL_PATH="/path/to/artifacts"
+export QUORUM_PATH="/path/to/artifacts"
 ```
 
 Replace `/path/to/artifacts` with the path where you want the tool to save cloned repositories and diff files.
@@ -145,7 +145,7 @@ CheckProposal --config path/to/config.json
 
 ## Configuration
 
-The `repos.json` file defines the repositories for each customer. It should be located under the `PRP_TOOL_PATH`. If not found, a default `repos.json` configuration will be created.
+The `repos.json` file defines the repositories for each customer. It should be located under the `QUORUM_PATH`. If not found, a default `repos.json` configuration will be created.
 
 Example `repos.json`:
 
@@ -163,12 +163,12 @@ This configuration is used by the tool to manage the repositories.
 
 ## Artifacts Structure
 
-Quorum generates and organizes artifacts in a structured manner under the `PRP_TOOL_PATH` directory. Here is a general overview of the structure:
+Quorum generates and organizes artifacts in a structured manner under the `QUORUM_PATH` directory. Here is a general overview of the structure:
 
 ### Directory Structure
 
 ```
-PRP_TOOL_PATH/
+QUORUM_PATH/
 ├── repos.json
 ├── CustomerName/
 |     ├── modules/
@@ -210,7 +210,7 @@ PRP_TOOL_PATH/
 
 ### Example
 
-For instance, the structure under the `PRP_TOOL_PATH/Aave/` directory might look like:
+For instance, the structure under the `QUORUM_PATH/Aave/` directory might look like:
 
 ```
 Aave/

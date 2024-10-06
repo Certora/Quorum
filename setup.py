@@ -9,7 +9,7 @@ def read_version() -> str:
         return f.read()
 
 setup(
-    name="ProposalTools",
+    name="Quorum",
     version=read_version(),
     packages=find_packages(),
     install_requires=read_requirements(),
@@ -19,7 +19,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "CheckProposal=ProposalTools.check_proposal:main",
+            "CheckProposal=Quorum.check_proposal:main",
         ],
     },
 )

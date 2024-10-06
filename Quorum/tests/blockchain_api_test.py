@@ -1,6 +1,6 @@
 import pytest
-from ProposalTools.utils.chain_enum import Chain
-from ProposalTools.apis.block_explorers.chains_api import ChainAPI
+from Quorum.utils.chain_enum import Chain
+from Quorum.apis.block_explorers.chains_api import ChainAPI
 
 @pytest.mark.parametrize(
     "chain, contract_address, function_name, expected_result",

@@ -3,9 +3,9 @@ import shutil
 from pathlib import Path
 
 
-main_path = os.getenv("PRP_TOOL_PATH")
+main_path = os.getenv("QUORUM_PATH")
 if not main_path:
-    raise ValueError("PRP_TOOL_PATH environment variable not set")
+    raise ValueError("QUORUM_PATH environment variable not set")
 
 MAIN_PATH = Path(main_path).absolute()
 

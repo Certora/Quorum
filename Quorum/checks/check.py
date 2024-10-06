@@ -3,9 +3,9 @@ from datetime import datetime
 import json
 from pathlib import Path
 
-import ProposalTools.config as config
-from ProposalTools.apis.block_explorers.source_code import SourceCode
-from ProposalTools.utils.chain_enum import Chain
+import Quorum.config as config
+from Quorum.apis.block_explorers.source_code import SourceCode
+from Quorum.utils.chain_enum import Chain
 
 
 class Check(ABC):
