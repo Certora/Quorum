@@ -1,8 +1,8 @@
 from solidity_parser.parser import Node
 from pydantic import BaseModel
 
-from ProposalTools.checks.check import Check
-import ProposalTools.utils.pretty_printer as pp
+from Quorum.checks.check import Check
+import Quorum.utils.pretty_printer as pp
 
 
 class ListingDetails(BaseModel):
