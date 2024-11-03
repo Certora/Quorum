@@ -1,4 +1,3 @@
-from solidity_parser.parser import Node
 from pydantic import BaseModel
 
 from Quorum.checks.check import Check
@@ -94,13 +93,13 @@ class NewListingCheck(Check):
             pp.pretty_print(f"Found supply call for {listing.asset}", pp.Colors.SUCCESS)
             self._write_to_file("found_supply_calls.json", listing.dict())
 
-    def __extract_listings_from_function(self, function_node: Node) -> list[ListingDetails]:
+    def __extract_listings_from_function(self, function_node: dict) -> list[ListingDetails]:
         """
         Extracts new listings information from the function node.
         This method simplifies the extraction of new listings by checking the function node for
         variable declarations related to listings and extracting the relevant details.
         Args:
-            function_node (Node): The function node to extract listings from.
+            function_node (dict): The function node to extract listings from.
         Returns:
             list[ListingDetails]: A list of ListingDetails objects representing the new listings.
         """
@@ -115,13 +114,13 @@ class NewListingCheck(Check):
                         new_listings.extend(self._extract_listings_from_statements(function_node))
         return new_listings
 
-    def _extract_listings_from_statements(self, function_node: Node) -> list[ListingDetails]:
+    def _extract_listings_from_statements(self, function_node: dict) -> list[ListingDetails]:
         """
         Extracts listings from the statements in the function node.
         This method iterates over the statements in the function node and extracts listing details
         from the relevant expressions.
         Args:
-            function_node (Node): The function node to extract listings from.
+            function_node (dict): The function node to extract listings from.
         Returns:
             list[ListingDetails]: A list of ListingDetails objects representing the new listings.
         """
@@ -137,7 +136,7 @@ class NewListingCheck(Check):
                             new_listings.append(listing_details)
         return new_listings
 
-    def __extract_listing_details(self, arguments: list[Node]) -> ListingDetails:
+    def __extract_listing_details(self, arguments: list[dict]) -> ListingDetails:
         """
         Extracts listing details from function arguments.
         This method extracts the asset, asset symbol, and price feed address from the function arguments
@@ -154,7 +153,7 @@ class NewListingCheck(Check):
             listing_info['priceFeedAddress'] = arguments[2].get('number') if len(arguments) > 2 else None
         return ListingDetails(**listing_info)
 
-    def __extract_approval_and_supply_calls(self, function_node: Node) -> tuple[list[FunctionCallDetails], list[FunctionCallDetails]]:
+    def __extract_approval_and_supply_calls(self, function_node: dict) -> tuple[list[FunctionCallDetails], list[FunctionCallDetails]]:
         """
         Extracts approval and supply calls from the function node.
         This method iterates over the statements in the function node and extracts details of approval
