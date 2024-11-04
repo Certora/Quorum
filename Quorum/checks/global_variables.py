@@ -45,7 +45,7 @@ class GlobalVariableCheck(Check):
         if state_variables:
             return [
                 v for v in state_variables.values() 
-                if not v.get("isDeclaredConst", False)
+                if not v.get("constant", False)
             ]
         return []
 
@@ -62,25 +62,8 @@ class GlobalVariableCheck(Check):
         Returns:
             list[dict]: A list of AST nodes representing variables that are not immutable.
         """
-        violated_variables = []
+        return [v for v in variables if v.get("mutability") != "immutable"]
 
-        for variable in variables:
-            variable_name = variable.get('name')
-            var_type = variable.get('typeName').get('name', variable.get("namePath", ""))
-            pattern = rf".*{var_type}.*{variable_name}.*"
-
-            found = False
-            for line in source_code:
-                if re.search(pattern, line):
-                    found = True
-                    if "immutable" not in line:
-                        violated_variables.append(variable)
-                    break
-
-            if not found:
-                violated_variables.append(variable)
-
-        return violated_variables
 
     def __process_results(self, source_code_to_violated_variables: dict[str, list[dict]]):
         """
