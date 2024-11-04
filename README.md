@@ -27,6 +27,10 @@ Or clone the repository:
 git clone git@github.com:Certora/Quorum.git
 ```
 
+## Clarifications
+
+As part of tool process, the tool will use solcx to parse the contract code to AST. the version of solcx used is the latest. If the contract code is not compatible with the latest version of solcx, the tool will not be able to parse the contract code and will not be able to proceed with the global variable and new listing checks.
+
 ## Environment Variables
 
 Before using Quorum, you need to configure the following environment variables for API keys corresponding to each blockchain. These keys are necessary to access the respective blockchain explorers:
