@@ -1,6 +1,6 @@
 requests
 GitPython
-solidity-parser
+py-solc-x
 pydantic
 eth-abi
 eth-utils

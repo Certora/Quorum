@@ -1,6 +1,5 @@
 import re
 from pathlib import Path
-from solidity_parser.parser import Node
 
 
 from Quorum.checks.check import Check
@@ -32,7 +31,7 @@ class GlobalVariableCheck(Check):
         
         self.__process_results(source_code_to_violated_variables)
 
-    def __check_const(self, source_code: SourceCode) -> list[Node]:
+    def __check_const(self, source_code: SourceCode) -> list[dict]:
         """
         Checks a source code for variables that are not declared as constant.
 
@@ -40,57 +39,40 @@ class GlobalVariableCheck(Check):
             source_code (SourceCode): The Solidity source code obj.
 
         Returns:
-            list[Node]: A list of AST nodes representing variables that are not constant.
+            list[dict]: A list of AST nodes representing variables that are not constant.
         """
         state_variables = source_code.get_state_variables()
         if state_variables:
             return [
                 v for v in state_variables.values() 
-                if not v.get("isDeclaredConst", False)
+                if not v.get("constant", False)
             ]
         return []
 
-    def __check_immutable(self, variables: list[Node], source_code: list[str]) -> list[Node]:
+    def __check_immutable(self, variables: list[dict], source_code: list[str]) -> list[dict]:
         """
         Checks a list of variables to ensure they are declared as immutable in the source code.
 
         This method searches the source code to verify that the variables are declared with the 'immutable' keyword.
 
         Args:
-            variables (list[Node]): A list of AST nodes representing variables.
+            variables (list[dict]): A list of AST nodes representing variables.
             source_code (list[str]): The Solidity source code lines.
 
         Returns:
-            list[Node]: A list of AST nodes representing variables that are not immutable.
+            list[dict]: A list of AST nodes representing variables that are not immutable.
         """
-        violated_variables = []
+        return [v for v in variables if v.get("mutability") != "immutable"]
 
-        for variable in variables:
-            variable_name = variable.get('name')
-            var_type = variable.get('typeName').get('name', variable.get("namePath", ""))
-            pattern = rf".*{var_type}.*{variable_name}.*"
 
-            found = False
-            for line in source_code:
-                if re.search(pattern, line):
-                    found = True
-                    if "immutable" not in line:
-                        violated_variables.append(variable)
-                    break
-
-            if not found:
-                violated_variables.append(variable)
-
-        return violated_variables
-
-    def __process_results(self, source_code_to_violated_variables: dict[str, list[Node]]):
+    def __process_results(self, source_code_to_violated_variables: dict[str, list[dict]]):
         """
         Processes the results of the global variable checks and prints them to the console.
 
         This method logs the results of the global variable check, including any violations found.
 
         Args:
-            source_code_to_violated_variables (dict[str, list[Node]]): A dictionary mapping file names
+            source_code_to_violated_variables (dict[str, list[dict]]): A dictionary mapping file names
                                                                        to lists of violated variables.
         """
         if not source_code_to_violated_variables:
