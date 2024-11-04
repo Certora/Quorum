@@ -17,9 +17,6 @@ class FunctionCallDetails(BaseModel):
 
 
 class NewListingCheck(Check):
-    def __init__(self, customer, chain, proposal_address, source_codes):
-        super().__init__(customer, chain, proposal_address, source_codes)
-        self.check_path = "new_listings.json"
 
     def new_listing_check(self) -> None:
         """
@@ -31,7 +28,7 @@ class NewListingCheck(Check):
         functions = self._get_functions_from_source_codes()
         if function := functions.get("newListings", functions.get("newListingsCustom")):
             pp.pretty_print(f"New listings detected for {self.proposal_address}", pp.Colors.WARNING)
-            self._write_to_file(self.check_path, data=function)
+            self._write_to_file("new_listings.json", data=function)
         else:
             pp.pretty_print(f"No new listings detected for {self.proposal_address}", pp.Colors.INFO)
     
