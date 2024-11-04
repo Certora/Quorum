@@ -50,7 +50,7 @@ class SourceCode:
             tmp_path.unlink()
     
     def __extract_nodes(self, ast: dict, node_type: ASTOption) -> list:
-        functions = {}
+        nodes = {}
         visited = set()
         for node in ast['nodes']:
             if node['id'] in visited:
@@ -58,10 +58,10 @@ class SourceCode:
             visited.add(node['id'])
             if node['nodeType'] == node_type:
                 name = node['name']
-                functions[name] = node
+                nodes[name] = node
             elif 'nodes' in node:
-                functions.update(self.__extract_nodes(node, node_type))
-        return functions
+                nodes.update(self.__extract_nodes(node, node_type))
+        return nodes
 
     def get_functions(self) -> dict | None:
         """
