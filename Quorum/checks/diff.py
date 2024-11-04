@@ -45,10 +45,28 @@ class DiffCheck(Check):
             Optional[Path]: The most common file path if found, otherwise None.
         """
         for i in range(len(source_path.parts)):
+            # Create a path suffix starting from the i-th part
             current_source_path = Path(*source_path.parts[i:])
+            
+            # Search for matching files in the repository
             local_files = list(repo.rglob(str(current_source_path)))
-            if len(local_files) == 1:
-                return local_files[0]
+            
+            if local_files:
+                # Compute similarity ratios between source_path and each local_file
+                similarities = []
+                source_str = current_source_path.as_posix()
+                for local_file in local_files:
+                    
+                    local_str = local_file.as_posix()
+                    ratio = difflib.SequenceMatcher(None, source_str, local_str).ratio()
+                    similarities.append((local_file, ratio))
+                
+                # Find the local_file with the highest similarity ratio
+                most_similar_file, _ = max(similarities, key=lambda x: x[1])
+                
+                return most_similar_file
+                
+        # Return None if no matching files are found
         return None
 
     def find_diffs(self) -> list[SourceCode]:
