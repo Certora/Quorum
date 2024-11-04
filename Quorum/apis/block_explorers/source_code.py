@@ -1,7 +1,18 @@
-from solidity_parser import parser
+import solcx
 from dataclasses import dataclass
+from pathlib import Path
+from enum import StrEnum
 
 import Quorum.utils.pretty_printer as pp
+
+# Install the latest version of Solidity compiler.
+solc_version = solcx.get_compilable_solc_versions()[0]
+solcx.install_solc(solc_version)
+solcx.set_solc_version(solc_version)
+
+class ASTOption(StrEnum):
+    FUNCTIONS = "FunctionDefinition"
+    STATE_VARIABLES = "VariableDeclaration"
 
 
 @dataclass
@@ -21,60 +32,36 @@ class SourceCode:
         Parses the Solidity source code and stores the contract's AST object.
         """
         source_code_str = "\n".join(self.file_content)
+        tmp_path = Path("tmp.sol")
+
+        with open(tmp_path, 'w') as file:
+            file.write(source_code_str)
 
         try:
-            ast = parser.parse(source_code_str)
-            ast_obj = parser.objectify(ast)
-            contract_name = ast_obj._current_contract.name
-            self._parsed_contract = ast_obj.contracts[contract_name]
+            contract_ast = solcx.compile_files(tmp_path, output_values=["ast"], stop_after="parsing")
+            contract_name = list(contract_ast.keys())[0]
+            self._parsed_contract = contract_ast[contract_name]['ast']
+
         except Exception as e:
             pp.pretty_print(f"Error parsing source code for {self.file_name}: {e}\n"
                             f"Some of the checks will not apply to this contract!!!",
                             pp.Colors.FAILURE)
-
-    def get_constructor(self) -> dict | None:
-        """
-        Retrieves the constructor information from the Solidity contract.
-
-        Returns:
-            (dict | None): Constructor information or None if not found.
-        """
-        if self._parsed_contract:
-            return self._parsed_contract.constructor
-        return None
-
-    def get_dependencies(self) -> list | None:
-        """
-        Retrieves the dependencies from the Solidity contract.
-
-        Returns:
-            (list | None): List of dependencies or None if not found.
-        """
-        if self._parsed_contract:
-            return self._parsed_contract.dependencies
-        return None
-
-    def get_enums(self) -> list | None:
-        """
-        Retrieves the enums from the Solidity contract.
-
-        Returns:
-            (list | None): List of enums or None if not found.
-        """
-        if self._parsed_contract:
-            return self._parsed_contract.enums
-        return None
-
-    def get_events(self) -> list | None:
-        """
-        Retrieves the events from the Solidity contract.
-
-        Returns:
-            (list | None): List of events or None if not found.
-        """
-        if self._parsed_contract:
-            return self._parsed_contract.events
-        return None
+        finally:
+            tmp_path.unlink()
+    
+    def __extract_nodes(self, ast: dict, node_type: ASTOption) -> list:
+        nodes = {}
+        visited = set()
+        for node in ast['nodes']:
+            if node['id'] in visited:
+                continue
+            visited.add(node['id'])
+            if node['nodeType'] == node_type:
+                name = node['name']
+                nodes[name] = node
+            elif 'nodes' in node:
+                nodes.update(self.__extract_nodes(node, node_type))
+        return nodes
 
     def get_functions(self) -> dict | None:
         """
@@ -84,51 +71,7 @@ class SourceCode:
             (dict | None): Dictionary of functions or None if not found.
         """
         if self._parsed_contract:
-            return self._parsed_contract.functions
-        return None
-
-    def get_inherited_names(self) -> list | None:
-        """
-        Retrieves the inherited names from the Solidity contract.
-
-        Returns:
-            (list | None): List of inherited names or None if not found.
-        """
-        if self._parsed_contract:
-            return self._parsed_contract.inherited_names
-        return None
-
-    def get_mappings(self) -> list | None:
-        """
-        Retrieves the mappings from the Solidity contract.
-
-        Returns:
-            (list | None): List of mappings or None if not found.
-        """
-        if self._parsed_contract:
-            return self._parsed_contract.mappings
-        return None
-
-    def get_modifiers(self) -> list | None:
-        """
-        Retrieves the modifiers from the Solidity contract.
-
-        Returns:
-            (list | None): List of modifiers or None if not found.
-        """
-        if self._parsed_contract:
-            return self._parsed_contract.modifiers
-        return None
-
-    def get_name(self) -> str | None:
-        """
-        Retrieves the contract name.
-
-        Returns:
-            (str | None): Contract name or None if not found.
-        """
-        if self._parsed_contract:
-            return self._parsed_contract.name
+            return self.__extract_nodes(self._parsed_contract, ASTOption.FUNCTIONS)
         return None
 
     def get_state_variables(self) -> dict | None:
@@ -139,16 +82,5 @@ class SourceCode:
             (dict | None): Dictionary of state variables or None if not found.
         """
         if self._parsed_contract:
-            return self._parsed_contract.stateVars
-        return None
-
-    def get_structs(self) -> list | None:
-        """
-        Retrieves the structs from the Solidity contract.
-
-        Returns:
-            (list | None): List of structs or None if not found.
-        """
-        if self._parsed_contract:
-            return self._parsed_contract.structs
+            return self.__extract_nodes(self._parsed_contract, ASTOption.STATE_VARIABLES)
         return None
