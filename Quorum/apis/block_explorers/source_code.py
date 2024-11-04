@@ -5,7 +5,7 @@ from enum import StrEnum
 
 import Quorum.utils.pretty_printer as pp
 
-class ExtractASTOption(StrEnum):
+class ASTOption(StrEnum):
     FUNCTIONS = "FunctionDefinition"
     STATE_VARIABLES = "VariableDeclaration"
 
@@ -44,7 +44,7 @@ class SourceCode:
         finally:
             tmp_path.unlink()
     
-    def __extract_nodes(self, ast: dict, node_type: ExtractASTOption) -> list:
+    def __extract_nodes(self, ast: dict, node_type: ASTOption) -> list:
         functions = {}
         visited = set()
         for node in ast['nodes']:
@@ -66,7 +66,7 @@ class SourceCode:
             (dict | None): Dictionary of functions or None if not found.
         """
         if self._parsed_contract:
-            return self.__extract_nodes(self._parsed_contract, ExtractASTOption.FUNCTIONS)
+            return self.__extract_nodes(self._parsed_contract, ASTOption.FUNCTIONS)
         return None
 
     def get_state_variables(self) -> dict | None:
@@ -77,5 +77,5 @@ class SourceCode:
             (dict | None): Dictionary of state variables or None if not found.
         """
         if self._parsed_contract:
-            return self.__extract_nodes(self._parsed_contract, ExtractASTOption.STATE_VARIABLES)
+            return self.__extract_nodes(self._parsed_contract, ASTOption.STATE_VARIABLES)
         return None
