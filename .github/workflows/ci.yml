@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     
     container:
-      image: public.ecr.aws/certora/cvt-image:2024.06.13-3755-0351582
+      image: public.ecr.aws/certora/cvt-image:2024.09.09-4377-104fa7d
     
     env:
       ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
