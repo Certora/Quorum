@@ -6,6 +6,8 @@ Quorum is an open-source Python utility designed to verify the integrity of smar
 - **Fetch Smart Contract Source Codes:** Retrieve source code directly from various blockchains using contract addresses.
 - **Compare Local and Remote Codes:** Generate unified diffs to highlight differences between local and remote source codes.
 - **Global Variable Check:** Ensure all global variables in unmatched contracts are either constant or immutable.
+- **Feed Price Check:** Verify the feed price of a contract is mentioned on ChainLink.
+- **New Listing Check:** Check if proposal contain a new Listing.
 - **Automated Repository Management:** Clone or update repositories based on customer configurations.
 
 ## Prerequisites
