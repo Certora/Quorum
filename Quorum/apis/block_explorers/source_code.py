@@ -25,6 +25,8 @@ class SourceCode:
 
     def __post_init__(self):
         self._parsed_contract = None
+        self._functions = None
+        self._state_variables = None
         self._parse_source_code()
 
     def _parse_source_code(self) -> None:
@@ -49,7 +51,7 @@ class SourceCode:
         finally:
             tmp_path.unlink()
     
-    def __extract_nodes(self, ast: dict, node_type: ASTOption) -> list:
+    def __extract_nodes(self, ast: dict, node_type: ASTOption) -> dict:
         nodes = {}
         visited = set()
         for node in ast['nodes']:
@@ -63,24 +65,26 @@ class SourceCode:
                 nodes.update(self.__extract_nodes(node, node_type))
         return nodes
 
-    def get_functions(self) -> dict | None:
+    def get_functions(self) -> dict:
         """
         Retrieves the functions from the Solidity contract.
 
         Returns:
-            (dict | None): Dictionary of functions or None if not found.
+            (dict): Dictionary of functions or None if not found.
         """
-        if self._parsed_contract:
-            return self.__extract_nodes(self._parsed_contract, ASTOption.FUNCTIONS)
-        return None
+        if not self._functions:
+            if self._parsed_contract:
+                self._functions = self.__extract_nodes(self._parsed_contract, ASTOption.FUNCTIONS)
+        return self._functions
 
-    def get_state_variables(self) -> dict | None:
+    def get_state_variables(self) -> dict:
         """
         Retrieves the state variables from the Solidity contract.
 
         Returns:
-            (dict | None): Dictionary of state variables or None if not found.
+            (dict): Dictionary of state variables or None if not found.
         """
-        if self._parsed_contract:
-            return self.__extract_nodes(self._parsed_contract, ASTOption.STATE_VARIABLES)
-        return None
+        if not self._state_variables:
+            if self._parsed_contract:
+                self._state_variables = self.__extract_nodes(self._parsed_contract, ASTOption.STATE_VARIABLES)
+        return self._state_variables
