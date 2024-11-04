@@ -54,8 +54,9 @@ class DiffCheck(Check):
             if local_files:
                 # Compute similarity ratios between source_path and each local_file
                 similarities = []
+                source_str = current_source_path.as_posix()
                 for local_file in local_files:
-                    source_str = source_path.as_posix()
+                    
                     local_str = local_file.as_posix()
                     ratio = difflib.SequenceMatcher(None, source_str, local_str).ratio()
                     similarities.append((local_file, ratio))
