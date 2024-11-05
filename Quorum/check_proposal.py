@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 from Quorum.utils.chain_enum import Chain
 import Quorum.utils.pretty_printer as pp
-from Quorum.git_api.git_manager import GitManager
+from Quorum.apis.git_api.git_manager import GitManager
 from Quorum.apis.block_explorers.chains_api import ChainAPI
 import Quorum.checks as Checks
 

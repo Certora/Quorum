@@ -14,5 +14,5 @@ class Chain(StrEnum):
     MET = 'MET'
     OPT = 'OPT'
     POLY = 'POLY'
-    SCR = 'SCR'
-    ZK = 'ZK'
+    SCR = 'SCROLL'
+    ZK = 'ZKSYNC'
