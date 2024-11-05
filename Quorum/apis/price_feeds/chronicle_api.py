@@ -20,9 +20,11 @@ class ChronicleAPI(metaclass=Singleton):
         self.__pairs = self.__process_pairs()
 
     def __process_pairs(self) -> dict[str, list[str]]:
-        pairs = requests.get(
+        response = requests.get(
             "https://chroniclelabs.org/api/pairs?testnet=false"
-        ).json()
+        )
+        response.raise_for_status()
+        pairs = response.json()
         pairs = [
             p for p in pairs if p["blockchain"] in Chain.__members__.values()
         ]
