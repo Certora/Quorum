@@ -32,7 +32,7 @@ class FeedPriceCheck(Check):
         self.address_pattern = r'0x[a-fA-F0-9]{40}'
 
         # Retrieve price feeds from Chainlink API and map them by contract address
-        price_feeds = self.chainlink_api.get_price_feeds_info(self.chain)
+        chain_link_price_feeds = self.chainlink_api.get_price_feeds_info(self.chain)
         self.chain_link_price_feeds = {feed.contractAddress: feed for feed in price_feeds}
         self.chain_link_price_feeds.update({feed.proxyAddress: feed for feed in price_feeds if feed.proxyAddress})
 

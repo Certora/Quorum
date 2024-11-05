@@ -17,7 +17,6 @@ class ChronicleAPI(metaclass=Singleton):
     def __init__(self):
         self.session = requests.Session()
         self.memory = defaultdict(list)
-        self.info_url = "https://chroniclelabs.org/api/median/info/{}/{}/?testnet=false"
         self.__pairs = self.__process_pairs()
 
     def __process_pairs(self) -> dict[str, list[str]]:
@@ -50,8 +49,9 @@ class ChronicleAPI(metaclass=Singleton):
                 return []
             
             for pair in pairs:
-                url = self.info_url.format(pair, chain.value)
-                response = self.session.get(url)
+                response = self.session.get(
+                    f"https://chroniclelabs.org/api/median/info/{pair}/{chain.value}/?testnet=false"
+                )
                 response.raise_for_status()
                 data = response.json()
                 
