@@ -1,7 +1,7 @@
 from pathlib import Path
 import re
 
-from Quorum.apis.chainlink_api import ChainLinkAPI
+from Quorum.apis.price_feeds import ChainLinkAPI, ChronicleAPI
 from Quorum.utils.chain_enum import Chain
 from Quorum.checks.check import Check
 from Quorum.apis.block_explorers.source_code import SourceCode
@@ -10,11 +10,8 @@ import Quorum.utils.pretty_printer as pp
 
 class FeedPriceCheck(Check):
     """
-    Verifies the price feed addresses in the provided source code against official Chainlink data.
-
-    This class is responsible for verifying that the price feed addresses found in the source code
-    match the addresses provided by the Chainlink API. It also categorizes these addresses into 
-    verified and violated based on whether they are found in the official source.
+    The VerifyFeedPrice class is responsible for verifying the price feed addresses in the source code
+    against official Chainlink or Chronical data.
     """
 
     def __init__(self, customer: str, chain: Chain, proposal_address: str, source_codes: list[SourceCode]) -> None:
@@ -29,21 +26,28 @@ class FeedPriceCheck(Check):
             source_codes (list[SourceCode]): A list of source code objects containing the Solidity contracts to be checked.
         """
         super().__init__(customer, chain, proposal_address, source_codes)
-        self.api = ChainLinkAPI()
+        self.chainlink_api = ChainLinkAPI()
+        self.chronicle_api = ChronicleAPI()
+
         self.address_pattern = r'0x[a-fA-F0-9]{40}'
 
         # Retrieve price feeds from Chainlink API and map them by contract address
-        price_feeds = self.api.get_price_feeds_info(self.chain)
-        self.price_feeds_dict = {feed.contractAddress: feed for feed in price_feeds}
-        self.price_feeds_dict.update({feed.proxyAddress: feed for feed in price_feeds if feed.proxyAddress})
+        chain_link_price_feeds = self.chainlink_api.get_price_feeds_info(self.chain)
+        self.chain_link_price_feeds = {feed.contractAddress: feed for feed in chain_link_price_feeds}
+        self.chain_link_price_feeds.update({feed.proxyAddress: feed for feed in chain_link_price_feeds if feed.proxyAddress})
+
+        # Retrieve price feeds from Chronical API and map them by contract address
+        chronicle_price_feeds = self.chronicle_api.get_price_feeds_info(self.chain)
+        self.chronicle_price_feeds_dict = {feed.get("address"): feed for feed in chronicle_price_feeds}
 
     
     def verify_feed_price(self) -> None:
         """
-        Verifies the price feeds in the source code against the Chainlink API for the specified chain.
+        Verifies the price feed addresses in the source code against official Chainlink or Chronical data.
 
-        This method retrieves price feeds from the Chainlink API, compares them against the addresses
-        found in the source code, and then categorizes them into verified or violated based on the comparison.
+        This method iterates through each source code file to find and verify the address variables
+        against the official Chainlink and Chronical price feeds. It categorizes the addresses into
+        verified and violated based on whether they are found in the official source.
         """
         # Iterate through each source code file to find and verify address variables
         for source_code in self.source_codes:
@@ -53,15 +57,23 @@ class FeedPriceCheck(Check):
             contract_text = '\n'.join(source_code.file_content)
             addresses = re.findall(self.address_pattern, contract_text)
             for address in addresses:
-                if address in self.price_feeds_dict:
-                    feed = self.price_feeds_dict[address]
+                if address in self.chain_link_price_feeds:
+                    feed = self.chain_link_price_feeds[address]
                     pp.pretty_print(
                         f"Found {address} on Chainlink\nname:{feed.name} Decimals:{feed.decimals}",
                         pp.Colors.SUCCESS
                     )
                     verified_variables.append(feed.dict())
+
+                elif address in self.chronicle_price_feeds_dict:
+                    feed = self.chronicle_price_feeds_dict[address]
+                    pp.pretty_print(
+                        f"Found {address} on Chronicle\nname:{feed.get('pair')}",
+                        pp.Colors.SUCCESS
+                    )
+                    verified_variables.append(feed)
             
             if verified_variables:
                 self._write_to_file(verified_sources_path, verified_variables)
             else:
-                pp.pretty_print(f"No address related to chain link found in {Path(source_code.file_name).stem}", pp.Colors.INFO)
+                pp.pretty_print(f"No address related to chain link or chronicle found in {Path(source_code.file_name).stem}", pp.Colors.INFO)
