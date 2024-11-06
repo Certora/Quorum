@@ -45,7 +45,9 @@ class GitManager:
         
         # Normalize the customer name to handle case differences
         normalized_customer = self.customer.lower()
-        customer_repos = next((repos for key, repos in repos_data.items() if key.lower() == normalized_customer), [])
+        customer_repos = next((repos for key, repos in repos_data.items() if key.lower() == normalized_customer), None)
+        if customer_repos is None:
+            return {}, {}
         
         repos = {Path(r).stem: r for r in customer_repos["dev_repos"]}
 
