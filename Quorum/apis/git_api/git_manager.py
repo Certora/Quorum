@@ -24,11 +24,11 @@ class GitManager:
         """
         self.customer = customer
         
-        self.customer_modules_path = config.MAIN_PATH / self.customer / "modules"
-        self.customer_modules_path.mkdir(parents=True, exist_ok=True)
+        self.modules_path = config.MAIN_PATH / self.customer / "modules"
+        self.modules_path.mkdir(parents=True, exist_ok=True)
         
-        self.customer_review_module_path = config.MAIN_PATH / self.customer / "review_module"
-        self.customer_review_module_path.mkdir(parents=True, exist_ok=True)
+        self.review_module_path = config.MAIN_PATH / self.customer / "review_module"
+        self.review_module_path.mkdir(parents=True, exist_ok=True)
 
         self.repos, self.review_repo = self._load_repos_from_file()
 
@@ -55,14 +55,8 @@ class GitManager:
                        if "review_repo" in customer_repos else {})
         return repos, verify_repo
 
-    def clone_or_update(self) -> None:
-        """
-        Clone the repositories for the customer.
-
-        If the repository already exists locally, it will update the repository and its submodules.
-        Otherwise, it will clone the repository and initialize submodules.
-        """
-        def clone_or_update_for_repo(repo_name: str, repo_url: str, to_path: Path):
+    @staticmethod
+    def __clone_or_update_for_repo(repo_name: str, repo_url: str, to_path: Path):
             repo_path = to_path / repo_name
             if repo_path.exists():
                 pp.pretty_print(f"Repository {repo_name} already exists at {repo_path}. Updating repo and submodules.", pp.Colors.INFO)
@@ -73,9 +67,18 @@ class GitManager:
                 pp.pretty_print(f"Cloning {repo_name} from URL: {repo_url} to {repo_path}...", pp.Colors.INFO)
                 Repo.clone_from(repo_url, repo_path, multi_options=["--recurse-submodules"])
 
-        for repo_name, repo_url in self.repos.items():
-           clone_or_update_for_repo(repo_name, repo_url, self.customer_modules_path)
-        
-        if len(self.review_repo) > 0:
-            clone_or_update_for_repo(*list(self.review_repo.items())[0], self.customer_review_module_path)
 
+    def clone_or_update(self) -> None:
+        """
+        Clone the repositories for the customer.
+
+        If the repository already exists locally, it will update the repository and its submodules.
+        Otherwise, it will clone the repository and initialize submodules.
+        """
+        
+        for repo_name, repo_url in self.repos.items():
+           GitManager.__clone_or_update_for_repo(repo_name, repo_url, self.modules_path)
+        
+        if self.review_repo:
+            repo_name, repo_url = next(iter(self.review_repo.items()))
+            GitManager.__clone_or_update_for_repo(repo_name, repo_url, self.review_module_path)
