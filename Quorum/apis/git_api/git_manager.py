@@ -24,36 +24,40 @@ class GitManager:
         """
         self.customer = customer
         
-        self.customer_path = config.MAIN_PATH / self.customer / "modules"
-        self.customer_path.mkdir(parents=True, exist_ok=True)
+        self.modules_path = config.MAIN_PATH / self.customer / "modules"
+        self.modules_path.mkdir(parents=True, exist_ok=True)
         
-        self.repos = self._load_repos()
+        self.review_module_path = config.MAIN_PATH / self.customer / "review_module"
+        self.review_module_path.mkdir(parents=True, exist_ok=True)
 
-    def _load_repos(self) -> dict:
+        self.repos, self.review_repo = self._load_repos_from_file()
+
+    def _load_repos_from_file(self) -> tuple[dict[str, str], dict[str, str]]:
         """
         Load repository URLs from the JSON file for the given customer.
 
         Returns:
-            dict: A dictionary mapping repository names to their URLs.
+            tuple[dict[str, str], dict[str, str]]: 2 dictionaries mapping repository names to their URLs.
+                The first dictionary contains the repos to diff against. The second dictionary is the verification repo.
         """
         with open(config.REPOS_PATH) as f:
             repos_data = json.load(f)
         
         # Normalize the customer name to handle case differences
         normalized_customer = self.customer.lower()
-        repos = next((repos for key, repos in repos_data.items() if key.lower() == normalized_customer), [])
+        customer_repos = next((repos for key, repos in repos_data.items() if key.lower() == normalized_customer), None)
+        if customer_repos is None:
+            return {}, {}
         
-        return {Path(r).stem: r for r in repos}
+        repos = {Path(r).stem: r for r in customer_repos["dev_repos"]}
 
-    def clone_or_update(self) -> None:
-        """
-        Clone the repositories for the customer.
+        verify_repo = ({Path(customer_repos["review_repo"]).stem: customer_repos["review_repo"]}
+                       if "review_repo" in customer_repos else {})
+        return repos, verify_repo
 
-        If the repository already exists locally, it will update the repository and its submodules.
-        Otherwise, it will clone the repository and initialize submodules.
-        """
-        for repo_name, repo_url in self.repos.items():
-            repo_path: Path = self.customer_path / repo_name
+    @staticmethod
+    def __clone_or_update_for_repo(repo_name: str, repo_url: str, to_path: Path):
+            repo_path = to_path / repo_name
             if repo_path.exists():
                 pp.pretty_print(f"Repository {repo_name} already exists at {repo_path}. Updating repo and submodules.", pp.Colors.INFO)
                 repo = Repo(repo_path)
@@ -63,3 +67,18 @@ class GitManager:
                 pp.pretty_print(f"Cloning {repo_name} from URL: {repo_url} to {repo_path}...", pp.Colors.INFO)
                 Repo.clone_from(repo_url, repo_path, multi_options=["--recurse-submodules"])
 
+
+    def clone_or_update(self) -> None:
+        """
+        Clone the repositories for the customer.
+
+        If the repository already exists locally, it will update the repository and its submodules.
+        Otherwise, it will clone the repository and initialize submodules.
+        """
+        
+        for repo_name, repo_url in self.repos.items():
+           GitManager.__clone_or_update_for_repo(repo_name, repo_url, self.modules_path)
+        
+        if self.review_repo:
+            repo_name, repo_url = next(iter(self.review_repo.items()))
+            GitManager.__clone_or_update_for_repo(repo_name, repo_url, self.review_module_path)

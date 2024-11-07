@@ -31,8 +31,6 @@ class ChainAPI:
 
     Attributes:
         chain_mapping (dict): Maps Chain enum to APIinfo containing base URL and API key function.
-        base_url (str): The full base URL for making requests to the selected chain.
-        api_key (str): The API key required to access the blockchain explorer API.
     """
     
     # Maps Chain enums to their corresponding API base URL and API key retrieval function.

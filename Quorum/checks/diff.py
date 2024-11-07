@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 from Quorum.apis.block_explorers.source_code import SourceCode
 from Quorum.checks.check import Check
+from Quorum.utils.chain_enum import Chain
 import Quorum.utils.pretty_printer as pp
 
 
@@ -30,6 +31,9 @@ class DiffCheck(Check):
     This class compares source files from a local repository with those from a remote proposal,
     identifying differences and generating patch files.
     """
+    def __init__(self, customer: str, chain: Chain, proposal_address: str, source_codes: list[SourceCode]):
+        super().__init__(customer, chain, proposal_address, source_codes)
+        self.target_repo = self.customer_folder / "modules"
 
     def __find_most_common_path(self, source_path: Path, repo: Path) -> Optional[Path]:
         """
@@ -82,10 +86,8 @@ class DiffCheck(Check):
         missing_files = []
         files_with_diffs = []
 
-        target_repo = self.customer_folder / "modules"
-
         for source_code in self.source_codes:
-            local_file = self.__find_most_common_path(Path(source_code.file_name), target_repo)
+            local_file = self.__find_most_common_path(Path(source_code.file_name), self.target_repo)
             if not local_file:
                 missing_files.append(source_code)
                 continue

@@ -2,3 +2,6 @@
 **__pycache__
 **/.vscode
 **/local*
+build/
+*.egg-info
+CustomerClones/
