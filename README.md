@@ -157,11 +157,16 @@ Example `repos.json`:
 
 ```json
 {
-    "Aave": [
-        "https://github.com/bgd-labs/aave-helpers",
-        "https://github.com/bgd-labs/aave-address-book",
-        "https://github.com/aave-dao/aave-v3-origin"
-    ]
+    "Aave": 
+    {
+        "dev_repos":
+        [
+            "https://github.com/bgd-labs/aave-helpers",
+            "https://github.com/bgd-labs/aave-address-book",
+            "https://github.com/aave-dao/aave-v3-origin"
+        ],
+        "review_repo": "https://github.com/bgd-labs/aave-proposals-v3"
+    }
 }
 ```
 
