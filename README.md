@@ -5,6 +5,7 @@ Quorum is an open-source Python utility designed to verify the integrity of smar
 ## Features
 - **Fetch Smart Contract Source Codes:** Retrieve source code directly from various blockchains using contract addresses.
 - **Compare Local and Remote Codes:** Generate unified diffs to highlight differences between local and remote source codes.
+- **Verify Code Against Known Reviewed Repositories:** Generate diffs against specifically defined trusted auditor's repositories.
 - **Global Variable Check:** Ensure all global variables in unmatched contracts are either constant or immutable.
 - **Feed Price Check:** Verify the feed price of a contract is mentioned on ChainLink.
 - **New Listing Check:** Check if proposal contain a new Listing.
@@ -157,11 +158,16 @@ Example `repos.json`:
 
 ```json
 {
-    "Aave": [
-        "https://github.com/bgd-labs/aave-helpers",
-        "https://github.com/bgd-labs/aave-address-book",
-        "https://github.com/aave-dao/aave-v3-origin"
-    ]
+    "Aave": 
+    {
+        "dev_repos":
+        [
+            "https://github.com/bgd-labs/aave-helpers",
+            "https://github.com/bgd-labs/aave-address-book",
+            "https://github.com/aave-dao/aave-v3-origin"
+        ],
+        "review_repo": "https://github.com/bgd-labs/aave-proposals-v3"
+    }
 }
 ```
 
