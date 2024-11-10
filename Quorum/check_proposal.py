@@ -67,6 +67,9 @@ def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str
         # Diff check
         missing_files = Checks.DiffCheck(customer, chain, proposal_address, source_codes).find_diffs()
 
+        # Review diff check
+        Checks.ReviewDiffCheck(customer, chain, proposal_address, missing_files).find_diffs()
+
         # Global variables check
         Checks.GlobalVariableCheck(customer, chain, proposal_address, missing_files).check_global_variables()
 
