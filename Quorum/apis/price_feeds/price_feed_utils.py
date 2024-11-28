@@ -37,7 +37,7 @@ class PriceFeedProviderBase(ABC):
 
     def __init__(self):
         super().__init__()
-        self.cache_dir = Path(f"{__file__.removesuffix('.py')}/cache/{self.get_name()}")
+        self.cache_dir = Path(__file__).parent / "cache" / self.get_name().value
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.session = requests.Session()
         self.memory: dict[Chain, dict[str, PriceFeedData]] = {}

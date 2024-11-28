@@ -1,9 +1,9 @@
 from Quorum.utils.chain_enum import Chain
-from Quorum.utils.singleton import SingletonABCMeta
+from Quorum.utils.singleton import singleton
 from .price_feed_utils import PriceFeedData, PriceFeedProviderBase, PriceFeedProvider
 
-
-class ChainLinkAPI(PriceFeedProviderBase, metaclass=SingletonABCMeta):
+@singleton
+class ChainLinkAPI(PriceFeedProviderBase):
     """
     ChainLinkAPI is a class designed to interact with the Chainlink data feed API.
     It fetches and stores price feed data for various blockchain networks supported by Chainlink.
@@ -54,4 +54,4 @@ class ChainLinkAPI(PriceFeedProviderBase, metaclass=SingletonABCMeta):
         return chain_link_price_feeds
 
     def get_name(self) -> PriceFeedProvider:
-        return "Chainlink"
+        return PriceFeedProvider.CHAINLINK

@@ -1,13 +1,13 @@
 import requests
 from collections import defaultdict
-import json
 
 from Quorum.utils.chain_enum import Chain
-from Quorum.utils.singleton import SingletonABCMeta
+from Quorum.utils.singleton import singleton
 from .price_feed_utils import PriceFeedData, PriceFeedProviderBase, PriceFeedProvider
 
 
-class ChronicleAPI(PriceFeedProviderBase, metaclass=SingletonABCMeta):
+@singleton
+class ChronicleAPI(PriceFeedProviderBase):
     """
     ChronicleAPI is a class designed to interact with the Chronicle data feed API.
     It fetches and stores price feed data for various blockchain networks supported by Chronicle.
@@ -65,4 +65,4 @@ class ChronicleAPI(PriceFeedProviderBase, metaclass=SingletonABCMeta):
 
         
     def get_name(self) -> PriceFeedProvider:
-        return "Chronicle"
+        return PriceFeedProvider.CHRONICLE
