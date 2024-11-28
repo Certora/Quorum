@@ -2,7 +2,7 @@ from pathlib import Path
 import re
 import json
 
-from Quorum.apis.price_feeds import ChainLinkAPI, ChronicleAPI, PriceFeedProvider
+from Quorum.apis.price_feeds import ChainLinkAPI, ChronicleAPI, PriceFeedProvider, PriceFeedData
 from Quorum.utils.chain_enum import Chain
 from Quorum.checks.check import Check
 from Quorum.apis.block_explorers.source_code import SourceCode
@@ -41,8 +41,12 @@ class FeedPriceCheck(Check):
             dict[PriceFeedProvider, dict]: A dictionary mapping the price feed provider to the price feed data.
         """
         with open(config.GROUND_TRUTH_PATH) as f:
-            providers: list = json.load(f).get(self.customer).get("price_feed_providers", [])
+            providers: list = json.load(f).get(self.customer, {}).get("price_feed_providers", [])
 
+        if not providers:
+            pp.pretty_print(f"No price feed providers found for {self.customer}", pp.Colors.FAILURE)
+            return {}
+        
         # Map providers to price feeds
         providers_to_price_feed = {}
         for provider in providers:
@@ -68,12 +72,12 @@ class FeedPriceCheck(Check):
         """
         for provider, price_feeds in self.providers_to_price_feed.items():
             if address in price_feeds:
-                feed = price_feeds[address]
+                feed: PriceFeedData = price_feeds[address]
                 pp.pretty_print(
-                    f"Found {address} on {provider.name}\nname:{feed.get('pair')}",
+                    f"Found {address} on {provider}\nname:{feed.name if feed.name else feed.pair}",
                     pp.Colors.SUCCESS
                 )
-                return feed
+                return feed.dict()
             
         pp.pretty_print(f"Address {address} not found in any price feed provider", pp.Colors.INFO)
         return None

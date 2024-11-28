@@ -1,51 +1,8 @@
 import requests
-from pydantic import BaseModel
-from typing import Optional
 
 from Quorum.utils.chain_enum import Chain
 from Quorum.utils.singleton import Singleton
-
-class Docs(BaseModel):
-    assetClass: Optional[str] = None 
-    assetName: Optional[str] = None
-    baseAsset: Optional[str] = None
-    baseAssetClic: Optional[str] = None
-    blockchainName: Optional[str] = None
-    clicProductName: Optional[str] = None
-    deliveryChannelCode: Optional[str] = None
-    feedType: Optional[str] = None
-    hidden: Optional[bool] = None
-    marketHours: Optional[str] = None
-    productSubType: Optional[str] = None
-    productType: Optional[str] = None
-    productTypeCode: Optional[str] = None
-    quoteAsset: Optional[str] = None
-    quoteAssetClic: Optional[str] = None
-
-
-class PriceFeedData(BaseModel):
-    compareOffchain: Optional[str] = None
-    contractAddress: str
-    contractType: Optional[str] = None
-    contractVersion: Optional[int] = None
-    decimalPlaces: Optional[int] = None
-    ens: Optional[str] = None
-    formatDecimalPlaces: Optional[int] = None
-    healthPrice: Optional[str] = None
-    heartbeat: Optional[int] = None
-    history: Optional[str | bool] = None
-    multiply: Optional[str] = None
-    name: Optional[str] = None
-    pair: Optional[list[Optional[str]]] = None
-    path: Optional[str] = None
-    proxyAddress: Optional[str] = None
-    threshold: Optional[float] = None
-    valuePrefix: Optional[str] = None
-    assetName: Optional[str] = None
-    feedCategory: Optional[str] = None
-    feedType: Optional[str] = None
-    docs: Optional[Docs] = None
-    decimals: Optional[int] = None
+from .price_feed_utils import PriceFeedData
 
 
 class ChainLinkAPI(metaclass=Singleton):
@@ -106,8 +63,8 @@ class ChainLinkAPI(metaclass=Singleton):
             response = self.session.get(url)
             response.raise_for_status()
             chain_link_price_feeds = [PriceFeedData(**feed) for feed in response.json()]
-            chain_link_price_feeds = {feed.contractAddress: feed for feed in chain_link_price_feeds}
-            chain_link_price_feeds.update({feed.proxyAddress: feed for feed in chain_link_price_feeds if feed.proxyAddress})
+            chain_link_price_feeds = {feed.address: feed for feed in chain_link_price_feeds}
+            chain_link_price_feeds.update({feed.proxy_address: feed for feed in chain_link_price_feeds.values() if feed.proxy_address})
             self.memory[chain] = chain_link_price_feeds
         
         return self.memory[chain]

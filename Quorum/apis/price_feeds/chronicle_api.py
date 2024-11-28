@@ -3,6 +3,8 @@ from collections import defaultdict
 
 from Quorum.utils.chain_enum import Chain
 from Quorum.utils.singleton import Singleton
+from .price_feed_utils import PriceFeedData
+
 
 class ChronicleAPI(metaclass=Singleton):
     """
@@ -50,7 +52,7 @@ class ChronicleAPI(metaclass=Singleton):
             if not pairs:
                 return {}
             
-            chronicle_price_feeds = []
+            chronicle_price_feeds: list[PriceFeedData] = []
             for pair in pairs:
                 response = self.session.get(
                     f"https://chroniclelabs.org/api/median/info/{pair}/{chain.value}/?testnet=false"
@@ -59,8 +61,8 @@ class ChronicleAPI(metaclass=Singleton):
                 data = response.json()
                 
                 for pair_info in data:
-                    chronicle_price_feeds.append(pair_info)
+                    chronicle_price_feeds.append(PriceFeedData(**pair_info))
             
-            self.memory[chain] = {feed.get("address"): feed for feed in chronicle_price_feeds}
+            self.memory[chain] = {feed.address: feed for feed in chronicle_price_feeds}
         
         return self.memory[chain]
