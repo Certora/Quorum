@@ -99,5 +99,3 @@ class FeedPriceCheck(Check):
             
             if verified_variables:
                 self._write_to_file(verified_sources_path, verified_variables)
-            else:
-                pp.pretty_print(f"No address related to chain link or chronicle found in {Path(source_code.file_name).stem}", pp.Colors.INFO)
