@@ -2,23 +2,29 @@ from pathlib import Path
 import re
 import json
 
-from Quorum.apis.price_feeds import ChainLinkAPI, ChronicleAPI, PriceFeedProvider, PriceFeedData
+from Quorum.apis.price_feeds import PriceFeedProvider, PriceFeedData, PriceFeedProviderBase
 from Quorum.utils.chain_enum import Chain
 from Quorum.checks.check import Check
 from Quorum.apis.block_explorers.source_code import SourceCode
-import Quorum.config as config
 import Quorum.utils.pretty_printer as pp
 
 
-class FeedPriceCheck(Check):
+class PriceFeedCheck(Check):
     """
-    The VerifyFeedPrice class is responsible for verifying the price feed addresses in the source code
+    The PriceFeedCheck class is responsible for verifying the price feed addresses in the source code
     against official Chainlink or Chronical data.
     """
 
-    def __init__(self, customer: str, chain: Chain, proposal_address: str, source_codes: list[SourceCode]) -> None:
+    def __init__(
+            self,
+            customer: str,
+            chain: Chain,
+            proposal_address: str,
+            source_codes: list[SourceCode],
+            providers: list[PriceFeedProviderBase]
+    ) -> None:
         """
-        Initializes the VerifyFeedPrice object with customer information, proposal address, 
+        Initializes the PriceFeedCheck object with customer information, proposal address, 
         and source codes to be checked.
 
         Args:
@@ -26,39 +32,30 @@ class FeedPriceCheck(Check):
             chain (Chain): The blockchain network to verify the price feeds against.
             proposal_address (str): The address of the proposal being verified.
             source_codes (list[SourceCode]): A list of source code objects containing the Solidity contracts to be checked.
+            providers (list[PriceFeedProviderInterface]): A list of price feed providers to be used for verification.
         """
         super().__init__(customer, chain, proposal_address, source_codes)
         self.address_pattern = r'0x[a-fA-F0-9]{40}'
         
         # load providers price feeds
-        self.providers_to_price_feed = self.__fetch_price_feed_providers()
+        self.providers_to_price_feed = self.__fetch_price_feed_data(providers)
 
-    def __fetch_price_feed_providers(self) -> dict[PriceFeedProvider, dict]:
+    def __fetch_price_feed_data(self, providers: list[PriceFeedProviderBase]) -> dict[PriceFeedProvider, dict]:
         """
         Load the price feed providers from the ground truth file.
 
-        Returns:
-            dict[PriceFeedProvider, dict]: A dictionary mapping the price feed provider to the price feed data.
-        """
-        with open(config.GROUND_TRUTH_PATH) as f:
-            providers: list = json.load(f).get(self.customer, {}).get("price_feed_providers", [])
+        Args:
+            providers (list[PriceFeedProviderInterface]): A list of price feed providers
 
+        Returns:
+            dict[str, dict]: A dictionary mapping the price feed provider to the price feed data.
+        """
         if not providers:
             pp.pretty_print(f"No price feed providers found for {self.customer}", pp.Colors.FAILURE)
             return {}
-        
-        # Map providers to price feeds
-        providers_to_price_feed = {}
-        for provider in providers:
-            if provider == PriceFeedProvider.CHAINLINK:
-                providers_to_price_feed[provider] = ChainLinkAPI().get_price_feeds_info(self.chain)
-            elif provider == PriceFeedProvider.CHRONICLE:
-                providers_to_price_feed[provider] = ChronicleAPI().get_price_feeds_info(self.chain)
-            else:
-                pp.pretty_print(f"Unknown price feed provider: {provider}", pp.Colors.FAILURE)
-                providers.remove(provider)
-
-        return providers_to_price_feed
+        return {
+            provider.get_name(): provider.get_feeds(self.chain) for provider in providers
+        }
 
     def __check_price_feed_address(self, address: str) -> dict | None:
         """
