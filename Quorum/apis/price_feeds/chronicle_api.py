@@ -16,7 +16,7 @@ class ChronicleAPI(metaclass=Singleton):
     
     def __init__(self):
         self.session = requests.Session()
-        self.memory = defaultdict(list)
+        self.memory: dict[Chain, dict[str, dict]] = {}
         self.__pairs = self.__process_pairs()
 
     def __process_pairs(self) -> dict[str, list[str]]:
@@ -33,7 +33,7 @@ class ChronicleAPI(metaclass=Singleton):
             result[p["blockchain"]].append(p["pair"])
         return result
 
-    def get_price_feeds_info(self, chain: Chain) -> list[dict]:
+    def get_price_feeds_info(self, chain: Chain) -> dict[str, dict]:
         """
         Get price feed data for a given blockchain network.
 
@@ -43,13 +43,14 @@ class ChronicleAPI(metaclass=Singleton):
             chain (Chain): The blockchain network to fetch price feed data for.
 
         Returns:
-            dict: The price feed data for the specified chain.
+            dict[str, dict]: A dictionary mapping the contract address of the price feed to the price feed data.
         """
         if chain not in self.memory:
             pairs = self.__pairs.get(chain)
             if not pairs:
-                return []
+                return {}
             
+            chronicle_price_feeds = []
             for pair in pairs:
                 response = self.session.get(
                     f"https://chroniclelabs.org/api/median/info/{pair}/{chain.value}/?testnet=false"
@@ -58,6 +59,8 @@ class ChronicleAPI(metaclass=Singleton):
                 data = response.json()
                 
                 for pair_info in data:
-                    self.memory[chain].append(pair_info)
+                    chronicle_price_feeds.append(pair_info)
+            
+            self.memory[chain] = {feed.get("address"): feed for feed in chronicle_price_feeds}
         
         return self.memory[chain]

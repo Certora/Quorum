@@ -81,21 +81,18 @@ class ChainLinkAPI(metaclass=Singleton):
         price feed data for different blockchain networks.
         """
         self.session = requests.Session()
-        self.memory: dict[Chain, list[PriceFeedData]] = {}
+        self.memory: dict[Chain, dict[str, PriceFeedData]] = {}
     
-    def get_price_feeds_info(self, chain: Chain) -> list[PriceFeedData]:
+    def get_price_feeds_info(self, chain: Chain) -> dict[str, PriceFeedData]:
         """
         Fetches the price feeds information from the Chainlink API for a specified blockchain network.
-        
-        This method first checks if the data for the given chain is already cached in memory. If not, it makes an HTTP 
-        request to the Chainlink API to fetch the data, parses the JSON response into a list of PriceFeedData objects, 
-        and stores it in the cache.
 
+        The method fetches the price feed data from the Chainlink API and stores it in the memory cache.
         Args:
             chain (Chain): The blockchain network to fetch price feeds for.
 
         Returns:
-            list[PriceFeedData]: A list of PriceFeedData objects containing the price feeds information.
+            dict[str, PriceFeedData]: A dictionary mapping the contract address of the price feed to the PriceFeedData object.
         
         Raises:
             requests.HTTPError: If the HTTP request to the Chainlink API fails.
@@ -108,6 +105,9 @@ class ChainLinkAPI(metaclass=Singleton):
             
             response = self.session.get(url)
             response.raise_for_status()
-            self.memory[chain] = [PriceFeedData(**feed) for feed in response.json()]
+            chain_link_price_feeds = [PriceFeedData(**feed) for feed in response.json()]
+            chain_link_price_feeds = {feed.contractAddress: feed for feed in chain_link_price_feeds}
+            chain_link_price_feeds.update({feed.proxyAddress: feed for feed in chain_link_price_feeds if feed.proxyAddress})
+            self.memory[chain] = chain_link_price_feeds
         
         return self.memory[chain]

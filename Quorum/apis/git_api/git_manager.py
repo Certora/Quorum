@@ -40,7 +40,7 @@ class GitManager:
             tuple[dict[str, str], dict[str, str]]: 2 dictionaries mapping repository names to their URLs.
                 The first dictionary contains the repos to diff against. The second dictionary is the verification repo.
         """
-        with open(config.REPOS_PATH) as f:
+        with open(config.GROUND_TRUTH_PATH) as f:
             repos_data = json.load(f)
         
         # Normalize the customer name to handle case differences
