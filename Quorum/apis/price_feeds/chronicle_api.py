@@ -1,10 +1,13 @@
 import requests
 from collections import defaultdict
+import json
 
 from Quorum.utils.chain_enum import Chain
-from Quorum.utils.singleton import Singleton
+from Quorum.utils.singleton import SingletonABCMeta
+from .price_feed_utils import PriceFeedData, PriceFeedProviderBase, PriceFeedProvider
 
-class ChronicleAPI(metaclass=Singleton):
+
+class ChronicleAPI(PriceFeedProviderBase, metaclass=SingletonABCMeta):
     """
     ChronicleAPI is a class designed to interact with the Chronicle data feed API.
     It fetches and stores price feed data for various blockchain networks supported by Chronicle.
@@ -15,8 +18,7 @@ class ChronicleAPI(metaclass=Singleton):
     """
     
     def __init__(self):
-        self.session = requests.Session()
-        self.memory = defaultdict(list)
+        super().__init__()
         self.__pairs = self.__process_pairs()
 
     def __process_pairs(self) -> dict[str, list[str]]:
@@ -33,31 +35,34 @@ class ChronicleAPI(metaclass=Singleton):
             result[p["blockchain"]].append(p["pair"])
         return result
 
-    def get_price_feeds_info(self, chain: Chain) -> list[dict]:
+    def _get_price_feeds_info(self, chain: Chain) -> dict[str, PriceFeedData]:
         """
         Get price feed data for a given blockchain network.
 
-        This method retrieves price feed data from the cache if it has been fetched previously.
-
         Args:
-            chain (Chain): The blockchain network to fetch price feed data for.
+            chain (Chain): The blockchain network to fetch price feeds for.
 
         Returns:
-            dict: The price feed data for the specified chain.
+            dict[str, PriceFeedData]: A dictionary mapping the contract address of the price feed to the PriceFeedData object.
         """
-        if chain not in self.memory:
-            pairs = self.__pairs.get(chain)
-            if not pairs:
-                return []
-            
-            for pair in pairs:
-                response = self.session.get(
-                    f"https://chroniclelabs.org/api/median/info/{pair}/{chain.value}/?testnet=false"
-                )
-                response.raise_for_status()
-                data = response.json()
-                
-                for pair_info in data:
-                    self.memory[chain].append(pair_info)
+
+        pairs = self.__pairs.get(chain)
+        if not pairs:
+            return {}
         
-        return self.memory[chain]
+        chronicle_price_feeds: list[PriceFeedData] = []
+        for pair in pairs:
+            response = self.session.get(
+                f"https://chroniclelabs.org/api/median/info/{pair}/{chain.value}/?testnet=false"
+            )
+            response.raise_for_status()
+            data = response.json()
+            
+            for pair_info in data:
+                chronicle_price_feeds.append(PriceFeedData(**pair_info))
+                
+        return {feed.address: feed for feed in chronicle_price_feeds}
+
+        
+    def get_name(self) -> PriceFeedProvider:
+        return "Chronicle"

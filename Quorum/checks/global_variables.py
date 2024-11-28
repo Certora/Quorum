@@ -64,7 +64,6 @@ class GlobalVariableCheck(Check):
         """
         return [v for v in variables if v.get("mutability") != "immutable"]
 
-
     def __process_results(self, source_code_to_violated_variables: dict[str, list[dict]]):
         """
         Processes the results of the global variable checks and prints them to the console.
