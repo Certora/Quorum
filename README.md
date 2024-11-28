@@ -174,6 +174,9 @@ Example `ground_truth.json`:
 
 This configuration is used by the tool to manage the ground truth information for each customer. The `dev_repos` array contains the URLs of the repositories associated with the customer. The `review_repo` field specifies the repository to compare against when checking proposals. The `price_feed_providers` array lists the feed price providers to check against.
 
+current supported price feed providers are:
+- Chainlink
+- Chronicle
 
 ## Artifacts Structure
 
