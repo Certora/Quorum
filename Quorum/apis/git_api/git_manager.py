@@ -1,10 +1,8 @@
-import json
 from pathlib import Path
 from git import Repo
 
 import Quorum.config as config
 import Quorum.utils.pretty_printer as pp
-
 
 class GitManager:
     """
@@ -15,12 +13,13 @@ class GitManager:
         repos (dict): A dictionary mapping repository names to their URLs.
     """
 
-    def __init__(self, customer: str) -> None:
+    def __init__(self, customer: str, gt_config: dict[str, any]) -> None:
         """
         Initialize the GitManager with the given customer name and load the repository URLs.
 
         Args:
             customer (str): The name or identifier of the customer.
+            gt_config (dict[str, any]): The ground truth configuration data.
         """
         self.customer = customer
         
@@ -30,22 +29,22 @@ class GitManager:
         self.review_module_path = config.MAIN_PATH / self.customer / "review_module"
         self.review_module_path.mkdir(parents=True, exist_ok=True)
 
-        self.repos, self.review_repo = self._load_repos_from_file()
+        self.repos, self.review_repo = self._load_repos_from_file(gt_config)
 
-    def _load_repos_from_file(self) -> tuple[dict[str, str], dict[str, str]]:
+    def _load_repos_from_file(self, gt_config: dict[str, any]) -> tuple[dict[str, str], dict[str, str]]:
         """
         Load repository URLs from the JSON file for the given customer.
+
+        Args:
+            gt_config (dict[str, any]): The ground truth configuration data.
 
         Returns:
             tuple[dict[str, str], dict[str, str]]: 2 dictionaries mapping repository names to their URLs.
                 The first dictionary contains the repos to diff against. The second dictionary is the verification repo.
         """
-        with open(config.REPOS_PATH) as f:
-            repos_data = json.load(f)
-        
         # Normalize the customer name to handle case differences
         normalized_customer = self.customer.lower()
-        customer_repos = next((repos for key, repos in repos_data.items() if key.lower() == normalized_customer), None)
+        customer_repos = next((repos for key, repos in gt_config.items() if key.lower() == normalized_customer), None)
         if customer_repos is None:
             return {}, {}
         

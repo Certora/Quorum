@@ -152,9 +152,9 @@ CheckProposal --config path/to/config.json
 
 ## Configuration
 
-The `repos.json` file defines the repositories for each customer. It should be located under the `QUORUM_PATH`. If not found, a default `repos.json` configuration will be created.
+The `ground_truth.json` file defines the repositories for each customer. It should be located under the `QUORUM_PATH`. If not found, a default `ground_truth.json` configuration will be created.
 
-Example `repos.json`:
+Example `ground_truth.json`:
 
 ```json
 {
@@ -166,12 +166,17 @@ Example `repos.json`:
             "https://github.com/bgd-labs/aave-address-book",
             "https://github.com/aave-dao/aave-v3-origin"
         ],
-        "review_repo": "https://github.com/bgd-labs/aave-proposals-v3"
+        "review_repo": "https://github.com/bgd-labs/aave-proposals-v3",
+        "price_feed_providers": ["Chainlink"]
     }
 }
 ```
 
-This configuration is used by the tool to manage the repositories.
+This configuration is used by the tool to manage the ground truth information for each customer. The `dev_repos` array contains the URLs of the repositories associated with the customer. The `review_repo` field specifies the repository to compare against when checking proposals. The `price_feed_providers` array lists the feed price providers to check against.
+
+current supported price feed providers are:
+- Chainlink
+- Chronicle
 
 ## Artifacts Structure
 
@@ -181,7 +186,7 @@ Quorum generates and organizes artifacts in a structured manner under the `QUORU
 
 ```
 QUORUM_PATH/
-├── repos.json
+├── ground_truth.json
 ├── CustomerName/
 |     ├── modules/
 |     │   ├── repository1/
@@ -218,7 +223,7 @@ QUORUM_PATH/
 
   - **execution.json**: This file stores the configuration and results of the last execution, including details like which proposals were checked and any findings or issues encountered.
 
-  - **repos.json**: A configuration file specifying the repositories to be managed for the customer. This file can be customized to include the URLs of the repositories related to the customer.
+  - **ground_truth.json**: A configuration file specifying the repositories to be managed for the customer. This file can be customized to include the URLs of the repositories related to the customer.
 
 ### Example
 
@@ -243,10 +248,10 @@ Aave/
 │   ├── aave-helpers/
 │   ├── aave-v3-origin/
 ├── execution.json
-├── repos.json
+├── ground_truth.json
 ```
 
-In this example, each proposal address under the `checks/` directory contains diff files that highlight the differences between the local and fetched source codes, as well as global variable check results. The `modules/` directory contains the repositories relevant to the customer "Aave," and the `execution.json` and `repos.json` files hold metadata and configuration details.
+In this example, each proposal address under the `checks/` directory contains diff files that highlight the differences between the local and fetched source codes, as well as global variable check results. The `modules/` directory contains the repositories relevant to the customer "Aave," and the `execution.json` and `ground_truth.json` files hold metadata and configuration details.
 
 ## License
 

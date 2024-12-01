@@ -15,7 +15,7 @@ setup(
     install_requires=read_requirements(),
     include_package_data=True,
         package_data={
-        '': ['repos.json'],
+        '': ['ground_truth.json'],
     },
     entry_points={
         "console_scripts": [

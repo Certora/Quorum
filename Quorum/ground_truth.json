@@ -7,6 +7,7 @@
             "https://github.com/bgd-labs/aave-address-book",
             "https://github.com/aave-dao/aave-v3-origin"
         ],
-        "review_repo": "https://github.com/bgd-labs/aave-proposals-v3"
+        "review_repo": "https://github.com/bgd-labs/aave-proposals-v3",
+        "price_feed_providers": ["Chainlink"]
     }
 }
