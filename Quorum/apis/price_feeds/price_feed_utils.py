@@ -22,7 +22,7 @@ class PriceFeedData(BaseModel):
     proxy_address: Optional[str] = Field(None, alias='proxyAddress')
 
     class Config:
-        allow_population_by_field_name = True  # Allows population using field names
+        populate_by_name = True  # Allows population using field names
         extra = 'ignore'  # Ignores extra fields not defined in the model
 
 
