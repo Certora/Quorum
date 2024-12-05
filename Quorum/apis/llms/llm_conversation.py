@@ -10,14 +10,11 @@ MAX_TOKENS = 1024
 
 
 def tmp_send_message_to_claude(client, model, messages):
-    try:
-        response = client.messages.create(
-            max_tokens=MAX_TOKENS,
-            model=model,
-            messages=messages
-        )
-    except:
-        raise
+    response = client.messages.create(
+        max_tokens=MAX_TOKENS,
+        model=model,
+        messages=messages
+    )
 
     with open(Path(__file__).parent / 'ClaudeExecutionsNum.txt', 'r+') as f:
         num = int(f.read())

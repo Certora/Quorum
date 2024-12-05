@@ -46,3 +46,5 @@ Pay Attention for possible problems:
 3. 'isolation mode' is *not* 'borrowableInIsolation', they are different parameters.
 4. 'variable slope2' should always be greater than 'variable slope1' Pay special attention to this fact.
 5. 'variable slope2' value need to be around 60%-300% Pay special attention to this range.
+
+Provide only your findings with no opening sentence or other conversational language, questions, or pleasantries.
