@@ -9,6 +9,7 @@ from Quorum.apis.block_explorers.chains_api import ChainAPI
 import Quorum.checks as Checks
 import Quorum.utils.pretty_printer as pp
 import Quorum.utils.config_loader as ConfigLoader
+import Quorum.utils.arg_validations as arg_valid
 
 
 def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
@@ -23,7 +24,7 @@ def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[
     parser.add_argument('--config', type=load_config, help="Path to JSON configuration file.")
     parser.add_argument('--customer', type=str, help="Customer name or identifier.")
     parser.add_argument('--chain', type=str, choices=[chain.value for chain in Chain], help="Blockchain chain.")
-    parser.add_argument('--proposal_address', type=str, help="Ethereum proposal address.")
+    parser.add_argument('--proposal_address', type=arg_valid.validate_address, help="Ethereum proposal address.")
     args = parser.parse_args()
 
     return args.config, args.customer, args.chain, args.proposal_address
