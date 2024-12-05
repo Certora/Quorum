@@ -17,3 +17,5 @@ DEFAULT_REPOS = Path(__file__).parent / "ground_truth.json"
 
 if not GROUND_TRUTH_PATH.exists():
     shutil.copy(DEFAULT_REPOS, GROUND_TRUTH_PATH)
+
+ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
