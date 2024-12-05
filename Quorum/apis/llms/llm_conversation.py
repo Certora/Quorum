@@ -1,5 +1,5 @@
 from enum import StrEnum, auto
-from pathlib import Path
+
 
 class MessageRole(StrEnum):
     USER = auto()
@@ -7,22 +7,6 @@ class MessageRole(StrEnum):
 
 
 MAX_TOKENS = 1024
-
-
-def tmp_send_message_to_claude(client, model, messages):
-    response = client.messages.create(
-        max_tokens=MAX_TOKENS,
-        model=model,
-        messages=messages
-    )
-
-    with open(Path(__file__).parent / 'ClaudeExecutionsNum.txt', 'r+') as f:
-        num = int(f.read())
-        f.seek(0)
-        f.write(str(num + 1))
-        f.truncate()
-
-    return response
 
 
 class LLMConversation:
@@ -82,7 +66,11 @@ class LLMConversation:
         self.add_message(MessageRole.USER, message)
         
         # Get response from LLM
-        response = tmp_send_message_to_claude(self.client, self.model, self.messages)
+        response = self.client.messages.create(
+            max_tokens=MAX_TOKENS,
+            model=self.model,
+            messages=self.messages
+        )
         
         # Add LLM's response to history
         # `response.content` is a list of responses. The LLM can generate more than 1 answer (configurable).
