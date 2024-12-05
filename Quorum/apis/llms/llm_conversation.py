@@ -88,6 +88,7 @@ class LLMConversation:
         response = tmp_send_message_to_claude(self.client, self.model, self.messages)
         
         # Add LLM's response to history
+        # `response.content` is a list of responses. The LLM can generate more than 1 answer (configurable).
         assistant_message = response.content[0].text
         self.add_message(MessageRole.ASSISTANT, assistant_message)
         

@@ -3,8 +3,11 @@ from Quorum.apis.llms.llm_conversation import LLMConversation
 from anthropic import Anthropic
 
 
+HAIKU = 'claude-3-5-haiku-20241022'
+
+
 class ClaudeConversation(LLMConversation):
-    def __init__(self, api_key: str, model: str = 'claude-3-5-haiku-20241022'):
+    def __init__(self, api_key: str, model: str = HAIKU):
         '''
         Summary
         -------

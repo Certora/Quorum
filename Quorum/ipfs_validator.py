@@ -24,6 +24,10 @@ def parse_args() -> argparse.Namespace:
     return args
 
 
+# TODO: This function should be temporary, it is scraping the Aave Gov UI page's HTML 
+#       of the proposal to get the ipfs link and it's pretty fragile.
+#       We should remove this function once we implement a better way to get the data using an API that 
+#       Aave is currently working on or their "v3-governance-cache" repo. This should be done on a different PR.
 def get_raw_ipfs(proposal_id: int) -> str:
     resp = requests.get(f'https://vote.onaave.com/proposal/?proposalId={proposal_id}')
     resp.raise_for_status()
