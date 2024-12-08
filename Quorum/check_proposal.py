@@ -3,10 +3,13 @@ import json
 from typing import Any, Optional
 
 from Quorum.utils.chain_enum import Chain
-import Quorum.utils.pretty_printer as pp
 from Quorum.apis.git_api.git_manager import GitManager
+from Quorum.apis.price_feeds.price_feed_utils import PriceFeedProviderBase
 from Quorum.apis.block_explorers.chains_api import ChainAPI
 import Quorum.checks as Checks
+import Quorum.utils.pretty_printer as pp
+import Quorum.utils.config_loader as ConfigLoader
+import Quorum.utils.arg_validations as arg_valid
 
 
 def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
@@ -21,7 +24,7 @@ def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[
     parser.add_argument('--config', type=load_config, help="Path to JSON configuration file.")
     parser.add_argument('--customer', type=str, help="Customer name or identifier.")
     parser.add_argument('--chain', type=str, choices=[chain.value for chain in Chain], help="Blockchain chain.")
-    parser.add_argument('--proposal_address', type=str, help="Ethereum proposal address.")
+    parser.add_argument('--proposal_address', type=arg_valid.validate_address, help="Ethereum proposal address.")
     args = parser.parse_args()
 
     return args.config, args.customer, args.chain, args.proposal_address
@@ -45,7 +48,7 @@ def load_config(config_path: str) -> dict[str, Any] | None:
         pp.pretty_print(f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE)
 
 
-def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str]) -> None:
+def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str], providers: list[PriceFeedProviderBase]) -> None:
     """
     Check and compare source code files for given proposals.
 
@@ -55,6 +58,7 @@ def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str
         customer (str): The customer name or identifier.
         chain_name (str): The blockchain chain name.
         proposal_addresses (list[str]): List of proposal addresses.
+        providers (list[PriceFeedProviderInterface]): List of price feed providers.
     """
     chain = Chain[chain_name.upper()]
     api = ChainAPI(chain)
@@ -74,7 +78,7 @@ def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str
         Checks.GlobalVariableCheck(customer, chain, proposal_address, missing_files).check_global_variables()
 
         # Feed price check
-        Checks.FeedPriceCheck(customer, chain, proposal_address, missing_files).verify_feed_price()
+        Checks.PriceFeedCheck(customer, chain, proposal_address, missing_files, providers).verify_price_feed()
 
         # New listing check
         Checks.NewListingCheck(customer, chain, proposal_address, missing_files).new_listing_check()
@@ -91,17 +95,21 @@ def main() -> None:
     if config_data:
         # Multi-task mode using JSON configuration
         for customer, chain_info in config_data.items():
-            GitManager(customer).clone_or_update()
+            ground_truth_config = ConfigLoader.load_customer_config(customer)
+            GitManager(customer, ground_truth_config).clone_or_update()
+            price_feed_providers = ground_truth_config.get("price_feed_providers", [])
             for chain_name, proposals in chain_info.items():
                 if proposals["Proposals"]: 
-                    proposals_check(customer, chain_name, proposals["Proposals"])
+                    proposals_check(customer, chain_name, proposals["Proposals"], price_feed_providers)
     else:
         # Single-task mode using command line arguments
         if not (customer and chain_name and proposal_address):
             raise ValueError("Customer, chain, and proposal_address must be specified if not using a config file.")
         
-        GitManager(customer).clone_or_update()    
-        proposals_check(customer, chain_name, [proposal_address])
+        ground_truth_config = ConfigLoader.load_customer_config(customer)
+        GitManager(customer, ground_truth_config).clone_or_update()
+        price_feed_providers = ground_truth_config.get("price_feed_providers", [])    
+        proposals_check(customer, chain_name, [proposal_address], price_feed_providers)
 
 
 if __name__ == "__main__":

@@ -12,8 +12,10 @@ MAIN_PATH = Path(main_path).absolute()
 if not MAIN_PATH.exists():
     MAIN_PATH.mkdir(parents=True)
 
-REPOS_PATH = MAIN_PATH / "repos.json"
-DEFAULT_REPOS = Path(__file__).parent / "repos.json"
+GROUND_TRUTH_PATH = MAIN_PATH / "ground_truth.json"
+DEFAULT_REPOS = Path(__file__).parent / "ground_truth.json"
 
-if not REPOS_PATH.exists():
-    shutil.copy(DEFAULT_REPOS, REPOS_PATH)
+if not GROUND_TRUTH_PATH.exists():
+    shutil.copy(DEFAULT_REPOS, GROUND_TRUTH_PATH)
+
+ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
