@@ -1,5 +1,6 @@
 from Quorum.auto_report.report_generator import ReportGenerator
 from Quorum.auto_report.tags import AaveTags
+import Quorum.utils.pretty_printer as pprinter
 
 import argparse
 from pathlib import Path
@@ -24,13 +25,16 @@ def parse_args() -> argparse.Namespace:
 def main():
     args = parse_args()
 
+    pprinter.pretty_print(f'Generating a report using template in {args.template}', pprinter.Colors.INFO)
     with open(args.template) as f:
         template = f.read()
     
     report = ReportGenerator(template, AaveTags(args.proposal_id).tag_mappings).report
 
-    with open(f'v3-{args.proposal_id}-<title>.md', 'w') as f:
+    with open((report_path:=f'v3-{args.proposal_id}.md'), 'w') as f:
         f.write(report)
+
+    pprinter.pretty_print(f'Created report at {report_path}.', pprinter.Colors.SUCCESS)
 
 
 if __name__ == '__main__':
