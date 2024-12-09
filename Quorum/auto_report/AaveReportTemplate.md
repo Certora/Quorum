@@ -25,9 +25,10 @@
 
 ### Proposal Creation
 Transaction: [<transaction_hash>](<transaction_link>)
-```
-<transaction_data>
-```
+- `proposalId`: <proposal_id>
+- `creator`: <creator>
+- `accessLevel`: <access_level>
+- `ipfsHash`: <ipfs_hash>
 
 **`createProposal()` Parameters**
 ```

@@ -1,5 +1,5 @@
 from Quorum.auto_report.report_generator import ReportGenerator
-from Quorum.auto_report.tags import AaveTags
+import Quorum.auto_report.aave_tags as aave_tags
 import Quorum.utils.pretty_printer as pprinter
 
 import argparse
@@ -29,7 +29,11 @@ def main():
     with open(args.template) as f:
         template = f.read()
     
-    report = ReportGenerator(template, AaveTags(args.proposal_id).tag_mappings).report
+    pprinter.pretty_print(f'Retrieving tag information for proposal {args.proposal_id}', pprinter.Colors.INFO)
+    tags = aave_tags.get_aave_tags(args.proposal_id)
+    pprinter.pretty_print(f'Tag information retrieved', pprinter.Colors.INFO)
+
+    report = ReportGenerator(template, tags).report
 
     with open((report_path:=f'v3-{args.proposal_id}.md'), 'w') as f:
         f.write(report)
