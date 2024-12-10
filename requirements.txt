@@ -6,4 +6,5 @@ eth-abi
 eth-utils
 pytest
 eth-hash[pycryptodome]
-Anthropic
+langchain
+jinja2

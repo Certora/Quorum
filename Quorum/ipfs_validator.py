@@ -19,7 +19,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--proposal_id', type=int, help='The id of the proposal.')
     parser.add_argument('--chain', type=str, choices=[chain.value for chain in Chain], help='Blockchain chain.')
     parser.add_argument('--proposal_address', type=arg_valid.validate_address, help='Ethereum proposal address.')
-    parser.add_argument('--prompt_template', type=arg_valid.validate_path, default=Path(__file__).parent / 'ipfs_validation_prompt.txt',
+    parser.add_argument('--prompt_template', type=arg_valid.validate_path, default=Path(__file__).parent / "llm" / "prompts" / 'ipfs_validation_prompt.txt',
                         help='Optional other template for prompting the LLM.')
     
     args = parser.parse_args()
