@@ -30,8 +30,8 @@ AAVE_CHAIN_MAPPING = {
 }
 
 
-def __extract_payload_address(chain_id: str, controller: str, payload_id: int) -> str:
-    resp = requests.get(f'{BASE_BGD_CACHE_REPO}/{chain_id}/{controller}/payloads/{payload_id}.json')
+def __extract_payload_address(session: requests.Session, chain_id: str, controller: str, payload_id: int) -> str:
+    resp = session.get(f'{BASE_BGD_CACHE_REPO}/{chain_id}/{controller}/payloads/{payload_id}.json')
     resp.raise_for_status()
 
     payload_data = resp.json()
@@ -40,39 +40,46 @@ def __extract_payload_address(chain_id: str, controller: str, payload_id: int) -
 
 
 def get_aave_tags(proposal_id: int) -> dict:
-    proposal_data_link = f'{PROPOSALS_URL}/{proposal_id}.json'
-    resp = requests.get(proposal_data_link)
-    resp.raise_for_status()
+    with requests.Session() as session: 
+        proposal_data_link = f'{PROPOSALS_URL}/{proposal_id}.json'
+        resp = session.get(proposal_data_link)
+        resp.raise_for_status()
 
-    proposal_data = resp.json()
+        proposal_data: dict = resp.json()
 
-    tags = {}
-    tags['proposal_id'] = str(proposal_id)
-    tags['proposal_title'] = proposal_data['ipfs']['title']
-    tags['voting_link'] = f'https://vote.onaave.com/proposal/?proposalId={proposal_id}'
-    tags['gov_forum_link'] = proposal_data['ipfs']['discussions']
+        ipfs: dict = proposal_data.get('ipfs', {})
+        proposal: dict = proposal_data.get('proposal', {})
+        create_event: dict = proposal_data.get('events', [{}])[0]  # The create event is always the first.
 
-    tags['chain'] = []
-    tags['payload_link'] = []
-    tags['payload_seatbelt_link'] = []
-    for p in proposal_data['proposal']['payloads']:
-        address = __extract_payload_address(p['chain'], p['payloadsController'], p['payloadId'])
-        tags['chain'].append(AAVE_CHAIN_MAPPING[p['chain']].name)
-        tags['payload_link'].append(f'{AAVE_CHAIN_MAPPING[p["chain"]].block_explorer_link}/{address}')
-        tags['payload_seatbelt_link'].append(
-            f'{SEATBELT_PAYLOADS_URL}/{p["chain"]}/{p["payloadsController"]}/{p["payloadId"]}.md'
-        )
-    
-    tags['transaction_hash'] = proposal_data['events'][0]['transactionHash']
-    tags['transaction_link'] = f'https://etherscan.io/tx/{tags["transaction_hash"]}'
+        tags = {}
+        tags['proposal_id'] = str(proposal_id)
+        tags['proposal_title'] = ipfs.get('title', 'N/A')
+        tags['voting_link'] = f'https://vote.onaave.com/proposal/?proposalId={proposal_id}'
+        tags['gov_forum_link'] = ipfs.get('discussions', 'N/A')
 
-    tags['creator'] = proposal_data['events'][0]['args']['creator']
-    tags['access_level'] = str(proposal_data['events'][0]['args']['accessLevel'])
-    tags['ipfs_hash'] = proposal_data['events'][0]['args']['ipfsHash']
-    
-    tags['createProposal_parameters_data'] = json.dumps({k: proposal_data['proposal'][k] for k 
-                                                         in ['payloads', 'votingPortal', 'ipfsHash']}, indent=4)
+        tags['chain'], tags['payload_link'], tags['payload_seatbelt_link'] = [], [], []
+        for p in proposal.get('payloads', []):
+            # These are necessary fields in the payload data to construct the payload fields.
+            if not all(k in p for k in ['chain', 'payloadsController', 'payloadId']):
+                continue
+            address = __extract_payload_address(session, p['chain'], p['payloadsController'], p['payloadId'])
+            tags['chain'].append(AAVE_CHAIN_MAPPING[p['chain']].name)
+            tags['payload_link'].append(f'{AAVE_CHAIN_MAPPING[p["chain"]].block_explorer_link}/{address}')
+            tags['payload_seatbelt_link'].append(
+                f'{SEATBELT_PAYLOADS_URL}/{p["chain"]}/{p["payloadsController"]}/{p["payloadId"]}.md'
+            )
+        
+        tags['transaction_hash'] = create_event.get('transactionHash', 'N/A')
+        tags['transaction_link'] = f'https://etherscan.io/tx/{tags["transaction_hash"]}'
 
-    tags['seatbelt_link'] = f'{BASE_SEATBELT_REPO}/proposals/{proposal_id}.md'
+        args: dict = create_event.get('args', {})
+        tags['creator'] = args.get('creator', 'N/A')
+        tags['access_level'] = str(args.get('accessLevel', 'N/A'))
+        tags['ipfs_hash'] = args.get('ipfsHash', 'N/A')
+        
+        tags['createProposal_parameters_data'] = json.dumps({k: proposal.get(k, 'N/A') for k 
+                                                            in ['payloads', 'votingPortal', 'ipfsHash']}, indent=4)
 
-    return tags
+        tags['seatbelt_link'] = f'{BASE_SEATBELT_REPO}/proposals/{proposal_id}.md'
+
+        return tags
