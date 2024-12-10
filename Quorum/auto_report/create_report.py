@@ -1,12 +1,13 @@
-from Quorum.auto_report.report_generator import ReportGenerator
 import Quorum.auto_report.aave_tags as aave_tags
 import Quorum.utils.pretty_printer as pprinter
 
 import argparse
 from pathlib import Path
 
+from jinja2 import Environment, FileSystemLoader
 
-DEFAULT_TEMPLATE_PATH = Path(__file__).parent / 'AaveReportTemplate.md'
+
+DEFAULT_TEMPLATE_PATH = Path(__file__).parent / 'AaveReportTemplate.md.j2'
 
 
 def parse_args() -> argparse.Namespace:
@@ -26,14 +27,15 @@ def main():
     args = parse_args()
 
     pprinter.pretty_print(f'Generating a report using template in {args.template}', pprinter.Colors.INFO)
-    with open(args.template) as f:
-        template = f.read()
+    env = Environment(loader=FileSystemLoader(args.template.parent))
+    env.globals.update(zip=zip)
+    template = env.get_template(args.template.name)
     
     pprinter.pretty_print(f'Retrieving tag information for proposal {args.proposal_id}', pprinter.Colors.INFO)
     tags = aave_tags.get_aave_tags(args.proposal_id)
     pprinter.pretty_print(f'Tag information retrieved', pprinter.Colors.INFO)
 
-    report = ReportGenerator(template, tags).report
+    report = template.render(tags)
 
     with open((report_path:=f'v3-{args.proposal_id}.md'), 'w') as f:
         f.write(report)

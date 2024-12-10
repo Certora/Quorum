@@ -1,13 +1,15 @@
-# Proposal <proposal_id>. <proposal_title>
+# Proposal {{ proposal_id }}. {{ proposal_title }}
 
 ### Voting Link
-[Link to voting page](<voting_link>)
+[Link to voting page]({{ voting_link }})
 
 ### Governance Forum Discussions
-[Link to forum discussions](<gov_forum_link>)
+[Link to forum discussions]({{ gov_forum_link }})
 
 ### Payloads
-<loop:chain,payload_link> * <chain> - [proposal payloads](<payload_link>) </loop>
+{% for chain, payload_link in zip(chain, payload_link) %}
+* {{ chain }} - [proposal payloads]({{ payload_link }})
+{% endfor %}
 
 
 ## Certora Analysis
@@ -24,24 +26,25 @@
 {**TODO: Write context.**}
 
 ### Proposal Creation
-Transaction: [<transaction_hash>](<transaction_link>)
-- `proposalId`: <proposal_id>
-- `creator`: <creator>
-- `accessLevel`: <access_level>
-- `ipfsHash`: <ipfs_hash>
+Transaction: [{{ transaction_hash }}]({{ transaction_link }})
+- `proposalId`: {{ proposal_id }}
+- `creator`: {{ creator }}
+- `accessLevel`: {{ access_level }}
+- `ipfsHash`: {{ ipfs_hash }}
 
 **`createProposal()` Parameters**
 ```
-<createProposal_parameters_data>
+{{ createProposal_parameters_data }}
 ```
 
 ### Aave Seatbelt Report
-
 **Proposal Report**
-[Link to Seatbelt proposal report](<seatbelt_link>)
+[Link to Seatbelt proposal report]({{ seatbelt_link }})
 
 **Payload Reports**
-<loop:chain,payload_seatbelt_link> * <chain> - [payload Seatbelt report](<payload_seatbelt_link>) </loop>
+{% for chain, payload_seatbelt_link in zip(chain, payload_seatbelt_link) %}
+* {{ chain }} - [payload Seatbelt report]({{ payload_seatbelt_link }})
+{% endfor %}
 
 ### Technical Analysis
 {**TODO: Write technical analysis.**}
