@@ -1,7 +1,7 @@
+from pathlib import Path
+
 from Quorum.llm.jinja_utils import render_prompt
 from Quorum.config import ANTHROPIC_MODEL
-
-from pathlib import Path
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.checkpoint.memory import MemorySaver
@@ -9,7 +9,7 @@ from langgraph.graph import START, MessagesState, StateGraph
 from langchain_core.globals import set_llm_cache
 from langchain_core.output_parsers import StrOutputParser
 from langchain_anthropic import ChatAnthropic
-# from langchain_ollama.chat_models import ChatOllama #  For testing.
+#from langchain_ollama.chat_models import ChatOllama #  For testing.
 from langchain_community.cache import SQLiteCache
 
 
