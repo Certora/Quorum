@@ -38,19 +38,19 @@ class IPFSValidationChain:
         )
 
         #Initialize the Anthropic LLM with the specified model and configurations
-        # self.llm = ChatAnthropic(
-        #     model="claude-3-5-haiku-20241022",
-        #     cache=True,
-        #     max_retries=3,
-        # )
-
-        # For testing purposes, we will use the ChatOllama model instead of ChatAnthropic
-        self.llm = ChatOllama(
-            model="llama3.2",
+        self.llm = ChatAnthropic(
+            model="claude-3-5-haiku-20241022",
             cache=True,
             max_retries=3,
-            temperature=0.0,
         )
+
+        # For testing purposes, we will use the ChatOllama model instead of ChatAnthropic
+        # self.llm = ChatOllama(
+        #     model="llama3.2",
+        #     cache=True,
+        #     max_retries=3,
+        #     temperature=0.0,
+        # )
 
         # Define the workflow for the IPFS validation chain
         workflow = StateGraph(state_schema=MessagesState)
