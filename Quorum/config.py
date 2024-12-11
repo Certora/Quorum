@@ -19,4 +19,4 @@ if not GROUND_TRUTH_PATH.exists():
     shutil.copy(DEFAULT_REPOS, GROUND_TRUTH_PATH)
 
 ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
-ANTHROPIC_MODEL = 'claude-3-5-haiku-20241022'
+ANTHROPIC_MODEL = os.getenv('ANTROPIC_MDOEL', 'claude-3-5-haiku-20241022')
