@@ -83,8 +83,7 @@ class IPFSValidationChain:
             - Invoke the LLM with the rendered prompt.
 
         Args:
-            prompt_templates (tuple[str, str]): A tuple containing the filenames of the Jinja2
-                templates for the first and second prompts, respectively.
+            prompt_templates (list[str]): A list of Jinja templates for prompting the LLM.
             ipf (str): The IPFS content associated with the proposal.
             payload (str): The Solidity payload code to be validated against the IPFS content.
 

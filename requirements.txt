@@ -9,4 +9,4 @@ eth-hash[pycryptodome]
 langchain
 jinja2
 langchain-anthropic
-langchain_community
+langgraph
