@@ -1,15 +1,12 @@
-# ipfs_validator.py
+from Quorum.utils.chain_enum import Chain
+import Quorum.utils.arg_validations as arg_valid
+from Quorum.apis.block_explorers.chains_api import ChainAPI
+from Quorum.llm.chains.ipfs_validation_chain import IPFSValidationChain
 
 from pathlib import Path
 import argparse
 import re
 import requests
-
-from Quorum.utils.chain_enum import Chain
-import Quorum.utils.arg_validations as arg_valid
-from Quorum.apis.block_explorers.chains_api import ChainAPI
-
-from llm.chains.ipfs_validation_chain import IPFSValidationChain
 
 
 IPFS_CACHE = Path(__file__).parent / '.ipfs_cache'

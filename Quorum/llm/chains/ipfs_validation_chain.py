@@ -1,3 +1,6 @@
+from Quorum.llm.jinja_utils import render_prompt
+from Quorum.config import ANTHROPIC_MODEL
+
 from pathlib import Path
 
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -8,9 +11,6 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_anthropic import ChatAnthropic
 from langchain_ollama.chat_models import ChatOllama
 from langchain_community.cache import SQLiteCache
-
-
-from Quorum.llm.jinja_utils import render_prompt
 
 
 class IPFSValidationChain:
@@ -39,7 +39,7 @@ class IPFSValidationChain:
 
         #Initialize the Anthropic LLM with the specified model and configurations
         self.llm = ChatAnthropic(
-            model="claude-3-5-haiku-20241022",
+            model=ANTHROPIC_MODEL,
             cache=True,
             max_retries=3,
         )
