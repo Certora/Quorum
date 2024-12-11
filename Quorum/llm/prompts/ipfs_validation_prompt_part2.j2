@@ -1,0 +1,12 @@
+Pay Attention for possible problems:
+
+1. Ensure all percentage parameters are correctly scaled and accurately reflect the percentages stated in the IPFS document. Pay special attention to the scaling factor:
+   * Values ending with `_00` represent whole percentages (e.g., `15_00` means 15%).
+   * Values ending with `_0` represent fractions of a percent (e.g., `15_0` means 1.5%).
+   * Double-check that the numerical values in the code match the intended percentages in the IPFS, accounting for the scaling factor of `1e2`. This includes parameters like Liquidation Threshold, LTV, and others.
+2. `'isolation mode'` parameter is enabled when the payload has a debt ceiling greater than 0.
+3. `'isolation mode'` is *not* `'borrowableInIsolation'`; they are different parameters.
+4. `'variable slope2'` should always be greater than `'variable slope1'`. Pay special attention to this fact.
+5. `'variable slope2'` value needs to be around 60%-300%. Pay special attention to this range.
+
+Provide only your findings with no opening sentence or other conversational language, questions, or pleasantries.

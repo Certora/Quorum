@@ -1,13 +1,15 @@
-from Quorum.utils.chain_enum import Chain
-import Quorum.utils.arg_validations as arg_valid
-import Quorum.config as config
-from Quorum.apis.block_explorers.chains_api import ChainAPI
-from Quorum.apis.llms.claude_conversation import ClaudeConversation
+# ipfs_validator.py
 
-import requests
+from pathlib import Path
 import argparse
 import re
-from pathlib import Path
+import requests
+
+from Quorum.utils.chain_enum import Chain
+import Quorum.utils.arg_validations as arg_valid
+from Quorum.apis.block_explorers.chains_api import ChainAPI
+
+from llm.chains.ipfs_validation_chain import IPFSValidationChain
 
 
 IPFS_CACHE = Path(__file__).parent / '.ipfs_cache'
@@ -19,8 +21,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--proposal_id', type=int, help='The id of the proposal.')
     parser.add_argument('--chain', type=str, choices=[chain.value for chain in Chain], help='Blockchain chain.')
     parser.add_argument('--proposal_address', type=arg_valid.validate_address, help='Ethereum proposal address.')
-    parser.add_argument('--prompt_template', type=arg_valid.validate_path, default=Path(__file__).parent / "llm" / "prompts" / 'ipfs_validation_prompt.txt',
-                        help='Optional other template for prompting the LLM.')
+    parser.add_argument('--prompt_template_part1', type=str, default='ipfs_validation_prompt_part1.j2',
+                        help='Jinja template for the first part of prompting the LLM.')
+    parser.add_argument('--prompt_template_part2', type=str, default='ipfs_validation_prompt_part2.j2',
+                        help='Jinja template for the second part of prompting the LLM.')
     
     args = parser.parse_args()
 
@@ -63,23 +67,27 @@ def get_raw_ipfs(proposal_id: int) -> str:
 def main():
     args = parse_args()
 
+    # Initialize Chain API and fetch source codes
     block_explorer = ChainAPI(args.chain)
     source_codes = block_explorer.get_source_code(args.proposal_address)
+    if not source_codes:
+        raise ValueError("No source codes found for the given proposal address.")
     payload = '\n'.join(source_codes[0].file_content)
 
+    # Fetch IPFS content
     ipfs = get_raw_ipfs(args.proposal_id)
 
-    with open(args.prompt_template) as f:
-        all_prompt_templates = f.read()
-    
-    prompts = [p.strip().replace('<ipfs>', ipfs).replace('<payload>', payload) for p in all_prompt_templates.split('<---next_prompt--->')]
+    # Initialize the IPFS Validation Chain
+    ipfs_validation_chain = IPFSValidationChain()
 
-    claude_conversation = ClaudeConversation(config.ANTHROPIC_API_KEY)
-    for prompt in prompts:
-        answer = claude_conversation.send_message(prompt)
-    
+    # Execute the Chain
+    answer = ipfs_validation_chain.execute(
+        prompts = [args.prompt_template_part1, args.prompt_template_part2],ipfs=ipfs, payload=payload
+    )
+
+    # Output the LLM's response
     print(answer)
-
+    
 
 if __name__ == '__main__':
     main()
