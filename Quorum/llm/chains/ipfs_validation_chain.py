@@ -80,7 +80,7 @@ class IPFSValidationChain:
             1. Rendering the first prompt with the provided IPFS and Solidity payloads.
             2. Sending the first prompt to the LLM and receiving the response.
             3. Rendering the second prompt that contains the guide lines for the answer.
-            4. Sending both prompts to the LLM in a sequential manner.
+            4. Sending all messages to the LLM in a sequential manner.
             5. Returning the final response from the LLM, which contains the validation findings.
 
         Args:
