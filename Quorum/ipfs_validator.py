@@ -5,7 +5,6 @@ from Quorum.llm.chains.ipfs_validation_chain import IPFSValidationChain
 
 from pathlib import Path
 import argparse
-import re
 import requests
 
 
@@ -26,38 +25,23 @@ def parse_args() -> argparse.Namespace:
 
     return args
 
-
-# TODO: This function should be temporary, it is scraping the Aave Gov UI page's HTML 
-#       of the proposal to get the ipfs link and it's pretty fragile.
-#       We should remove this function once we implement a better way to get the data using an API that 
-#       Aave is currently working on or their "v3-governance-cache" repo. This should be done on a different PR.
 def get_raw_ipfs(proposal_id: int) -> str:
     cache = IPFS_CACHE / f'{proposal_id}.txt'
     if cache.exists():
         with open(cache) as f:
             return f.read()
     
-    resp = requests.get(f'https://vote.onaave.com/proposal/?proposalId={proposal_id}')
+    resp = requests.get('https://raw.githubusercontent.com/bgd-labs/v3-governance-cache/refs/heads/main/cache/'
+                        f'1/0x9AEE0B04504CeF83A65AC3f0e838D0593BCb2BC7/proposals/{proposal_id}.json')
     resp.raise_for_status()
-    voting_ui_html = resp.content.decode()
 
-    # Somewhere in the HTML there's a js script that contains a json with the following field:
-    # "ipfsHash": "<ipfs_hash>". We want to get the ipfs_hash to construct the link to the raw ipfs.
-    # The json also has \\" to mark these are special characters.
-    # ipfs_hash = voting_ui_html.replace('\\', '').split('"ipfsHash":')[1].split(',')[0].replace('"', '')
-    match = re.search(r'\\"ipfsHash\\":\s*\\"(.*?)\\"', voting_ui_html)
-    if not match:
-        raise ValueError('ipfsHash not found in the HTML.')
-    
-    ipfs_hash = match.group(1)
-    
-    resp = requests.get(f'https://ipfs.io/ipfs/{ipfs_hash}')
-    resp.raise_for_status()
-    
-    content = resp.content.decode()
+    proposal_data = resp.json()
+    ipfs_content = proposal_data['ipfs']['description']
+
     with open(cache, 'w') as f:
-        f.write(content)
-    return content
+        f.write(ipfs_content)
+    
+    return ipfs_content
 
 
 def main():

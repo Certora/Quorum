@@ -9,7 +9,7 @@ from langgraph.graph import START, MessagesState, StateGraph
 from langchain_core.globals import set_llm_cache
 from langchain_core.output_parsers import StrOutputParser
 from langchain_anthropic import ChatAnthropic
-from langchain_ollama.chat_models import ChatOllama
+# from langchain_ollama.chat_models import ChatOllama #  For testing.
 from langchain_community.cache import SQLiteCache
 
 
@@ -23,7 +23,6 @@ class IPFSValidationChain:
     Attributes:
         chain (SequentialChain): A LangChain SequentialChain that manages the sequence of LLM interactions.
     """
-
     def __init__(self):
         """
         Initializes the IPFSValidationChain by setting up the LLM, caching mechanism, and the sequential
@@ -31,9 +30,12 @@ class IPFSValidationChain:
         prompt templates for execution.
         """
         # Configure caching to optimize LLM interactions and reduce redundant computations
+        cache_dir = Path(__file__).parent.parent / '.cache'
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        
         set_llm_cache(
             SQLiteCache(
-                database_path=f"{Path(__file__).parent.parent / 'cache' / f'{Path(__file__).stem}_cache.db'}"
+                database_path=cache_dir / f'{Path(__file__).stem}_cache.db'
             )
         )
 
