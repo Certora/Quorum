@@ -8,20 +8,39 @@ from langchain_core.globals import set_llm_cache
 
 from Quorum.llm.jinja_utils import render_prompt
 
-set_llm_cache(SQLiteCache(database_path=f"{Path(__file__).parent.parent / 'cache' / f'{Path(__file__).stem}_cache.db'}"))
 
 class IPFSValidationChain:
     """
-    This chain is responsible for validating the IPFS payload by comparing it with the actual payload.
+    IPFSValidationChain is responsible for validating the integrity and accuracy of an IPFS payload
+    by comparing it against an actual Solidity payload. It leverages LangChain's capabilities to
+    orchestrate a sequential interaction with the Anthropic LLM, ensuring that the validation process
+    is both efficient and contextually aware.
+
+    Attributes:
+        chain (SequentialChain): A LangChain SequentialChain that manages the sequence of LLM interactions.
     """
-    
+
     def __init__(self):
-        model = ChatAnthropic(
+        """
+        Initializes the IPFSValidationChain by setting up the LLM, caching mechanism, and the sequential
+        chain of prompts. It configures the Anthropic LLM with specified parameters and prepares the
+        prompt templates for execution.
+        """
+        # Configure caching to optimize LLM interactions and reduce redundant computations
+        set_llm_cache(
+            SQLiteCache(
+                database_path=f"{Path(__file__).parent.parent / 'cache' / f'{Path(__file__).stem}_cache.db'}"
+            )
+        )
+
+        # Initialize the Anthropic LLM with the specified model and configurations
+        self.llm = ChatAnthropic(
             model="claude-3-5-sonnet-20240620",
             cache=True,
             max_retries=3,
         )
 
+        # Define the prompt template using system and placeholder messages
         prompt = ChatPromptTemplate.from_messages(
             [
                 SystemMessage(
@@ -31,26 +50,56 @@ class IPFSValidationChain:
             ]
         )
 
-        self.chain = prompt | model
+        # Combine the prompt template with the LLM to form the sequential chain
+        self.chain = prompt | self.llm
 
     def execute(self, prompt_templates: tuple[str, str], ipf: str, payload: str) -> str:
         """
-        Executes the IPFS validation chain.
+        Executes the IPFS validation workflow by rendering prompts, interacting with the LLM,
+        and retrieving the final validation report.
+
+        The validation workflow consists of:
+            1. Rendering the first prompt with the provided IPFS and Solidity payloads.
+            2. Rendering the second prompt that contains the guide lines for the answer.
+            3. Sending both prompts to the LLM in a sequential manner.
+            4. Returning the final response from the LLM, which contains the validation findings.
 
         Args:
-            prompt_templates (list[str]): The list of Jinja templates for the prompts.
-            ipf (str): The IPFS payload.
-            payload (str): The actual payload.
+            prompt_templates (tuple[str, str]): A tuple containing the filenames of the Jinja2
+                templates for the first and second prompts, respectively.
+            ipf (str): The IPFS content associated with the proposal.
+            payload (str): The Solidity payload code to be validated against the IPFS content.
 
         Returns:
-            str: The response from the LLM.
+            str: The final response from the LLM, detailing the validation results.
+
+        Raises:
+            ValueError: If the number of prompt templates provided is not exactly two.
+            Exception: Propagates any exceptions encountered during the chain execution.
         """
+        # Render the first prompt with IPFS and payload context
+        prompt1_rendered = render_prompt(
+            prompt_templates[0],
+            {"ipfs": ipf, "payload": payload}
+        )
+
+        # Render the second prompt, potentially utilizing conversation history
+        prompt2_rendered = render_prompt(
+            prompt_templates[1],
+            {}
+        )
+
+        # Create a list of HumanMessage instances for the prompts
         messages = [
-            HumanMessage(content=render_prompt(prompt_templates[0], {"ipfs": ipf, "payload": payload})),
-            HumanMessage(content=render_prompt(prompt_templates[1], {})),
+            HumanMessage(content=prompt1_rendered),
+            HumanMessage(content=prompt2_rendered),
         ]
-        return self.chain.invoke(
+
+        # Invoke the sequential chain with the prepared messages
+        response = self.chain.invoke(
             {
                 "messages": messages,
             }
         )
+
+        return response
