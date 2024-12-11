@@ -37,9 +37,9 @@ class IPFSValidationChain:
             )
         )
 
-        # Initialize the Anthropic LLM with the specified model and configurations
+        #Initialize the Anthropic LLM with the specified model and configurations
         # self.llm = ChatAnthropic(
-        #     model="claude-3-5-sonnet-20240620",
+        #     model="claude-3-5-haiku-20241022",
         #     cache=True,
         #     max_retries=3,
         # )
@@ -70,17 +70,15 @@ class IPFSValidationChain:
         response = self.llm.invoke(messages)
         return {"messages": response}
 
-    def execute(self, prompt_templates: tuple[str, str], ipfs: str, payload: str) -> str:
+    def execute(self, prompt_templates: list[str], ipfs: str, payload: str) -> str:
         """
         Executes the IPFS validation workflow by rendering prompts, interacting with the LLM,
         and retrieving the final validation report.
 
         The validation workflow consists of:
-            1. Rendering the first prompt with the provided IPFS and Solidity payloads.
-            2. Sending the first prompt to the LLM and receiving the response.
-            3. Rendering the second prompt that contains the guide lines for the answer.
-            4. Sending all messages to the LLM in a sequential manner.
-            5. Returning the final response from the LLM, which contains the validation findings.
+        For each prompt template:
+            - Render the prompt with the provided IPFS and payload data.
+            - Invoke the LLM with the rendered prompt.
 
         Args:
             prompt_templates (tuple[str, str]): A tuple containing the filenames of the Jinja2
@@ -91,24 +89,16 @@ class IPFSValidationChain:
         Returns:
             str: The final response from the LLM, detailing the validation results.
         """
-        prompt1_rendered = render_prompt(
-            prompt_templates[0],
-            {"ipfs": ipfs, "payload": payload}
-        )
+        for template in prompt_templates:
 
-        self.app.invoke(
-            {"messages": [HumanMessage(prompt1_rendered)]},
-            config={"configurable": {"thread_id": "1"}},
-        )
+            prompt_rendered = render_prompt(
+                template,
+                {"ipfs": ipfs, "payload": payload}
+            )
 
-        prompt2_rendered = render_prompt(
-            prompt_templates[1],
-            {}
-        )
-        
-        history = self.app.invoke(
-            {"messages": [HumanMessage(prompt2_rendered)]},
-            config={"configurable": {"thread_id": "1"}},
-        )
+            history = self.app.invoke(
+                {"messages": [HumanMessage(prompt_rendered)]},
+                config={"configurable": {"thread_id": "1"}},
+            )
 
         return StrOutputParser().parse(history["messages"][-1].content)
