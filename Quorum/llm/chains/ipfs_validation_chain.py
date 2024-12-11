@@ -52,17 +52,16 @@ class IPFSValidationChain:
             temperature=0.0,
         )
 
+        # Define the workflow for the IPFS validation chain
         workflow = StateGraph(state_schema=MessagesState)
-        # Define the node and edge
         workflow.add_node("model", self.__call_model)
         workflow.add_edge(START, "model")
-        # Add simple in-memory checkpointer
         memory = MemorySaver()
 
         self.app = workflow.compile(checkpointer=memory)
 
     # Define the function that calls the model
-    def __call_model(self, state: MessagesState):
+    def __call_model(self, state: MessagesState) -> MessagesState:
         system_prompt = (
             "You are a helpful assistant. "
             "Answer all questions to the best of your ability."
@@ -92,25 +91,24 @@ class IPFSValidationChain:
         Returns:
             str: The final response from the LLM, detailing the validation results.
         """
-        # Render the first prompt with IPFS and payload context
         prompt1_rendered = render_prompt(
             prompt_templates[0],
             {"ipfs": ipfs, "payload": payload}
         )
 
-        # Render the second prompt, potentially utilizing conversation history
-        prompt2_rendered = render_prompt(
-            prompt_templates[1],
-            {}
-        )
-
-        # Execute the LLM workflow with the rendered prompts
         self.app.invoke(
             {"messages": [HumanMessage(prompt1_rendered)]},
             config={"configurable": {"thread_id": "1"}},
         )
+
+        prompt2_rendered = render_prompt(
+            prompt_templates[1],
+            {}
+        )
+        
         history = self.app.invoke(
             {"messages": [HumanMessage(prompt2_rendered)]},
             config={"configurable": {"thread_id": "1"}},
         )
+
         return StrOutputParser().parse(history["messages"][-1].content)
