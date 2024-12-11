@@ -47,7 +47,7 @@ class IPFSValidationChain:
         """
         messages = [
             HumanMessage(content=render_prompt(prompt_templates[0], {"ipfs": ipf, "payload": payload})),
-            HumanMessage(content=prompt_templates[1]),
+            HumanMessage(content=render_prompt(prompt_templates[1], {})),
         ]
         return self.chain.invoke(
             {
