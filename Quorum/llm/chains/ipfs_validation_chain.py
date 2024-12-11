@@ -2,9 +2,12 @@ from pathlib import Path
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_anthropic import ChatAnthropic
-from langchain_community.cache import SQLiteCache
 from langchain_core.globals import set_llm_cache
+from langchain_core.output_parsers import StrOutputParser
+from langchain_anthropic import ChatAnthropic
+from langchain_ollama.chat_models import ChatOllama
+from langchain_community.cache import SQLiteCache
+
 
 from Quorum.llm.jinja_utils import render_prompt
 
@@ -34,10 +37,18 @@ class IPFSValidationChain:
         )
 
         # Initialize the Anthropic LLM with the specified model and configurations
-        self.llm = ChatAnthropic(
-            model="claude-3-5-sonnet-20240620",
-            cache=True,
+        # self.llm = ChatAnthropic(
+        #     model="claude-3-5-sonnet-20240620",
+        #     cache=True,
+        #     max_retries=3,
+        # )
+
+        # For testing purposes, we will use the ChatOllama model instead of ChatAnthropic
+        self.llm = ChatOllama(
+            model="llama3.2",
+            cache=False,
             max_retries=3,
+            temperature=0.0,
         )
 
         # Define the prompt template using system and placeholder messages
@@ -51,9 +62,9 @@ class IPFSValidationChain:
         )
 
         # Combine the prompt template with the LLM to form the sequential chain
-        self.chain = prompt | self.llm
+        self.chain = prompt | self.llm | StrOutputParser()
 
-    def execute(self, prompt_templates: tuple[str, str], ipf: str, payload: str) -> str:
+    def execute(self, prompt_templates: tuple[str, str], ipfs: str, payload: str) -> str:
         """
         Executes the IPFS validation workflow by rendering prompts, interacting with the LLM,
         and retrieving the final validation report.
@@ -80,7 +91,7 @@ class IPFSValidationChain:
         # Render the first prompt with IPFS and payload context
         prompt1_rendered = render_prompt(
             prompt_templates[0],
-            {"ipfs": ipf, "payload": payload}
+            {"ipfs": ipfs, "payload": payload}
         )
 
         # Render the second prompt, potentially utilizing conversation history
