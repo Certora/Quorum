@@ -33,7 +33,7 @@ class IPFSValidationChain:
 
         self.chain = prompt | model
 
-    def execute(self, prompt_templates: list[str], ipf: str, payload: str) -> str:
+    def execute(self, prompt_templates: tuple[str, str], ipf: str, payload: str) -> str:
         """
         Executes the IPFS validation chain.
 

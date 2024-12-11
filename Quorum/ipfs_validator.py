@@ -82,7 +82,7 @@ def main():
 
     # Execute the Chain
     answer = ipfs_validation_chain.execute(
-        prompts = [args.prompt_template_part1, args.prompt_template_part2],ipfs=ipfs, payload=payload
+        prompts = (args.prompt_template_part1, args.prompt_template_part2),ipfs=ipfs, payload=payload
     )
 
     # Output the LLM's response
