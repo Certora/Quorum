@@ -1,6 +1,10 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from pathlib import Path
 
+
+TEMPLATE_DIR = Path(__file__).parent / "prompts"
+
+
 def render_prompt(template_name: str, context: dict) -> str:
     """
     Renders a single Jinja template with the provided context.
@@ -12,9 +16,9 @@ def render_prompt(template_name: str, context: dict) -> str:
     Returns:
         str: The rendered prompt.
     """
-    template_dir = Path(__file__).parent / "prompts"
+
     env = Environment(
-        loader=FileSystemLoader(searchpath=str(template_dir)),
+        loader=FileSystemLoader(searchpath=str(TEMPLATE_DIR)),
         autoescape=select_autoescape(['j2'])
     )
     template = env.get_template(template_name)
