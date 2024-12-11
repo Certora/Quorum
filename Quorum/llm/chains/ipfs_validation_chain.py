@@ -1,7 +1,8 @@
 from pathlib import Path
 
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import START, MessagesState, StateGraph
 from langchain_core.globals import set_llm_cache
 from langchain_core.output_parsers import StrOutputParser
 from langchain_anthropic import ChatAnthropic
@@ -46,23 +47,29 @@ class IPFSValidationChain:
         # For testing purposes, we will use the ChatOllama model instead of ChatAnthropic
         self.llm = ChatOllama(
             model="llama3.2",
-            cache=False,
+            cache=True,
             max_retries=3,
             temperature=0.0,
         )
 
-        # Define the prompt template using system and placeholder messages
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                SystemMessage(
-                    content="You are a helpful assistant. Answer all questions to the best of your ability."
-                ),
-                MessagesPlaceholder(variable_name="messages"),
-            ]
-        )
+        workflow = StateGraph(state_schema=MessagesState)
+        # Define the node and edge
+        workflow.add_node("model", self.__call_model)
+        workflow.add_edge(START, "model")
+        # Add simple in-memory checkpointer
+        memory = MemorySaver()
 
-        # Combine the prompt template with the LLM to form the sequential chain
-        self.chain = prompt | self.llm | StrOutputParser()
+        self.app = workflow.compile(checkpointer=memory)
+
+    # Define the function that calls the model
+    def __call_model(self, state: MessagesState):
+        system_prompt = (
+            "You are a helpful assistant. "
+            "Answer all questions to the best of your ability."
+        )
+        messages = [SystemMessage(content=system_prompt)] + state["messages"]
+        response = self.llm.invoke(messages)
+        return {"messages": response}
 
     def execute(self, prompt_templates: tuple[str, str], ipfs: str, payload: str) -> str:
         """
@@ -71,9 +78,10 @@ class IPFSValidationChain:
 
         The validation workflow consists of:
             1. Rendering the first prompt with the provided IPFS and Solidity payloads.
-            2. Rendering the second prompt that contains the guide lines for the answer.
-            3. Sending both prompts to the LLM in a sequential manner.
-            4. Returning the final response from the LLM, which contains the validation findings.
+            2. Sending the first prompt to the LLM and receiving the response.
+            3. Rendering the second prompt that contains the guide lines for the answer.
+            4. Sending both prompts to the LLM in a sequential manner.
+            5. Returning the final response from the LLM, which contains the validation findings.
 
         Args:
             prompt_templates (tuple[str, str]): A tuple containing the filenames of the Jinja2
@@ -83,10 +91,6 @@ class IPFSValidationChain:
 
         Returns:
             str: The final response from the LLM, detailing the validation results.
-
-        Raises:
-            ValueError: If the number of prompt templates provided is not exactly two.
-            Exception: Propagates any exceptions encountered during the chain execution.
         """
         # Render the first prompt with IPFS and payload context
         prompt1_rendered = render_prompt(
@@ -100,17 +104,13 @@ class IPFSValidationChain:
             {}
         )
 
-        # Create a list of HumanMessage instances for the prompts
-        messages = [
-            HumanMessage(content=prompt1_rendered),
-            HumanMessage(content=prompt2_rendered),
-        ]
-
-        # Invoke the sequential chain with the prepared messages
-        response = self.chain.invoke(
-            {
-                "messages": messages,
-            }
+        # Execute the LLM workflow with the rendered prompts
+        self.app.invoke(
+            {"messages": [HumanMessage(prompt1_rendered)]},
+            config={"configurable": {"thread_id": "1"}},
         )
-
-        return response
+        history = self.app.invoke(
+            {"messages": [HumanMessage(prompt2_rendered)]},
+            config={"configurable": {"thread_id": "1"}},
+        )
+        return StrOutputParser().parse(history["messages"][-1].content)
