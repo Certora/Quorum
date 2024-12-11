@@ -12,7 +12,7 @@ def render_prompt(template_name: str, context: dict) -> str:
     Returns:
         str: The rendered prompt.
     """
-    template_dir = Path(__file__).parent / "prompts" / "jinja"
+    template_dir = Path(__file__).parent / "prompts"
     env = Environment(
         loader=FileSystemLoader(searchpath=str(template_dir)),
         autoescape=select_autoescape(['j2'])

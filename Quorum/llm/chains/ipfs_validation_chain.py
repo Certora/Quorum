@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_anthropic import ChatAnthropic
 from langchain_community.cache import SQLiteCache
@@ -8,7 +8,7 @@ from langchain_core.globals import set_llm_cache
 
 from Quorum.llm.jinja_utils import render_prompt
 
-set_llm_cache(SQLiteCache(database_path=f"{Path(__file__).parent.parent / 'cache' / f'{Path(__file__).stem}cache.db'}"))
+set_llm_cache(SQLiteCache(database_path=f"{Path(__file__).parent.parent / 'cache' / f'{Path(__file__).stem}_cache.db'}"))
 
 class IPFSValidationChain:
     """
