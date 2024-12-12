@@ -34,7 +34,9 @@ class PriceFeedData(BaseModel):
             s += f"Name: {self.name}\n"
         if self.pair:
             if isinstance(self.pair, list):
-                s += f"Pair: {', '.join(self.pair)}\n"
+                pair_str = ','.join(self.pair)
+                if pair_str != ",":
+                    s += f"Pairs: {pair_str}\n"
             else:
                 s += f"Pair: {self.pair}\n"
         if self.proxy_address:
