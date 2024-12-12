@@ -59,8 +59,8 @@ class CoinGeckoAPI(PriceFeedProviderBase):
         return PriceFeedData(
             name=data.get('name'),
             pair=data.get('symbol'),
-            address=detail_platforms.get('contract_address'),
-            decimals=detail_platforms.get('decimal_place')
+            address=platform_details.get('contract_address'),
+            decimals=platform_details.get('decimal_place')
         )
 
     def get_name(self) -> PriceFeedProvider:
