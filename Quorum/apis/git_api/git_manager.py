@@ -36,22 +36,16 @@ class GitManager:
         Load repository URLs from the JSON file for the given customer.
 
         Args:
-            gt_config (dict[str, any]): The ground truth configuration data.
+            gt_config (dict[str, any]): The ground truth configuration data for the customer.
 
         Returns:
             tuple[dict[str, str], dict[str, str]]: 2 dictionaries mapping repository names to their URLs.
                 The first dictionary contains the repos to diff against. The second dictionary is the verification repo.
         """
-        # Normalize the customer name to handle case differences
-        normalized_customer = self.customer.lower()
-        customer_repos = next((repos for key, repos in gt_config.items() if key.lower() == normalized_customer), None)
-        if customer_repos is None:
-            return {}, {}
-        
-        repos = {Path(r).stem: r for r in customer_repos["dev_repos"]}
+        repos = {Path(r).stem: r for r in gt_config["dev_repos"]}
 
-        verify_repo = ({Path(customer_repos["review_repo"]).stem: customer_repos["review_repo"]}
-                       if "review_repo" in customer_repos else {})
+        verify_repo = ({Path(gt_config["review_repo"]).stem: gt_config["review_repo"]}
+                       if "review_repo" in gt_config else {})
         return repos, verify_repo
 
     @staticmethod
