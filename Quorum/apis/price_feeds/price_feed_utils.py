@@ -21,7 +21,7 @@ class PriceFeedData(BaseModel):
     pair: Optional[str | list]
     address: str = Field(..., alias='contractAddress')
     proxy_address: Optional[str] = Field(None, alias='proxyAddress')
-    decimals: Optional[float | int]
+    decimals: Optional[int]
 
     class Config:
         populate_by_name = True  # Allows population using field names
@@ -33,16 +33,16 @@ class PriceFeedData(BaseModel):
         if self.name:
             s += f"Name: {self.name}\n"
         if self.pair:
-            s += f"Pair: {self.pair}\n"
+            if isinstance(self.pair, list) and self.pair:
+                s += f"Pair: {', '.join(self.pair)}\n"
+            else:
+                s += f"Pair: {self.pair}\n"
         if self.proxy_address:
             s += f"Proxy Address: {self.proxy_address}\n"
         if self.decimals:
             s += f"Decimals: {self.decimals}\n"
         return s
         
-
-
-
 
 class PriceFeedProviderBase(ABC):
     """
@@ -62,7 +62,7 @@ class PriceFeedProviderBase(ABC):
 
     def get_price_feed(self, chain: Chain, address: str) -> PriceFeedData | None: 
         """
-        Get price feed data for a given blockchain network from the cache.
+        Get price feed data for a given address on a blockchain network.
 
         Args:
             chain (Chain): The blockchain network to fetch price feed data for.

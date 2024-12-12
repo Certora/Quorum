@@ -2,9 +2,9 @@ import json
 from typing import Dict
 import Quorum.config as config
 import Quorum.utils.pretty_printer as pp
-from Quorum.apis.price_feeds import PriceFeedProvider, ChainLinkAPI, ChronicleAPI
+import Quorum.apis.price_feeds as price_feeds
 
-SUPPORTED_PROVIDERS = set(PriceFeedProvider.__members__.values())
+SUPPORTED_PROVIDERS = set(price_feeds.PriceFeedProvider.__members__.values())
 
 with open(config.GROUND_TRUTH_PATH) as f:
     config_data = json.load(f)
@@ -30,10 +30,12 @@ def load_customer_config(customer: str) -> Dict[str, any]:
     
     # Replace the provider names with the actual API objects
     for i, provider in enumerate(providers):
-        if provider == PriceFeedProvider.CHAINLINK:
-            providers[i] = ChainLinkAPI()
-        elif provider == PriceFeedProvider.CHRONICLE:
-            providers[i] = ChronicleAPI()
+        if provider == price_feeds.PriceFeedProvider.CHAINLINK:
+            providers[i] = price_feeds.ChainLinkAPI()
+        elif provider == price_feeds.PriceFeedProvider.CHRONICLE:
+            providers[i] = price_feeds.ChronicleAPI()
+        elif provider == price_feeds.PriceFeedProvider.COINGECKO:
+            providers[i] = price_feeds.CoinGeckoAPI()
             
     customer_config["price_feed_providers"] = providers
     return customer_config

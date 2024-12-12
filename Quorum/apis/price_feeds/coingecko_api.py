@@ -50,7 +50,12 @@ class CoinGeckoAPI(PriceFeedProviderBase):
         data: dict = response.json()
         if not data:
             return None
-        detail_platforms: dict = data.get('detail_platforms').get(platform)
+        detail_platforms: dict = data.get('detail_platforms')
+        if not detail_platforms:
+            return None
+        platform_details = detail_platforms.get(platform)
+        if not platform_details:
+            return None
         return PriceFeedData(
             name=data.get('name'),
             pair=data.get('symbol'),
