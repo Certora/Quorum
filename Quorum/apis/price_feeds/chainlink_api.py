@@ -7,11 +7,6 @@ class ChainLinkAPI(PriceFeedProviderBase):
     """
     ChainLinkAPI is a class designed to interact with the Chainlink data feed API.
     It fetches and stores price feed data for various blockchain networks supported by Chainlink.
-
-    Attributes:
-        chain_mapping (dict): A mapping of supported blockchain networks (Chain enum) to their corresponding Chainlink API URLs.
-        session (requests.Session): A session object to manage HTTP requests.
-        memory (dict): A cache to store fetched price feed data for each chain.
     """
     
     chain_mapping = {
@@ -28,19 +23,16 @@ class ChainLinkAPI(PriceFeedProviderBase):
         Chain.ZK: "https://reference-data-directory.vercel.app/feeds-ethereum-mainnet-zksync-1.json"
     }
     
-    def _get_price_feeds_info(self, chain: Chain) -> dict[str, PriceFeedData]:
+    def _get_price_feed_info(self, chain: Chain, address: str) -> PriceFeedData | None:
         """
-        Get price feed data for a given blockchain network.
+        Get price feed data for a given address on a blockchain network.
 
         Args:
             chain (Chain): The blockchain network to fetch price feeds for.
+            address (str): The contract address of the price feed.
 
         Returns:
-            dict[str, PriceFeedData]: A dictionary mapping the contract address of the price feed to the PriceFeedData object.
-        
-        Raises:
-            requests.HTTPError: If the HTTP request to the Chainlink API fails.
-            KeyError: If the specified chain is not supported.
+            PriceFeedData: The price feed data for the specified address.
         """
         url = self.chain_mapping.get(chain)
         if not url:
@@ -48,10 +40,10 @@ class ChainLinkAPI(PriceFeedProviderBase):
         
         response = self.session.get(url)
         response.raise_for_status()
-        chain_link_price_feeds = [PriceFeedData(**feed) for feed in response.json()]
-        chain_link_price_feeds = {feed.address: feed for feed in chain_link_price_feeds}
-        chain_link_price_feeds.update({feed.proxy_address: feed for feed in chain_link_price_feeds.values() if feed.proxy_address})
-        return chain_link_price_feeds
+        data = response.json()
+        price_feeds = [PriceFeedData(**feed) for feed in data]
+        address_feed = next((feed for feed in price_feeds if address in [feed.proxy_address, feed.address]), None)
+        return address_feed
 
     def get_name(self) -> PriceFeedProvider:
         return PriceFeedProvider.CHAINLINK
