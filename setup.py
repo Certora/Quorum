@@ -20,7 +20,8 @@ setup(
     entry_points={
         "console_scripts": [
             "CheckProposal=Quorum.check_proposal:main",
-            "IPFSValidator=Quorum.ipfs_validator:main"
+            "IPFSValidator=Quorum.ipfs_validator:main",
+            "CreateReport=Quorum.auto_report.create_report:main"
         ],
     },
 )
