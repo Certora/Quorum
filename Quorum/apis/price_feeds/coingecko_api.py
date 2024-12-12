@@ -1,6 +1,3 @@
-import requests
-import time
-
 from Quorum.utils.chain_enum import Chain
 from Quorum.utils.singleton import singleton
 from .price_feed_utils import PriceFeedData, PriceFeedProviderBase, PriceFeedProvider
