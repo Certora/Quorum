@@ -76,7 +76,7 @@ class PriceFeedCheck(Check):
             verified_variables = []
 
             contract_text = '\n'.join(source_code.file_content)
-            addresses = re.findall(self.address_pattern, contract_text)
+            addresses = set(re.findall(self.address_pattern, contract_text))
             for address in addresses:
                 if feed := self.__check_price_feed_address(address):
                     verified_variables.append(feed)
