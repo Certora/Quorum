@@ -1,11 +1,4 @@
 {
-    "SparkDAO": {
-        "ETH" :{
-            "Proposals": [
-                "0x85042d44894E08f81D70A2Ae568C09f907297dcb"
-            ]
-        }
-    },
     "Aave": {
         "AVAX": {
             "Proposals": [
