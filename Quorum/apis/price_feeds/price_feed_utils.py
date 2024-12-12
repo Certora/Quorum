@@ -17,11 +17,11 @@ class PriceFeedProvider(StrEnum):
     COINGECKO = 'Coingecko'
 
 class PriceFeedData(BaseModel):
-    name: Optional[str]
-    pair: Optional[str | list]
+    name: Optional[str] = Field(None, alias='name')
+    pair: Optional[str | list] = Field(None, alias='symbol')
     address: str = Field(..., alias='contractAddress')
     proxy_address: Optional[str] = Field(None, alias='proxyAddress')
-    decimals: Optional[int]
+    decimals: Optional[int] = Field(None, alias='decimals')
 
     class Config:
         populate_by_name = True  # Allows population using field names
