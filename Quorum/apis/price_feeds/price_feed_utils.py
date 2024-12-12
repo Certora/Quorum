@@ -14,7 +14,7 @@ class PriceFeedProvider(StrEnum):
     """
     CHAINLINK = 'Chainlink'
     CHRONICLE = 'Chronicle'
-    COINGECKO = 'CoinGecko'
+    COINGECKO = 'Coingecko'
 
 class PriceFeedData(BaseModel):
     name: Optional[str]
@@ -33,7 +33,7 @@ class PriceFeedData(BaseModel):
         if self.name:
             s += f"Name: {self.name}\n"
         if self.pair:
-            if isinstance(self.pair, list) and self.pair:
+            if isinstance(self.pair, list):
                 s += f"Pair: {', '.join(self.pair)}\n"
             else:
                 s += f"Pair: {self.pair}\n"
