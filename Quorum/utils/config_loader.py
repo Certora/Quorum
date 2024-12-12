@@ -20,7 +20,10 @@ def load_customer_config(customer: str) -> Dict[str, any]:
     Returns:
         Dict[str, any]: The customer configuration data.
     """
-    customer_config = config_data.get(customer, {})
+    customer_config = config_data.get(customer)
+    if not customer_config:
+        pp.pretty_print(f"Customer {customer} not found in ground truth data.", pp.Colors.FAILURE)
+        raise ValueError(f"Customer {customer} not found in ground truth data.")
     providers = customer_config.get("price_feed_providers", [])
     unsupported = set(providers) - SUPPORTED_PROVIDERS
     if unsupported:
