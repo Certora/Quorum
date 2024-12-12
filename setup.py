@@ -15,7 +15,7 @@ setup(
     install_requires=read_requirements(),
     include_package_data=True,
         package_data={
-        '': ['ground_truth.json'],
+        '': ['ground_truth.json', "Quorum/llm/prompts/*.j2"],        
     },
     entry_points={
         "console_scripts": [
