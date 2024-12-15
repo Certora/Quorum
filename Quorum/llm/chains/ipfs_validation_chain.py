@@ -9,7 +9,6 @@ from langgraph.graph import START, MessagesState, StateGraph
 from langchain_core.globals import set_llm_cache
 from langchain_core.output_parsers import StrOutputParser
 from langchain_anthropic import ChatAnthropic
-#from langchain_ollama.chat_models import ChatOllama #  For testing.
 from langchain_community.cache import SQLiteCache
 
 
@@ -44,15 +43,8 @@ class IPFSValidationChain:
             model=ANTHROPIC_MODEL,
             cache=True,
             max_retries=3,
+            temperature=0.0,
         )
-
-        # For testing purposes, we will use the ChatOllama model instead of ChatAnthropic
-        # self.llm = ChatOllama(
-        #     model="llama3.2",
-        #     cache=True,
-        #     max_retries=3,
-        #     temperature=0.0,
-        # )
 
         # Define the workflow for the IPFS validation chain
         workflow = StateGraph(state_schema=MessagesState)
@@ -72,7 +64,7 @@ class IPFSValidationChain:
         response = self.llm.invoke(messages)
         return {"messages": response}
 
-    def execute(self, prompt_templates: list[str], ipfs: str, payload: str) -> str:
+    def execute(self, prompt_templates: list[str], ipfs: str, payload: str, thread_id: int = 1) -> str:
         """
         Executes the IPFS validation workflow by rendering prompts, interacting with the LLM,
         and retrieving the final validation report.
@@ -86,6 +78,7 @@ class IPFSValidationChain:
             prompt_templates (list[str]): A list of Jinja templates for prompting the LLM.
             ipf (str): The IPFS content associated with the proposal.
             payload (str): The Solidity payload code to be validated against the IPFS content.
+            thread_id (int): The thread ID to associate with the LLM interaction
 
         Returns:
             str: The final response from the LLM, detailing the validation results.
@@ -99,7 +92,7 @@ class IPFSValidationChain:
 
             history = self.app.invoke(
                 {"messages": [HumanMessage(prompt_rendered)]},
-                config={"configurable": {"thread_id": "1"}},
+                config={"configurable": {"thread_id": f"{thread_id}"}},
             )
 
         return StrOutputParser().parse(history["messages"][-1].content)
