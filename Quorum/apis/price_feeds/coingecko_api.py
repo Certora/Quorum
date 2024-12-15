@@ -46,21 +46,20 @@ class CoinGeckoAPI(PriceFeedProviderBase):
         response = self.session.get(url)
         if response.status_code != 200:
             return None
-        response.raise_for_status()
         data: dict = response.json()
         if not data:
             return None
-        detail_platforms: dict = data.get('detail_platforms')
-        if not detail_platforms:
+        network_platform_info: dict = data.get('detail_platforms')
+        if not network_platform_info:
             return None
-        platform_details = detail_platforms.get(platform)
-        if not platform_details:
+        details = network_platform_info.get(platform)
+        if not details:
             return None
         return PriceFeedData(
             name=data.get('name'),
             pair=data.get('symbol'),
-            address=platform_details.get('contract_address'),
-            decimals=platform_details.get('decimal_place')
+            address=details.get('contract_address'),
+            decimals=details.get('decimal_place')
         )
 
     def get_name(self) -> PriceFeedProvider:

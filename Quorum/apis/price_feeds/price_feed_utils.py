@@ -85,7 +85,9 @@ class PriceFeedProviderBase(ABC):
                     return None
                 cache_file.parent.mkdir(parents=True, exist_ok=True)
                 with open(cache_file, 'w') as file:
-                    json.dump(self.memory[address].model_dump(mode="json"), file)
+                    json.dump(
+                        self.memory[address].model_dump(mode="json"), file, indent=4
+                    )
         return self.memory[address]
     
     @abstractmethod
