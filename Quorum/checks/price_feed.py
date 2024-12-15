@@ -1,8 +1,7 @@
 from pathlib import Path
 import re
-import json
 
-from Quorum.apis.price_feeds import PriceFeedProvider, PriceFeedData, PriceFeedProviderBase
+from Quorum.apis.price_feeds import PriceFeedProviderBase
 from Quorum.utils.chain_enum import Chain
 from Quorum.checks.check import Check
 from Quorum.apis.block_explorers.source_code import SourceCode
@@ -36,26 +35,7 @@ class PriceFeedCheck(Check):
         """
         super().__init__(customer, chain, proposal_address, source_codes)
         self.address_pattern = r'0x[a-fA-F0-9]{40}'
-        
-        # load providers price feeds
-        self.providers_to_price_feed = self.__fetch_price_feed_data(providers)
-
-    def __fetch_price_feed_data(self, providers: list[PriceFeedProviderBase]) -> dict[PriceFeedProvider, dict]:
-        """
-        Load the price feed providers from the ground truth file.
-
-        Args:
-            providers (list[PriceFeedProviderInterface]): A list of price feed providers
-
-        Returns:
-            dict[str, dict]: A dictionary mapping the price feed provider to the price feed data.
-        """
-        if not providers:
-            pp.pretty_print(f"No price feed providers found for {self.customer}", pp.Colors.FAILURE)
-            return {}
-        return {
-            provider.get_name(): provider.get_feeds(self.chain) for provider in providers
-        }
+        self.providers = providers
 
     def __check_price_feed_address(self, address: str) -> dict | None:
         """
@@ -67,16 +47,19 @@ class PriceFeedCheck(Check):
         Returns:
             dict | None: The price feed data if the address is found, otherwise None.
         """
-        for provider, price_feeds in self.providers_to_price_feed.items():
-            if address in price_feeds:
-                feed: PriceFeedData = price_feeds[address]
+        for provider in self.providers:
+            if (price_feed := provider.get_price_feed(self.chain, address)):
                 pp.pretty_print(
-                    f"Found {address} on {provider}\nname:{feed.name if feed.name else feed.pair}",
+                    f"Found {address} on {provider.get_name()}\n"
+                    f"info: {price_feed}",
                     pp.Colors.SUCCESS
                 )
-                return feed.dict()
+                return price_feed.model_dump()
             
-        pp.pretty_print(f"Address {address} not found in any price feed provider", pp.Colors.INFO)
+        pp.pretty_print(
+            f"Address {address} not found in any price feed provider: {[p.get_name() for p in self.providers]}",
+            pp.Colors.INFO
+        )
         return None
 
     def verify_price_feed(self) -> None:
@@ -93,7 +76,7 @@ class PriceFeedCheck(Check):
             verified_variables = []
 
             contract_text = '\n'.join(source_code.file_content)
-            addresses = re.findall(self.address_pattern, contract_text)
+            addresses = set(re.findall(self.address_pattern, contract_text))
             for address in addresses:
                 if feed := self.__check_price_feed_address(address):
                     verified_variables.append(feed)
