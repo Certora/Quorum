@@ -11,10 +11,6 @@ class ChronicleAPI(PriceFeedProviderBase):
     """
     ChronicleAPI is a class designed to interact with the Chronicle data feed API.
     It fetches and stores price feed data for various blockchain networks supported by Chronicle.
-
-    Attributes:
-        session (requests.Session): A session object to manage HTTP requests.
-        memory (dict): A cache to store fetched price feed data for each chain.
     """
     
     def __init__(self):
@@ -35,15 +31,16 @@ class ChronicleAPI(PriceFeedProviderBase):
             result[p["blockchain"]].append(p["pair"])
         return result
 
-    def _get_price_feeds_info(self, chain: Chain) -> dict[str, PriceFeedData]:
+    def _get_price_feed_info(self, chain: Chain, address: str) -> PriceFeedData | None:
         """
-        Get price feed data for a given blockchain network.
+        Get price feed data for a given address on a blockchain network.
 
         Args:
             chain (Chain): The blockchain network to fetch price feeds for.
+            address (str): The contract address of the price feed.
 
         Returns:
-            dict[str, PriceFeedData]: A dictionary mapping the contract address of the price feed to the PriceFeedData object.
+            PriceFeedData: The price feed data for the specified address.
         """
 
         pairs = self.__pairs.get(chain)
@@ -61,7 +58,7 @@ class ChronicleAPI(PriceFeedProviderBase):
             for pair_info in data:
                 chronicle_price_feeds.append(PriceFeedData(**pair_info))
                 
-        return {feed.address: feed for feed in chronicle_price_feeds}
+        return next((feed for feed in chronicle_price_feeds if address == feed.address), None)
 
         
     def get_name(self) -> PriceFeedProvider:
