@@ -3,7 +3,6 @@ from pathlib import Path
 from Quorum.config import ANTHROPIC_MODEL, ANTHROPIC_API_KEY
 
 from langchain_anthropic import ChatAnthropic
-from langchain_ollama import ChatOllama
 from langchain_community.cache import SQLiteCache
 from langchain_core.globals import set_llm_cache
 
@@ -33,9 +32,3 @@ class CachedLLM():
             temperature=0.0,
             api_key=ANTHROPIC_API_KEY
         )
-
-        # self.llm = ChatOllama(
-        #     model="llama3.2",
-        #     temperature=0,
-        #     # other params...
-        # )
