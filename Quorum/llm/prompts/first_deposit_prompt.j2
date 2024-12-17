@@ -4,7 +4,7 @@ Your role is to extract the following information for each new listing (i.e., ea
 
 1. **Asset**: Extract the underlying asset address or identifier from the listing array or the code. This is the token address or name used in the listing struct, often found in code referencing `listings[i].asset` or similar.
 
-2. **Supply/Approval Indicators**: Search for two sequential lines of code:
+2. **Supply/Approval Indicators**: Search for two sequential calls in the code (not necessarily line-by-line) that indicate the following:
     - An **approval** of the asset to the pool, typically:
       - `IERC20(asset).approve(...)` or `IERC20(asset).forceApprove(...)`
       - With arguments including a **pool address** and a **non-zero** amount.
