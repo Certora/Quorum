@@ -44,7 +44,7 @@ class ChainAPI:
         Raises:
             ValueError: If the selected chain is unsupported or the API key is not set.
         """
-        if chain not in self.CHAIN_ID_MAP or chain != Chain.MET:
+        if chain not in self.CHAIN_ID_MAP and chain != Chain.MET:
             raise ValueError(f"Unsupported chain: {chain}. Available chains: {', '.join([c.name for c in self.CHAIN_ID_MAP.keys()])}")
         
         if chain == Chain.MET:
@@ -52,7 +52,7 @@ class ChainAPI:
         else:
             chain_id = self.CHAIN_ID_MAP[chain]
             api_key = os.getenv("ETHSCAN_API_KEY")
-            if not self.api_key:
+            if not api_key:
                 raise ValueError(f"{chain}SCAN_API_KEY environment variable is not set.")
             
             self.base_url = self.BASE_URL.format(chain_id=chain_id, api_key=api_key)
