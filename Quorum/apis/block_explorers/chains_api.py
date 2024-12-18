@@ -1,7 +1,6 @@
-from dataclasses import dataclass
-import requests
-from typing import Callable, Any
 import os
+import requests
+from typing import Any
 import json
 
 from eth_abi import encode
@@ -9,20 +8,6 @@ from eth_utils import keccak
 
 from Quorum.utils.chain_enum import Chain
 from Quorum.apis.block_explorers.source_code import SourceCode
-
-
-@dataclass
-class APIinfo:
-    """
-    Data class for storing API base URL and a function to retrieve the API key.
-
-    Attributes:
-        base_url (str): The base URL of the blockchain explorer API.
-        api_key (Callable[[], str]): A function to retrieve the API key for the explorer.
-    """
-    base_url: str
-    api_key: Callable[[], str]
-
 
 class ChainAPI:
     """
@@ -33,31 +18,21 @@ class ChainAPI:
         chain_mapping (dict): Maps Chain enum to APIinfo containing base URL and API key function.
     """
     
-    # Maps Chain enums to their corresponding API base URL and API key retrieval function.
-    chain_mapping = {
-        Chain.ETH: APIinfo(base_url="https://api.etherscan.io/api",
-                           api_key=lambda: os.getenv('ETHSCAN_API_KEY')),
-        Chain.ARB: APIinfo(base_url="https://api.arbiscan.io/api",
-                           api_key=lambda: os.getenv('ARBSCAN_API_KEY')),
-        Chain.AVAX: APIinfo(base_url="https://api.routescan.io/v2/network/mainnet/evm/43114/etherscan/api",
-                            api_key=lambda: os.getenv('AVAXSCAN_API_KEY', "FREE")),
-        Chain.BASE: APIinfo(base_url="https://api.basescan.org/api",
-                            api_key=lambda: os.getenv('BASESCAN_API_KEY')),
-        Chain.BSC: APIinfo(base_url="https://api.bscscan.com/api",
-                           api_key=lambda: os.getenv('BSCSCAN_API_KEY')),
-        Chain.GNO: APIinfo(base_url="https://api.gnosisscan.io/api",
-                           api_key=lambda: os.getenv('GNOSCAN_API_KEY')),
-        Chain.MET: APIinfo(base_url="https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan/api",
-                           api_key=lambda: os.getenv('METSCAN_API_KEY', "FREE")),
-        Chain.OPT: APIinfo(base_url="https://api-optimistic.etherscan.io/api",
-                           api_key=lambda: os.getenv('OPTSCAN_API_KEY')),
-        Chain.POLY: APIinfo(base_url="https://api.polygonscan.com/api",
-                            api_key=lambda: os.getenv('POLYSCAN_API_KEY')),
-        Chain.SCR: APIinfo(base_url="https://api.scrollscan.com/api",
-                           api_key=lambda: os.getenv('SCRSCAN_API_KEY')),
-        Chain.ZK: APIinfo(base_url="https://api-era.zksync.network/api",
-                          api_key=lambda: os.getenv('ZKSCAN_API_KEY'))
+    # Mapping between Chain enum members and their corresponding Chain IDs
+    CHAIN_ID_MAP = {
+        Chain.ETH: 1,
+        Chain.ARB: 42161,
+        Chain.AVAX: 43114,
+        Chain.BASE: 8453,
+        Chain.BSC: 56,
+        Chain.GNO: 100,
+        Chain.OPT: 10,
+        Chain.POLY: 137,
+        Chain.SCR: 534352,
+        Chain.ZK: 324
     }
+    
+    BASE_URL = "https://api.etherscan.io/v2/api?chainid={chain_id}&apikey={api_key}"
     
     def __init__(self, chain: Chain) -> None:
         """
@@ -69,15 +44,20 @@ class ChainAPI:
         Raises:
             ValueError: If the selected chain is unsupported or the API key is not set.
         """
-        if chain not in self.chain_mapping:
-            raise ValueError(f"Unsupported chain: {chain}. Available chains: {', '.join([c.name for c in self.chain_mapping.keys()])}")
+        if chain not in self.CHAIN_ID_MAP and chain != Chain.MET:
+            raise ValueError(f"Unsupported chain: {chain}. Available chains: {', '.join([c.name for c in self.CHAIN_ID_MAP.keys()])}")
+        # MET is not supported via ETHScan API
+        if chain == Chain.MET:
+            self.base_url = "https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan/api"
+        else:
+            chain_id = self.CHAIN_ID_MAP[chain]
+            api_key = os.getenv("ETHSCAN_API_KEY")
+            if not api_key:
+                raise ValueError(f"{chain}SCAN_API_KEY environment variable is not set.")
+            
+            self.base_url = self.BASE_URL.format(chain_id=chain_id, api_key=api_key)
         
-        api_info = self.chain_mapping[chain]
-        self.api_key = api_info.api_key()
-        if not self.api_key:
-            raise ValueError(f"{chain}SCAN_API_KEY environment variable is not set.")
-        
-        self.base_url = f"{api_info.base_url}?apikey={self.api_key}"
+        self.session = requests.Session()
 
     def get_source_code(self, proposal_address: str) -> list[SourceCode]:
         """
@@ -93,7 +73,7 @@ class ChainAPI:
             ValueError: If the API request fails or the source code could not be retrieved.
         """
         url = f"{self.base_url}&module=contract&action=getsourcecode&address={proposal_address}"
-        response = requests.get(url)
+        response = self.session.get(url)
         response.raise_for_status()
         data = response.json()
         
@@ -128,7 +108,7 @@ class ChainAPI:
             ValueError: If the API request fails or the ABI could not be retrieved.
         """
         url = f"{self.base_url}&module=contract&action=getabi&address={contract_address}"
-        response = requests.get(url)
+        response = self.session.get(url)
         response.raise_for_status()
         data = response.json()
 
@@ -169,7 +149,7 @@ class ChainAPI:
 
         # Step 5: Make the request to the blockchain explorer eth_call endpoint
         url = f"{self.base_url}&module=proxy&action=eth_call&to={contract_address}&data={data}&tag=latest"
-        response = requests.get(url)
+        response = self.session.get(url)
         response.raise_for_status()
 
         # Step 6: Handle the response
