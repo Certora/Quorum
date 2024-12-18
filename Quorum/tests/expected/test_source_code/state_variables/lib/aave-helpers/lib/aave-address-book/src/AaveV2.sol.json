@@ -1,0 +1,2322 @@
+{
+    "CALLER_NOT_POOL_ADMIN": {
+        "constant": true,
+        "id": 45,
+        "mutability": "constant",
+        "name": "CALLER_NOT_POOL_ADMIN",
+        "nameLocation": "2306:21:0",
+        "nodeType": "VariableDeclaration",
+        "src": "2283:51:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 43,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "2283:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3333",
+            "id": 44,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "2330:4:0",
+            "typeDescriptions": {},
+            "value": "33"
+        },
+        "visibility": "public"
+    },
+    "BORROW_ALLOWANCE_NOT_ENOUGH": {
+        "constant": true,
+        "id": 48,
+        "mutability": "constant",
+        "name": "BORROW_ALLOWANCE_NOT_ENOUGH",
+        "nameLocation": "2400:27:0",
+        "nodeType": "VariableDeclaration",
+        "src": "2377:57:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 46,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "2377:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3539",
+            "id": 47,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "2430:4:0",
+            "typeDescriptions": {},
+            "value": "59"
+        },
+        "visibility": "public"
+    },
+    "VL_INVALID_AMOUNT": {
+        "constant": true,
+        "id": 51,
+        "mutability": "constant",
+        "name": "VL_INVALID_AMOUNT",
+        "nameLocation": "2546:17:0",
+        "nodeType": "VariableDeclaration",
+        "src": "2523:46:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 49,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "2523:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "31",
+            "id": 50,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "2566:3:0",
+            "typeDescriptions": {},
+            "value": "1"
+        },
+        "visibility": "public"
+    },
+    "VL_NO_ACTIVE_RESERVE": {
+        "constant": true,
+        "id": 54,
+        "mutability": "constant",
+        "name": "VL_NO_ACTIVE_RESERVE",
+        "nameLocation": "2631:20:0",
+        "nodeType": "VariableDeclaration",
+        "src": "2608:49:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 52,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "2608:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "32",
+            "id": 53,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "2654:3:0",
+            "typeDescriptions": {},
+            "value": "2"
+        },
+        "visibility": "public"
+    },
+    "VL_RESERVE_FROZEN": {
+        "constant": true,
+        "id": 57,
+        "mutability": "constant",
+        "name": "VL_RESERVE_FROZEN",
+        "nameLocation": "2723:17:0",
+        "nodeType": "VariableDeclaration",
+        "src": "2700:46:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 55,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "2700:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "33",
+            "id": 56,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "2743:3:0",
+            "typeDescriptions": {},
+            "value": "3"
+        },
+        "visibility": "public"
+    },
+    "VL_CURRENT_AVAILABLE_LIQUIDITY_NOT_ENOUGH": {
+        "constant": true,
+        "id": 60,
+        "mutability": "constant",
+        "name": "VL_CURRENT_AVAILABLE_LIQUIDITY_NOT_ENOUGH",
+        "nameLocation": "2835:41:0",
+        "nodeType": "VariableDeclaration",
+        "src": "2812:70:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 58,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "2812:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "34",
+            "id": 59,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "2879:3:0",
+            "typeDescriptions": {},
+            "value": "4"
+        },
+        "visibility": "public"
+    },
+    "VL_NOT_ENOUGH_AVAILABLE_USER_BALANCE": {
+        "constant": true,
+        "id": 63,
+        "mutability": "constant",
+        "name": "VL_NOT_ENOUGH_AVAILABLE_USER_BALANCE",
+        "nameLocation": "2950:36:0",
+        "nodeType": "VariableDeclaration",
+        "src": "2927:65:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 61,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "2927:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "35",
+            "id": 62,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "2989:3:0",
+            "typeDescriptions": {},
+            "value": "5"
+        },
+        "visibility": "public"
+    },
+    "VL_TRANSFER_NOT_ALLOWED": {
+        "constant": true,
+        "id": 66,
+        "mutability": "constant",
+        "name": "VL_TRANSFER_NOT_ALLOWED",
+        "nameLocation": "3077:23:0",
+        "nodeType": "VariableDeclaration",
+        "src": "3054:52:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 64,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "3054:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "36",
+            "id": 65,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "3103:3:0",
+            "typeDescriptions": {},
+            "value": "6"
+        },
+        "visibility": "public"
+    },
+    "VL_BORROWING_NOT_ENABLED": {
+        "constant": true,
+        "id": 69,
+        "mutability": "constant",
+        "name": "VL_BORROWING_NOT_ENABLED",
+        "nameLocation": "3166:24:0",
+        "nodeType": "VariableDeclaration",
+        "src": "3143:53:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 67,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "3143:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "37",
+            "id": 68,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "3193:3:0",
+            "typeDescriptions": {},
+            "value": "7"
+        },
+        "visibility": "public"
+    },
+    "VL_INVALID_INTEREST_RATE_MODE_SELECTED": {
+        "constant": true,
+        "id": 72,
+        "mutability": "constant",
+        "name": "VL_INVALID_INTEREST_RATE_MODE_SELECTED",
+        "nameLocation": "3253:38:0",
+        "nodeType": "VariableDeclaration",
+        "src": "3230:67:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 70,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "3230:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "38",
+            "id": 71,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "3294:3:0",
+            "typeDescriptions": {},
+            "value": "8"
+        },
+        "visibility": "public"
+    },
+    "VL_COLLATERAL_BALANCE_IS_0": {
+        "constant": true,
+        "id": 75,
+        "mutability": "constant",
+        "name": "VL_COLLATERAL_BALANCE_IS_0",
+        "nameLocation": "3365:26:0",
+        "nodeType": "VariableDeclaration",
+        "src": "3342:55:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 73,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "3342:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "39",
+            "id": 74,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "3394:3:0",
+            "typeDescriptions": {},
+            "value": "9"
+        },
+        "visibility": "public"
+    },
+    "VL_HEALTH_FACTOR_LOWER_THAN_LIQUIDATION_THRESHOLD": {
+        "constant": true,
+        "id": 78,
+        "mutability": "constant",
+        "name": "VL_HEALTH_FACTOR_LOWER_THAN_LIQUIDATION_THRESHOLD",
+        "nameLocation": "3457:49:0",
+        "nodeType": "VariableDeclaration",
+        "src": "3434:79:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 76,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "3434:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3130",
+            "id": 77,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "3509:4:0",
+            "typeDescriptions": {},
+            "value": "10"
+        },
+        "visibility": "public"
+    },
+    "VL_COLLATERAL_CANNOT_COVER_NEW_BORROW": {
+        "constant": true,
+        "id": 81,
+        "mutability": "constant",
+        "name": "VL_COLLATERAL_CANNOT_COVER_NEW_BORROW",
+        "nameLocation": "3600:37:0",
+        "nodeType": "VariableDeclaration",
+        "src": "3577:67:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 79,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "3577:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3131",
+            "id": 80,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "3640:4:0",
+            "typeDescriptions": {},
+            "value": "11"
+        },
+        "visibility": "public"
+    },
+    "VL_STABLE_BORROWING_NOT_ENABLED": {
+        "constant": true,
+        "id": 84,
+        "mutability": "constant",
+        "name": "VL_STABLE_BORROWING_NOT_ENABLED",
+        "nameLocation": "3729:31:0",
+        "nodeType": "VariableDeclaration",
+        "src": "3706:61:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 82,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "3706:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3132",
+            "id": 83,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "3763:4:0",
+            "typeDescriptions": {},
+            "value": "12"
+        },
+        "visibility": "public"
+    },
+    "VL_COLLATERAL_SAME_AS_BORROWING_CURRENCY": {
+        "constant": true,
+        "id": 87,
+        "mutability": "constant",
+        "name": "VL_COLLATERAL_SAME_AS_BORROWING_CURRENCY",
+        "nameLocation": "3826:40:0",
+        "nodeType": "VariableDeclaration",
+        "src": "3803:70:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 85,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "3803:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3133",
+            "id": 86,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "3869:4:0",
+            "typeDescriptions": {},
+            "value": "13"
+        },
+        "visibility": "public"
+    },
+    "VL_AMOUNT_BIGGER_THAN_MAX_LOAN_SIZE_STABLE": {
+        "constant": true,
+        "id": 90,
+        "mutability": "constant",
+        "name": "VL_AMOUNT_BIGGER_THAN_MAX_LOAN_SIZE_STABLE",
+        "nameLocation": "3967:42:0",
+        "nodeType": "VariableDeclaration",
+        "src": "3944:72:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 88,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "3944:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3134",
+            "id": 89,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "4012:4:0",
+            "typeDescriptions": {},
+            "value": "14"
+        },
+        "visibility": "public"
+    },
+    "VL_NO_DEBT_OF_SELECTED_TYPE": {
+        "constant": true,
+        "id": 93,
+        "mutability": "constant",
+        "name": "VL_NO_DEBT_OF_SELECTED_TYPE",
+        "nameLocation": "4122:27:0",
+        "nodeType": "VariableDeclaration",
+        "src": "4099:57:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 91,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "4099:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3135",
+            "id": 92,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "4152:4:0",
+            "typeDescriptions": {},
+            "value": "15"
+        },
+        "visibility": "public"
+    },
+    "VL_NO_EXPLICIT_AMOUNT_TO_REPAY_ON_BEHALF": {
+        "constant": true,
+        "id": 96,
+        "mutability": "constant",
+        "name": "VL_NO_EXPLICIT_AMOUNT_TO_REPAY_ON_BEHALF",
+        "nameLocation": "4296:40:0",
+        "nodeType": "VariableDeclaration",
+        "src": "4273:70:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 94,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "4273:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3136",
+            "id": 95,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "4339:4:0",
+            "typeDescriptions": {},
+            "value": "16"
+        },
+        "visibility": "public"
+    },
+    "VL_NO_STABLE_RATE_LOAN_IN_RESERVE": {
+        "constant": true,
+        "id": 99,
+        "mutability": "constant",
+        "name": "VL_NO_STABLE_RATE_LOAN_IN_RESERVE",
+        "nameLocation": "4443:33:0",
+        "nodeType": "VariableDeclaration",
+        "src": "4420:63:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 97,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "4420:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3137",
+            "id": 98,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "4479:4:0",
+            "typeDescriptions": {},
+            "value": "17"
+        },
+        "visibility": "public"
+    },
+    "VL_NO_VARIABLE_RATE_LOAN_IN_RESERVE": {
+        "constant": true,
+        "id": 102,
+        "mutability": "constant",
+        "name": "VL_NO_VARIABLE_RATE_LOAN_IN_RESERVE",
+        "nameLocation": "4581:35:0",
+        "nodeType": "VariableDeclaration",
+        "src": "4558:65:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 100,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "4558:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3138",
+            "id": 101,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "4619:4:0",
+            "typeDescriptions": {},
+            "value": "18"
+        },
+        "visibility": "public"
+    },
+    "VL_UNDERLYING_BALANCE_NOT_GREATER_THAN_0": {
+        "constant": true,
+        "id": 105,
+        "mutability": "constant",
+        "name": "VL_UNDERLYING_BALANCE_NOT_GREATER_THAN_0",
+        "nameLocation": "4723:40:0",
+        "nodeType": "VariableDeclaration",
+        "src": "4700:70:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 103,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "4700:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3139",
+            "id": 104,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "4766:4:0",
+            "typeDescriptions": {},
+            "value": "19"
+        },
+        "visibility": "public"
+    },
+    "VL_DEPOSIT_ALREADY_IN_USE": {
+        "constant": true,
+        "id": 108,
+        "mutability": "constant",
+        "name": "VL_DEPOSIT_ALREADY_IN_USE",
+        "nameLocation": "4852:25:0",
+        "nodeType": "VariableDeclaration",
+        "src": "4829:55:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 106,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "4829:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3230",
+            "id": 107,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "4880:4:0",
+            "typeDescriptions": {},
+            "value": "20"
+        },
+        "visibility": "public"
+    },
+    "LP_NOT_ENOUGH_STABLE_BORROW_BALANCE": {
+        "constant": true,
+        "id": 111,
+        "mutability": "constant",
+        "name": "LP_NOT_ENOUGH_STABLE_BORROW_BALANCE",
+        "nameLocation": "4965:35:0",
+        "nodeType": "VariableDeclaration",
+        "src": "4942:65:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 109,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "4942:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3231",
+            "id": 110,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "5003:4:0",
+            "typeDescriptions": {},
+            "value": "21"
+        },
+        "visibility": "public"
+    },
+    "LP_INTEREST_RATE_REBALANCE_CONDITIONS_NOT_MET": {
+        "constant": true,
+        "id": 114,
+        "mutability": "constant",
+        "name": "LP_INTEREST_RATE_REBALANCE_CONDITIONS_NOT_MET",
+        "nameLocation": "5096:45:0",
+        "nodeType": "VariableDeclaration",
+        "src": "5073:75:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 112,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "5073:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3232",
+            "id": 113,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "5144:4:0",
+            "typeDescriptions": {},
+            "value": "22"
+        },
+        "visibility": "public"
+    },
+    "LP_LIQUIDATION_CALL_FAILED": {
+        "constant": true,
+        "id": 117,
+        "mutability": "constant",
+        "name": "LP_LIQUIDATION_CALL_FAILED",
+        "nameLocation": "5228:26:0",
+        "nodeType": "VariableDeclaration",
+        "src": "5205:56:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 115,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "5205:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3233",
+            "id": 116,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "5257:4:0",
+            "typeDescriptions": {},
+            "value": "23"
+        },
+        "visibility": "public"
+    },
+    "LP_NOT_ENOUGH_LIQUIDITY_TO_BORROW": {
+        "constant": true,
+        "id": 120,
+        "mutability": "constant",
+        "name": "LP_NOT_ENOUGH_LIQUIDITY_TO_BORROW",
+        "nameLocation": "5317:33:0",
+        "nodeType": "VariableDeclaration",
+        "src": "5294:63:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 118,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "5294:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3234",
+            "id": 119,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "5353:4:0",
+            "typeDescriptions": {},
+            "value": "24"
+        },
+        "visibility": "public"
+    },
+    "LP_REQUESTED_AMOUNT_TOO_SMALL": {
+        "constant": true,
+        "id": 123,
+        "mutability": "constant",
+        "name": "LP_REQUESTED_AMOUNT_TOO_SMALL",
+        "nameLocation": "5439:29:0",
+        "nodeType": "VariableDeclaration",
+        "src": "5416:59:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 121,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "5416:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3235",
+            "id": 122,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "5471:4:0",
+            "typeDescriptions": {},
+            "value": "25"
+        },
+        "visibility": "public"
+    },
+    "LP_INCONSISTENT_PROTOCOL_ACTUAL_BALANCE": {
+        "constant": true,
+        "id": 126,
+        "mutability": "constant",
+        "name": "LP_INCONSISTENT_PROTOCOL_ACTUAL_BALANCE",
+        "nameLocation": "5558:39:0",
+        "nodeType": "VariableDeclaration",
+        "src": "5535:69:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 124,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "5535:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3236",
+            "id": 125,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "5600:4:0",
+            "typeDescriptions": {},
+            "value": "26"
+        },
+        "visibility": "public"
+    },
+    "LP_CALLER_NOT_LENDING_POOL_CONFIGURATOR": {
+        "constant": true,
+        "id": 129,
+        "mutability": "constant",
+        "name": "LP_CALLER_NOT_LENDING_POOL_CONFIGURATOR",
+        "nameLocation": "5687:39:0",
+        "nodeType": "VariableDeclaration",
+        "src": "5664:69:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 127,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "5664:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3237",
+            "id": 128,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "5729:4:0",
+            "typeDescriptions": {},
+            "value": "27"
+        },
+        "visibility": "public"
+    },
+    "LP_INCONSISTENT_FLASHLOAN_PARAMS": {
+        "constant": true,
+        "id": 132,
+        "mutability": "constant",
+        "name": "LP_INCONSISTENT_FLASHLOAN_PARAMS",
+        "nameLocation": "5829:32:0",
+        "nodeType": "VariableDeclaration",
+        "src": "5806:62:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 130,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "5806:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3238",
+            "id": 131,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "5864:4:0",
+            "typeDescriptions": {},
+            "value": "28"
+        },
+        "visibility": "public"
+    },
+    "CT_CALLER_MUST_BE_LENDING_POOL": {
+        "constant": true,
+        "id": 135,
+        "mutability": "constant",
+        "name": "CT_CALLER_MUST_BE_LENDING_POOL",
+        "nameLocation": "5895:30:0",
+        "nodeType": "VariableDeclaration",
+        "src": "5872:60:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 133,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "5872:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3239",
+            "id": 134,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "5928:4:0",
+            "typeDescriptions": {},
+            "value": "29"
+        },
+        "visibility": "public"
+    },
+    "CT_CANNOT_GIVE_ALLOWANCE_TO_HIMSELF": {
+        "constant": true,
+        "id": 138,
+        "mutability": "constant",
+        "name": "CT_CANNOT_GIVE_ALLOWANCE_TO_HIMSELF",
+        "nameLocation": "6015:35:0",
+        "nodeType": "VariableDeclaration",
+        "src": "5992:65:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 136,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "5992:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3330",
+            "id": 137,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "6053:4:0",
+            "typeDescriptions": {},
+            "value": "30"
+        },
+        "visibility": "public"
+    },
+    "CT_TRANSFER_AMOUNT_NOT_GT_0": {
+        "constant": true,
+        "id": 141,
+        "mutability": "constant",
+        "name": "CT_TRANSFER_AMOUNT_NOT_GT_0",
+        "nameLocation": "6127:27:0",
+        "nodeType": "VariableDeclaration",
+        "src": "6104:57:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 139,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "6104:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3331",
+            "id": 140,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "6157:4:0",
+            "typeDescriptions": {},
+            "value": "31"
+        },
+        "visibility": "public"
+    },
+    "RL_RESERVE_ALREADY_INITIALIZED": {
+        "constant": true,
+        "id": 144,
+        "mutability": "constant",
+        "name": "RL_RESERVE_ALREADY_INITIALIZED",
+        "nameLocation": "6242:30:0",
+        "nodeType": "VariableDeclaration",
+        "src": "6219:60:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 142,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "6219:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3332",
+            "id": 143,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "6275:4:0",
+            "typeDescriptions": {},
+            "value": "32"
+        },
+        "visibility": "public"
+    },
+    "LPC_RESERVE_LIQUIDITY_NOT_0": {
+        "constant": true,
+        "id": 147,
+        "mutability": "constant",
+        "name": "LPC_RESERVE_LIQUIDITY_NOT_0",
+        "nameLocation": "6348:27:0",
+        "nodeType": "VariableDeclaration",
+        "src": "6325:57:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 145,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "6325:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3334",
+            "id": 146,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "6378:4:0",
+            "typeDescriptions": {},
+            "value": "34"
+        },
+        "visibility": "public"
+    },
+    "LPC_INVALID_ATOKEN_POOL_ADDRESS": {
+        "constant": true,
+        "id": 150,
+        "mutability": "constant",
+        "name": "LPC_INVALID_ATOKEN_POOL_ADDRESS",
+        "nameLocation": "6457:31:0",
+        "nodeType": "VariableDeclaration",
+        "src": "6434:61:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 148,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "6434:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3335",
+            "id": 149,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "6491:4:0",
+            "typeDescriptions": {},
+            "value": "35"
+        },
+        "visibility": "public"
+    },
+    "LPC_INVALID_STABLE_DEBT_TOKEN_POOL_ADDRESS": {
+        "constant": true,
+        "id": 153,
+        "mutability": "constant",
+        "name": "LPC_INVALID_STABLE_DEBT_TOKEN_POOL_ADDRESS",
+        "nameLocation": "6570:42:0",
+        "nodeType": "VariableDeclaration",
+        "src": "6547:72:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 151,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "6547:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3336",
+            "id": 152,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "6615:4:0",
+            "typeDescriptions": {},
+            "value": "36"
+        },
+        "visibility": "public"
+    },
+    "LPC_INVALID_VARIABLE_DEBT_TOKEN_POOL_ADDRESS": {
+        "constant": true,
+        "id": 156,
+        "mutability": "constant",
+        "name": "LPC_INVALID_VARIABLE_DEBT_TOKEN_POOL_ADDRESS",
+        "nameLocation": "6694:44:0",
+        "nodeType": "VariableDeclaration",
+        "src": "6671:74:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 154,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "6671:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3337",
+            "id": 155,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "6741:4:0",
+            "typeDescriptions": {},
+            "value": "37"
+        },
+        "visibility": "public"
+    },
+    "LPC_INVALID_STABLE_DEBT_TOKEN_UNDERLYING_ADDRESS": {
+        "constant": true,
+        "id": 159,
+        "mutability": "constant",
+        "name": "LPC_INVALID_STABLE_DEBT_TOKEN_UNDERLYING_ADDRESS",
+        "nameLocation": "6820:48:0",
+        "nodeType": "VariableDeclaration",
+        "src": "6797:78:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 157,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "6797:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3338",
+            "id": 158,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "6871:4:0",
+            "typeDescriptions": {},
+            "value": "38"
+        },
+        "visibility": "public"
+    },
+    "LPC_INVALID_VARIABLE_DEBT_TOKEN_UNDERLYING_ADDRESS": {
+        "constant": true,
+        "id": 162,
+        "mutability": "constant",
+        "name": "LPC_INVALID_VARIABLE_DEBT_TOKEN_UNDERLYING_ADDRESS",
+        "nameLocation": "6950:50:0",
+        "nodeType": "VariableDeclaration",
+        "src": "6927:80:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 160,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "6927:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3339",
+            "id": 161,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "7003:4:0",
+            "typeDescriptions": {},
+            "value": "39"
+        },
+        "visibility": "public"
+    },
+    "LPC_INVALID_ADDRESSES_PROVIDER_ID": {
+        "constant": true,
+        "id": 165,
+        "mutability": "constant",
+        "name": "LPC_INVALID_ADDRESSES_PROVIDER_ID",
+        "nameLocation": "7082:33:0",
+        "nodeType": "VariableDeclaration",
+        "src": "7059:63:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 163,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "7059:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3430",
+            "id": 164,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "7118:4:0",
+            "typeDescriptions": {},
+            "value": "40"
+        },
+        "visibility": "public"
+    },
+    "LPC_INVALID_CONFIGURATION": {
+        "constant": true,
+        "id": 168,
+        "mutability": "constant",
+        "name": "LPC_INVALID_CONFIGURATION",
+        "nameLocation": "7197:25:0",
+        "nodeType": "VariableDeclaration",
+        "src": "7174:55:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 166,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "7174:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3735",
+            "id": 167,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "7225:4:0",
+            "typeDescriptions": {},
+            "value": "75"
+        },
+        "visibility": "public"
+    },
+    "LPC_CALLER_NOT_EMERGENCY_ADMIN": {
+        "constant": true,
+        "id": 171,
+        "mutability": "constant",
+        "name": "LPC_CALLER_NOT_EMERGENCY_ADMIN",
+        "nameLocation": "7301:30:0",
+        "nodeType": "VariableDeclaration",
+        "src": "7278:60:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 169,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "7278:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3736",
+            "id": 170,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "7334:4:0",
+            "typeDescriptions": {},
+            "value": "76"
+        },
+        "visibility": "public"
+    },
+    "LPAPR_PROVIDER_NOT_REGISTERED": {
+        "constant": true,
+        "id": 174,
+        "mutability": "constant",
+        "name": "LPAPR_PROVIDER_NOT_REGISTERED",
+        "nameLocation": "7409:29:0",
+        "nodeType": "VariableDeclaration",
+        "src": "7386:59:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 172,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "7386:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3431",
+            "id": 173,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "7441:4:0",
+            "typeDescriptions": {},
+            "value": "41"
+        },
+        "visibility": "public"
+    },
+    "LPCM_HEALTH_FACTOR_NOT_BELOW_THRESHOLD": {
+        "constant": true,
+        "id": 177,
+        "mutability": "constant",
+        "name": "LPCM_HEALTH_FACTOR_NOT_BELOW_THRESHOLD",
+        "nameLocation": "7504:38:0",
+        "nodeType": "VariableDeclaration",
+        "src": "7481:68:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 175,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "7481:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3432",
+            "id": 176,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "7545:4:0",
+            "typeDescriptions": {},
+            "value": "42"
+        },
+        "visibility": "public"
+    },
+    "LPCM_COLLATERAL_CANNOT_BE_LIQUIDATED": {
+        "constant": true,
+        "id": 180,
+        "mutability": "constant",
+        "name": "LPCM_COLLATERAL_CANNOT_BE_LIQUIDATED",
+        "nameLocation": "7622:36:0",
+        "nodeType": "VariableDeclaration",
+        "src": "7599:66:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 178,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "7599:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3433",
+            "id": 179,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "7661:4:0",
+            "typeDescriptions": {},
+            "value": "43"
+        },
+        "visibility": "public"
+    },
+    "LPCM_SPECIFIED_CURRENCY_NOT_BORROWED_BY_USER": {
+        "constant": true,
+        "id": 183,
+        "mutability": "constant",
+        "name": "LPCM_SPECIFIED_CURRENCY_NOT_BORROWED_BY_USER",
+        "nameLocation": "7740:44:0",
+        "nodeType": "VariableDeclaration",
+        "src": "7717:74:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 181,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "7717:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3434",
+            "id": 182,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "7787:4:0",
+            "typeDescriptions": {},
+            "value": "44"
+        },
+        "visibility": "public"
+    },
+    "LPCM_NOT_ENOUGH_LIQUIDITY_TO_LIQUIDATE": {
+        "constant": true,
+        "id": 186,
+        "mutability": "constant",
+        "name": "LPCM_NOT_ENOUGH_LIQUIDITY_TO_LIQUIDATE",
+        "nameLocation": "7866:38:0",
+        "nodeType": "VariableDeclaration",
+        "src": "7843:68:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 184,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "7843:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3435",
+            "id": 185,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "7907:4:0",
+            "typeDescriptions": {},
+            "value": "45"
+        },
+        "visibility": "public"
+    },
+    "LPCM_NO_ERRORS": {
+        "constant": true,
+        "id": 189,
+        "mutability": "constant",
+        "name": "LPCM_NO_ERRORS",
+        "nameLocation": "7995:14:0",
+        "nodeType": "VariableDeclaration",
+        "src": "7972:44:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 187,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "7972:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3436",
+            "id": 188,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "8012:4:0",
+            "typeDescriptions": {},
+            "value": "46"
+        },
+        "visibility": "public"
+    },
+    "LP_INVALID_FLASHLOAN_MODE": {
+        "constant": true,
+        "id": 192,
+        "mutability": "constant",
+        "name": "LP_INVALID_FLASHLOAN_MODE",
+        "nameLocation": "8058:25:0",
+        "nodeType": "VariableDeclaration",
+        "src": "8035:55:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 190,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "8035:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3437",
+            "id": 191,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "8086:4:0",
+            "typeDescriptions": {},
+            "value": "47"
+        },
+        "visibility": "public"
+    },
+    "MATH_MULTIPLICATION_OVERFLOW": {
+        "constant": true,
+        "id": 195,
+        "mutability": "constant",
+        "name": "MATH_MULTIPLICATION_OVERFLOW",
+        "nameLocation": "8151:28:0",
+        "nodeType": "VariableDeclaration",
+        "src": "8128:58:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 193,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "8128:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3438",
+            "id": 194,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "8182:4:0",
+            "typeDescriptions": {},
+            "value": "48"
+        },
+        "visibility": "public"
+    },
+    "MATH_ADDITION_OVERFLOW": {
+        "constant": true,
+        "id": 198,
+        "mutability": "constant",
+        "name": "MATH_ADDITION_OVERFLOW",
+        "nameLocation": "8213:22:0",
+        "nodeType": "VariableDeclaration",
+        "src": "8190:52:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 196,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "8190:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3439",
+            "id": 197,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "8238:4:0",
+            "typeDescriptions": {},
+            "value": "49"
+        },
+        "visibility": "public"
+    },
+    "MATH_DIVISION_BY_ZERO": {
+        "constant": true,
+        "id": 201,
+        "mutability": "constant",
+        "name": "MATH_DIVISION_BY_ZERO",
+        "nameLocation": "8269:21:0",
+        "nodeType": "VariableDeclaration",
+        "src": "8246:51:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 199,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "8246:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3530",
+            "id": 200,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "8293:4:0",
+            "typeDescriptions": {},
+            "value": "50"
+        },
+        "visibility": "public"
+    },
+    "RL_LIQUIDITY_INDEX_OVERFLOW": {
+        "constant": true,
+        "id": 204,
+        "mutability": "constant",
+        "name": "RL_LIQUIDITY_INDEX_OVERFLOW",
+        "nameLocation": "8324:27:0",
+        "nodeType": "VariableDeclaration",
+        "src": "8301:57:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 202,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "8301:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3531",
+            "id": 203,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "8354:4:0",
+            "typeDescriptions": {},
+            "value": "51"
+        },
+        "visibility": "public"
+    },
+    "RL_VARIABLE_BORROW_INDEX_OVERFLOW": {
+        "constant": true,
+        "id": 207,
+        "mutability": "constant",
+        "name": "RL_VARIABLE_BORROW_INDEX_OVERFLOW",
+        "nameLocation": "8423:33:0",
+        "nodeType": "VariableDeclaration",
+        "src": "8400:63:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 205,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "8400:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3532",
+            "id": 206,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "8459:4:0",
+            "typeDescriptions": {},
+            "value": "52"
+        },
+        "visibility": "public"
+    },
+    "RL_LIQUIDITY_RATE_OVERFLOW": {
+        "constant": true,
+        "id": 210,
+        "mutability": "constant",
+        "name": "RL_LIQUIDITY_RATE_OVERFLOW",
+        "nameLocation": "8534:26:0",
+        "nodeType": "VariableDeclaration",
+        "src": "8511:56:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 208,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "8511:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3533",
+            "id": 209,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "8563:4:0",
+            "typeDescriptions": {},
+            "value": "53"
+        },
+        "visibility": "public"
+    },
+    "RL_VARIABLE_BORROW_RATE_OVERFLOW": {
+        "constant": true,
+        "id": 213,
+        "mutability": "constant",
+        "name": "RL_VARIABLE_BORROW_RATE_OVERFLOW",
+        "nameLocation": "8631:32:0",
+        "nodeType": "VariableDeclaration",
+        "src": "8608:62:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 211,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "8608:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3534",
+            "id": 212,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "8666:4:0",
+            "typeDescriptions": {},
+            "value": "54"
+        },
+        "visibility": "public"
+    },
+    "RL_STABLE_BORROW_RATE_OVERFLOW": {
+        "constant": true,
+        "id": 216,
+        "mutability": "constant",
+        "name": "RL_STABLE_BORROW_RATE_OVERFLOW",
+        "nameLocation": "8740:30:0",
+        "nodeType": "VariableDeclaration",
+        "src": "8717:60:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 214,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "8717:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3535",
+            "id": 215,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "8773:4:0",
+            "typeDescriptions": {},
+            "value": "55"
+        },
+        "visibility": "public"
+    },
+    "CT_INVALID_MINT_AMOUNT": {
+        "constant": true,
+        "id": 219,
+        "mutability": "constant",
+        "name": "CT_INVALID_MINT_AMOUNT",
+        "nameLocation": "8845:22:0",
+        "nodeType": "VariableDeclaration",
+        "src": "8822:52:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 217,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "8822:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3536",
+            "id": 218,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "8870:4:0",
+            "typeDescriptions": {},
+            "value": "56"
+        },
+        "visibility": "public"
+    },
+    "LP_FAILED_REPAY_WITH_COLLATERAL": {
+        "constant": true,
+        "id": 222,
+        "mutability": "constant",
+        "name": "LP_FAILED_REPAY_WITH_COLLATERAL",
+        "nameLocation": "8926:31:0",
+        "nodeType": "VariableDeclaration",
+        "src": "8903:61:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 220,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "8903:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3537",
+            "id": 221,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "8960:4:0",
+            "typeDescriptions": {},
+            "value": "57"
+        },
+        "visibility": "public"
+    },
+    "CT_INVALID_BURN_AMOUNT": {
+        "constant": true,
+        "id": 225,
+        "mutability": "constant",
+        "name": "CT_INVALID_BURN_AMOUNT",
+        "nameLocation": "8991:22:0",
+        "nodeType": "VariableDeclaration",
+        "src": "8968:52:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 223,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "8968:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3538",
+            "id": 224,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9016:4:0",
+            "typeDescriptions": {},
+            "value": "58"
+        },
+        "visibility": "public"
+    },
+    "LP_FAILED_COLLATERAL_SWAP": {
+        "constant": true,
+        "id": 228,
+        "mutability": "constant",
+        "name": "LP_FAILED_COLLATERAL_SWAP",
+        "nameLocation": "9072:25:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9049:55:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 226,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9049:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3630",
+            "id": 227,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9100:4:0",
+            "typeDescriptions": {},
+            "value": "60"
+        },
+        "visibility": "public"
+    },
+    "LP_INVALID_EQUAL_ASSETS_TO_SWAP": {
+        "constant": true,
+        "id": 231,
+        "mutability": "constant",
+        "name": "LP_INVALID_EQUAL_ASSETS_TO_SWAP",
+        "nameLocation": "9131:31:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9108:61:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 229,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9108:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3631",
+            "id": 230,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9165:4:0",
+            "typeDescriptions": {},
+            "value": "61"
+        },
+        "visibility": "public"
+    },
+    "LP_REENTRANCY_NOT_ALLOWED": {
+        "constant": true,
+        "id": 234,
+        "mutability": "constant",
+        "name": "LP_REENTRANCY_NOT_ALLOWED",
+        "nameLocation": "9196:25:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9173:55:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 232,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9173:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3632",
+            "id": 233,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9224:4:0",
+            "typeDescriptions": {},
+            "value": "62"
+        },
+        "visibility": "public"
+    },
+    "LP_CALLER_MUST_BE_AN_ATOKEN": {
+        "constant": true,
+        "id": 237,
+        "mutability": "constant",
+        "name": "LP_CALLER_MUST_BE_AN_ATOKEN",
+        "nameLocation": "9255:27:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9232:57:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 235,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9232:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3633",
+            "id": 236,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9285:4:0",
+            "typeDescriptions": {},
+            "value": "63"
+        },
+        "visibility": "public"
+    },
+    "LP_IS_PAUSED": {
+        "constant": true,
+        "id": 240,
+        "mutability": "constant",
+        "name": "LP_IS_PAUSED",
+        "nameLocation": "9316:12:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9293:42:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 238,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9293:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3634",
+            "id": 239,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9331:4:0",
+            "typeDescriptions": {},
+            "value": "64"
+        },
+        "visibility": "public"
+    },
+    "LP_NO_MORE_RESERVES_ALLOWED": {
+        "constant": true,
+        "id": 243,
+        "mutability": "constant",
+        "name": "LP_NO_MORE_RESERVES_ALLOWED",
+        "nameLocation": "9382:27:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9359:57:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 241,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9359:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3635",
+            "id": 242,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9412:4:0",
+            "typeDescriptions": {},
+            "value": "65"
+        },
+        "visibility": "public"
+    },
+    "LP_INVALID_FLASH_LOAN_EXECUTOR_RETURN": {
+        "constant": true,
+        "id": 246,
+        "mutability": "constant",
+        "name": "LP_INVALID_FLASH_LOAN_EXECUTOR_RETURN",
+        "nameLocation": "9443:37:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9420:67:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 244,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9420:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3636",
+            "id": 245,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9483:4:0",
+            "typeDescriptions": {},
+            "value": "66"
+        },
+        "visibility": "public"
+    },
+    "RC_INVALID_LTV": {
+        "constant": true,
+        "id": 249,
+        "mutability": "constant",
+        "name": "RC_INVALID_LTV",
+        "nameLocation": "9514:14:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9491:44:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 247,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9491:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3637",
+            "id": 248,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9531:4:0",
+            "typeDescriptions": {},
+            "value": "67"
+        },
+        "visibility": "public"
+    },
+    "RC_INVALID_LIQ_THRESHOLD": {
+        "constant": true,
+        "id": 252,
+        "mutability": "constant",
+        "name": "RC_INVALID_LIQ_THRESHOLD",
+        "nameLocation": "9562:24:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9539:54:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 250,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9539:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3638",
+            "id": 251,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9589:4:0",
+            "typeDescriptions": {},
+            "value": "68"
+        },
+        "visibility": "public"
+    },
+    "RC_INVALID_LIQ_BONUS": {
+        "constant": true,
+        "id": 255,
+        "mutability": "constant",
+        "name": "RC_INVALID_LIQ_BONUS",
+        "nameLocation": "9620:20:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9597:50:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 253,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9597:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3639",
+            "id": 254,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9643:4:0",
+            "typeDescriptions": {},
+            "value": "69"
+        },
+        "visibility": "public"
+    },
+    "RC_INVALID_DECIMALS": {
+        "constant": true,
+        "id": 258,
+        "mutability": "constant",
+        "name": "RC_INVALID_DECIMALS",
+        "nameLocation": "9674:19:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9651:49:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 256,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9651:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3730",
+            "id": 257,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9696:4:0",
+            "typeDescriptions": {},
+            "value": "70"
+        },
+        "visibility": "public"
+    },
+    "RC_INVALID_RESERVE_FACTOR": {
+        "constant": true,
+        "id": 261,
+        "mutability": "constant",
+        "name": "RC_INVALID_RESERVE_FACTOR",
+        "nameLocation": "9727:25:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9704:55:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 259,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9704:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3731",
+            "id": 260,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9755:4:0",
+            "typeDescriptions": {},
+            "value": "71"
+        },
+        "visibility": "public"
+    },
+    "LPAPR_INVALID_ADDRESSES_PROVIDER_ID": {
+        "constant": true,
+        "id": 264,
+        "mutability": "constant",
+        "name": "LPAPR_INVALID_ADDRESSES_PROVIDER_ID",
+        "nameLocation": "9786:35:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9763:65:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 262,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9763:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3732",
+            "id": 263,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9824:4:0",
+            "typeDescriptions": {},
+            "value": "72"
+        },
+        "visibility": "public"
+    },
+    "VL_INCONSISTENT_FLASHLOAN_PARAMS": {
+        "constant": true,
+        "id": 267,
+        "mutability": "constant",
+        "name": "VL_INCONSISTENT_FLASHLOAN_PARAMS",
+        "nameLocation": "9855:32:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9832:62:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 265,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9832:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3733",
+            "id": 266,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9890:4:0",
+            "typeDescriptions": {},
+            "value": "73"
+        },
+        "visibility": "public"
+    },
+    "LP_INCONSISTENT_PARAMS_LENGTH": {
+        "constant": true,
+        "id": 270,
+        "mutability": "constant",
+        "name": "LP_INCONSISTENT_PARAMS_LENGTH",
+        "nameLocation": "9921:29:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9898:59:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 268,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9898:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3734",
+            "id": 269,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "9953:4:0",
+            "typeDescriptions": {},
+            "value": "74"
+        },
+        "visibility": "public"
+    },
+    "UL_INVALID_INDEX": {
+        "constant": true,
+        "id": 273,
+        "mutability": "constant",
+        "name": "UL_INVALID_INDEX",
+        "nameLocation": "9984:16:0",
+        "nodeType": "VariableDeclaration",
+        "src": "9961:46:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 271,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "9961:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3737",
+            "id": 272,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "10003:4:0",
+            "typeDescriptions": {},
+            "value": "77"
+        },
+        "visibility": "public"
+    },
+    "LP_NOT_CONTRACT": {
+        "constant": true,
+        "id": 276,
+        "mutability": "constant",
+        "name": "LP_NOT_CONTRACT",
+        "nameLocation": "10034:15:0",
+        "nodeType": "VariableDeclaration",
+        "src": "10011:45:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 274,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "10011:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3738",
+            "id": 275,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "10052:4:0",
+            "typeDescriptions": {},
+            "value": "78"
+        },
+        "visibility": "public"
+    },
+    "SDT_STABLE_DEBT_OVERFLOW": {
+        "constant": true,
+        "id": 279,
+        "mutability": "constant",
+        "name": "SDT_STABLE_DEBT_OVERFLOW",
+        "nameLocation": "10083:24:0",
+        "nodeType": "VariableDeclaration",
+        "src": "10060:54:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 277,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "10060:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3739",
+            "id": 278,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "10110:4:0",
+            "typeDescriptions": {},
+            "value": "79"
+        },
+        "visibility": "public"
+    },
+    "SDT_BURN_EXCEEDS_BALANCE": {
+        "constant": true,
+        "id": 282,
+        "mutability": "constant",
+        "name": "SDT_BURN_EXCEEDS_BALANCE",
+        "nameLocation": "10141:24:0",
+        "nodeType": "VariableDeclaration",
+        "src": "10118:54:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 280,
+            "name": "string",
+            "nodeType": "ElementaryTypeName",
+            "src": "10118:6:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "3830",
+            "id": 281,
+            "kind": "string",
+            "nodeType": "Literal",
+            "src": "10168:4:0",
+            "typeDescriptions": {},
+            "value": "80"
+        },
+        "visibility": "public"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "name": "ENJ / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x63f71CB5c29c33656dCd5dcA144e12532A361bEF",
+    "proxy_address": "0x24D9aB51950F3d62E9144fdC2f3135DAA6Ce8D1B",
+    "decimals": 18
+}

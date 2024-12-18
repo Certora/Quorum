@@ -1,0 +1,7 @@
+{
+    "name": "Aave DAI",
+    "pair": "adai",
+    "address": "0x028171bca77440897b824ca71d1c56cac55b68a3",
+    "proxy_address": null,
+    "decimals": 18
+}

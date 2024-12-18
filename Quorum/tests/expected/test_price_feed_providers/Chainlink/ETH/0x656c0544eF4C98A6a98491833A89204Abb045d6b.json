@@ -1,0 +1,10 @@
+{
+    "name": "KNC / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x714FF6b6Fc99c2Ee37BAC73aB41c8E4ae30508a5",
+    "proxy_address": "0x656c0544eF4C98A6a98491833A89204Abb045d6b",
+    "decimals": 18
+}

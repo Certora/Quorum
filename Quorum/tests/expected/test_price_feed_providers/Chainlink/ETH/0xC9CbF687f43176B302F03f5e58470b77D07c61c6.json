@@ -1,0 +1,10 @@
+{
+    "name": "CVX / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0xA3c0D69CedFf5b173Bc496074003dCe9C503e861",
+    "proxy_address": "0xC9CbF687f43176B302F03f5e58470b77D07c61c6",
+    "decimals": 18
+}
