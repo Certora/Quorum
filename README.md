@@ -34,37 +34,20 @@ As part of tool process, the tool will use solcx to parse the contract code to A
 
 ## Environment Variables
 
-Before using Quorum, you need to configure the following environment variables for API keys corresponding to each blockchain. These keys are necessary to access the respective blockchain explorers:
+Before using Quorum, you need to configure the following environment variable for the Etherscan API key. This key is necessary to access the respective blockchain explorers:
 
-- **ETHSCAN_API_KEY:** API key for Etherscan (Ethereum).
-- **ARBSCAN_API_KEY:** API key for Arbiscan (Arbitrum).
-- **AVAXSCAN_API_KEY:** API key for AvaScan (Avalanche). Defaults to "FREE" if not set.
-- **BASESCAN_API_KEY:** API key for BaseScan (Base).
-- **BSCSCAN_API_KEY:** API key for BscScan (Binance Smart Chain).
-- **GNOSCAN_API_KEY:** API key for GnoScan (Gnosis Chain).
-- **METSCAN_API_KEY:** API key for MetScan (Meter). Defaults to "FREE" if not set.
-- **OPTSCAN_API_KEY:** API key for OptScan (Optimism).
-- **POLYSCAN_API_KEY:** API key for PolygonScan (Polygon).
-- **SCRSCAN_API_KEY:** API key for ScrollScan (Scroll).
-- **ZKSCAN_API_KEY:** API key for ZKScan (ZKsync).
+- **ETHSCAN_API_KEY:** API key for Etherscan.
+
+And for the new advanced new listing first deposit check, you need to configure the ANTHROPIC_API_KEY This key is necessary to access the Antropic API.
 
 You can set these environment variables in your shell:
 
 ```sh
 export ETHSCAN_API_KEY="your_etherscan_api_key"
-export ARBSCAN_API_KEY="your_arbiscan_api_key"
-export AVAXSCAN_API_KEY="your_avaxscan_api_key"
-export BASESCAN_API_KEY="your_basescan_api_key"
-export BSCSCAN_API_KEY="your_bscscan_api_key"
-export GNOSCAN_API_KEY="your_gnoscan_api_key"
-export METSCAN_API_KEY="your_metscan_api_key"
-export OPTSCAN_API_KEY="your_optscan_api_key"
-export POLYSCAN_API_KEY="your_polyscan_api_key"
-export SCRSCAN_API_KEY="your_scrscan_api_key"
-export ZKSCAN_API_KEY="your_zkscan_api_key"
+export ANTHROPIC_API_KEY="your_anthropic_api_key"
 ```
 
-Replace `your_etherscan_api_key`, `your_arbiscan_api_key`, etc., with the actual API keys provided by the respective blockchain explorers.
+Replace `your_etherscan_api_key`, `your_anthropic_api_key` with your actual API keys.
 
 Additionally, set the `QUORUM_PATH` environment variable to specify where the repositories and diffs will be saved:
 
@@ -177,6 +160,7 @@ This configuration is used by the tool to manage the ground truth information fo
 current supported price feed providers are:
 - Chainlink
 - Chronicle
+- Coingecko
 
 ## Artifacts Structure
 
