@@ -35,6 +35,8 @@ def tmp_output_path() -> Generator[Path, None, None]:
 @pytest.fixture
 def tmp_cache() -> Generator[Path, None, None]:
     cache = Path(__file__).parent / 'tmp_cache'
+    if cache.exists:
+        shutil.rmtree(cache)
     cache.mkdir()
     yield cache
     shutil.rmtree(cache)
