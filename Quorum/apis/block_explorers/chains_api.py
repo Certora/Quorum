@@ -56,6 +56,8 @@ class ChainAPI:
                 raise ValueError(f"{chain}SCAN_API_KEY environment variable is not set.")
             
             self.base_url = self.BASE_URL.format(chain_id=chain_id, api_key=api_key)
+        
+        self.session = requests.Session()
 
     def get_source_code(self, proposal_address: str) -> list[SourceCode]:
         """
@@ -71,7 +73,7 @@ class ChainAPI:
             ValueError: If the API request fails or the source code could not be retrieved.
         """
         url = f"{self.base_url}&module=contract&action=getsourcecode&address={proposal_address}"
-        response = requests.get(url)
+        response = self.session.get(url)
         response.raise_for_status()
         data = response.json()
         
@@ -106,7 +108,7 @@ class ChainAPI:
             ValueError: If the API request fails or the ABI could not be retrieved.
         """
         url = f"{self.base_url}&module=contract&action=getabi&address={contract_address}"
-        response = requests.get(url)
+        response = self.session.get(url)
         response.raise_for_status()
         data = response.json()
 
@@ -147,7 +149,7 @@ class ChainAPI:
 
         # Step 5: Make the request to the blockchain explorer eth_call endpoint
         url = f"{self.base_url}&module=proxy&action=eth_call&to={contract_address}&data={data}&tag=latest"
-        response = requests.get(url)
+        response = self.session.get(url)
         response.raise_for_status()
 
         # Step 6: Handle the response
