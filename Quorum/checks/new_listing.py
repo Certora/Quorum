@@ -1,6 +1,6 @@
 from Quorum.checks.check import Check
 import Quorum.utils.pretty_printer as pp
-from Quorum.llm.chains.first_deposit_chain import FirstDepositChain
+from Quorum.llm.chains.first_deposit_chain import FirstDepositChain, ListingArray
 
 
 class NewListingCheck(Check):
@@ -17,7 +17,7 @@ class NewListingCheck(Check):
             pp.pretty_print(f"New listings detected for {self.proposal_address}", pp.Colors.WARNING)
             proposal_code = self.source_codes[0].file_content
             proposal_code_str = '\n'.join(proposal_code)
-            listings = FirstDepositChain().execute(proposal_code_str)
+            listings: ListingArray | None = FirstDepositChain().execute(proposal_code_str)
             if listings is None:
                 pp.pretty_print(f"Failed to retrieve new listings for {self.proposal_address}", pp.Colors.FAILURE)
                 return
