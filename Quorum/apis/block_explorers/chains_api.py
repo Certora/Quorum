@@ -46,7 +46,7 @@ class ChainAPI:
         """
         if chain not in self.CHAIN_ID_MAP and chain != Chain.MET:
             raise ValueError(f"Unsupported chain: {chain}. Available chains: {', '.join([c.name for c in self.CHAIN_ID_MAP.keys()])}")
-        
+        # MET is not supported via ETHScan API
         if chain == Chain.MET:
             self.base_url = "https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan/api"
         else:
