@@ -1,0 +1,10 @@
+{
+    "name": "CRV / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0xb3478aC41a7acD9a33eb15D7A764b7119e571A3C",
+    "proxy_address": "0x8a12Be339B0cD1829b91Adc01977caa5E9ac121e",
+    "decimals": 18
+}
