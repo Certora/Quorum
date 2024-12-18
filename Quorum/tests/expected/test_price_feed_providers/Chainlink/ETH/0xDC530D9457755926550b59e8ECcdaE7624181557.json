@@ -1,0 +1,10 @@
+{
+    "name": "LINK / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x3357974B41466c9Adb453Dc9D8A5a07278887174",
+    "proxy_address": "0xDC530D9457755926550b59e8ECcdaE7624181557",
+    "decimals": 18
+}

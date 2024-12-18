@@ -1,0 +1,10 @@
+{
+    "name": "MKR / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x6D68A0636246d1dE3EbE972AD8bEE886B10610Ee",
+    "proxy_address": "0x24551a8Fb2A7211A25a17B1481f043A8a8adC7f2",
+    "decimals": 18
+}

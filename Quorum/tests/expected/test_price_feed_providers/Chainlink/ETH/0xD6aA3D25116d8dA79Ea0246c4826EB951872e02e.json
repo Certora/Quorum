@@ -1,0 +1,10 @@
+{
+    "name": "UNI / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x08B383db68EE48Cef76d3A48c4E0dE9B558704f5",
+    "proxy_address": "0xD6aA3D25116d8dA79Ea0246c4826EB951872e02e",
+    "decimals": 18
+}

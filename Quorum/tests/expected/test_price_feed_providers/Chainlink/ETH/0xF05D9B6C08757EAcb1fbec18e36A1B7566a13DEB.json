@@ -1,0 +1,10 @@
+{
+    "name": "Calculated XSUSHI / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x2f28300Feef2Fe3F279E2A1cBb1f8be69e06Be85",
+    "proxy_address": "0xF05D9B6C08757EAcb1fbec18e36A1B7566a13DEB",
+    "decimals": 18
+}

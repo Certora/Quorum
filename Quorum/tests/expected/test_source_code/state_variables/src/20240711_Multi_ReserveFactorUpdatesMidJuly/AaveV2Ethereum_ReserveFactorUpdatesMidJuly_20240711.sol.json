@@ -1,0 +1,239 @@
+{
+    "POOL_CONFIGURATOR": {
+        "constant": true,
+        "id": 17,
+        "mutability": "constant",
+        "name": "POOL_CONFIGURATOR",
+        "nameLocation": "727:17:0",
+        "nodeType": "VariableDeclaration",
+        "src": "686:123:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 12,
+            "nodeType": "UserDefinedTypeName",
+            "pathNode": {
+                "id": 11,
+                "name": "ILendingPoolConfigurator",
+                "nameLocations": [
+                    "686:24:0"
+                ],
+                "nodeType": "IdentifierPath",
+                "src": "686:24:0"
+            },
+            "src": "686:24:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "arguments": [
+                {
+                    "expression": {
+                        "id": 14,
+                        "name": "AaveV2Ethereum",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "src": "776:14:0",
+                        "typeDescriptions": {}
+                    },
+                    "id": 15,
+                    "memberLocation": "791:17:0",
+                    "memberName": "POOL_CONFIGURATOR",
+                    "nodeType": "MemberAccess",
+                    "src": "776:32:0",
+                    "typeDescriptions": {}
+                }
+            ],
+            "expression": {
+                "id": 13,
+                "name": "ILendingPoolConfigurator",
+                "nodeType": "Identifier",
+                "overloadedDeclarations": [],
+                "src": "751:24:0",
+                "typeDescriptions": {}
+            },
+            "id": 16,
+            "nameLocations": [],
+            "names": [],
+            "nodeType": "FunctionCall",
+            "src": "751:58:0",
+            "tryCall": false,
+            "typeDescriptions": {}
+        },
+        "visibility": "public"
+    },
+    "DAI_RF": {
+        "constant": true,
+        "id": 20,
+        "mutability": "constant",
+        "name": "DAI_RF",
+        "nameLocation": "838:6:0",
+        "nodeType": "VariableDeclaration",
+        "src": "814:38:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 18,
+            "name": "uint256",
+            "nodeType": "ElementaryTypeName",
+            "src": "814:7:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "36355f3030",
+            "id": 19,
+            "kind": "number",
+            "nodeType": "Literal",
+            "src": "847:5:0",
+            "typeDescriptions": {},
+            "value": "65_00"
+        },
+        "visibility": "public"
+    },
+    "LINK_RF": {
+        "constant": true,
+        "id": 23,
+        "mutability": "constant",
+        "name": "LINK_RF",
+        "nameLocation": "880:7:0",
+        "nodeType": "VariableDeclaration",
+        "src": "856:39:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 21,
+            "name": "uint256",
+            "nodeType": "ElementaryTypeName",
+            "src": "856:7:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "37305f3030",
+            "id": 22,
+            "kind": "number",
+            "nodeType": "Literal",
+            "src": "890:5:0",
+            "typeDescriptions": {},
+            "value": "70_00"
+        },
+        "visibility": "public"
+    },
+    "USDC_RF": {
+        "constant": true,
+        "id": 26,
+        "mutability": "constant",
+        "name": "USDC_RF",
+        "nameLocation": "923:7:0",
+        "nodeType": "VariableDeclaration",
+        "src": "899:39:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 24,
+            "name": "uint256",
+            "nodeType": "ElementaryTypeName",
+            "src": "899:7:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "36355f3030",
+            "id": 25,
+            "kind": "number",
+            "nodeType": "Literal",
+            "src": "933:5:0",
+            "typeDescriptions": {},
+            "value": "65_00"
+        },
+        "visibility": "public"
+    },
+    "USDT_RF": {
+        "constant": true,
+        "id": 29,
+        "mutability": "constant",
+        "name": "USDT_RF",
+        "nameLocation": "966:7:0",
+        "nodeType": "VariableDeclaration",
+        "src": "942:39:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 27,
+            "name": "uint256",
+            "nodeType": "ElementaryTypeName",
+            "src": "942:7:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "36355f3030",
+            "id": 28,
+            "kind": "number",
+            "nodeType": "Literal",
+            "src": "976:5:0",
+            "typeDescriptions": {},
+            "value": "65_00"
+        },
+        "visibility": "public"
+    },
+    "WBTC_RF": {
+        "constant": true,
+        "id": 32,
+        "mutability": "constant",
+        "name": "WBTC_RF",
+        "nameLocation": "1009:7:0",
+        "nodeType": "VariableDeclaration",
+        "src": "985:39:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 30,
+            "name": "uint256",
+            "nodeType": "ElementaryTypeName",
+            "src": "985:7:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "37305f3030",
+            "id": 31,
+            "kind": "number",
+            "nodeType": "Literal",
+            "src": "1019:5:0",
+            "typeDescriptions": {},
+            "value": "70_00"
+        },
+        "visibility": "public"
+    },
+    "WETH_RF": {
+        "constant": true,
+        "id": 35,
+        "mutability": "constant",
+        "name": "WETH_RF",
+        "nameLocation": "1052:7:0",
+        "nodeType": "VariableDeclaration",
+        "src": "1028:39:0",
+        "stateVariable": false,
+        "storageLocation": "default",
+        "typeDescriptions": {},
+        "typeName": {
+            "id": 33,
+            "name": "uint256",
+            "nodeType": "ElementaryTypeName",
+            "src": "1028:7:0",
+            "typeDescriptions": {}
+        },
+        "value": {
+            "hexValue": "36355f3030",
+            "id": 34,
+            "kind": "number",
+            "nodeType": "Literal",
+            "src": "1062:5:0",
+            "typeDescriptions": {},
+            "value": "65_00"
+        },
+        "visibility": "public"
+    }
+}

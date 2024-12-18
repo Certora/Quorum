@@ -1,0 +1,10 @@
+{
+    "name": "REN / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0xFfF8FdC3C2B041C783D90dFeFDDd842B15A98712",
+    "proxy_address": "0x3147D7203354Dc06D9fd350c7a2437bcA92387a4",
+    "decimals": 18
+}

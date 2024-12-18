@@ -1,0 +1,10 @@
+{
+    "name": "SNX / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x84Cf90cfF80828dD32c69A2f25a09FC1ccbB7fc3",
+    "proxy_address": "0x79291A9d692Df95334B1a0B3B4AE6bC606782f8c",
+    "decimals": 18
+}

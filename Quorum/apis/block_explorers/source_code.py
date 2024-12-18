@@ -5,10 +5,12 @@ from enum import StrEnum
 
 import Quorum.utils.pretty_printer as pp
 
+
 # Install the latest version of Solidity compiler.
 solc_version = solcx.get_compilable_solc_versions()[0]
 solcx.install_solc(solc_version)
 solcx.set_solc_version(solc_version)
+
 
 class ASTOption(StrEnum):
     FUNCTIONS = "FunctionDefinition"

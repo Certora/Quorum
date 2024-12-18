@@ -1,0 +1,10 @@
+{
+    "name": "1INCH / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x2b16C345E0558458E919E3351C62EcAD57cA7F36",
+    "proxy_address": "0x72AFAECF99C9d9C8215fF44C77B94B99C28741e8",
+    "decimals": 18
+}
