@@ -1,0 +1,10 @@
+{
+    "name": "RAI / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x019699e5b12331cf77DF9E39818c2E15C8B06215",
+    "proxy_address": "0x4ad7B025127e89263242aB68F0f9c4E5C033B489",
+    "decimals": 18
+}
