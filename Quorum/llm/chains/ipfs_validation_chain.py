@@ -1,18 +1,13 @@
-from pathlib import Path
-
 from Quorum.llm.jinja_utils import render_prompt
-from Quorum.config import ANTHROPIC_MODEL
+from Quorum.llm.chains.cached_llm import CachedLLM
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
-from langchain_core.globals import set_llm_cache
 from langchain_core.output_parsers import StrOutputParser
-from langchain_anthropic import ChatAnthropic
-from langchain_community.cache import SQLiteCache
 
 
-class IPFSValidationChain:
+class IPFSValidationChain(CachedLLM):
     """
     IPFSValidationChain is responsible for validating the integrity and accuracy of an IPFS payload
     by comparing it against an actual Solidity payload. It leverages LangChain's capabilities to
@@ -28,24 +23,8 @@ class IPFSValidationChain:
         chain of prompts. It configures the Anthropic LLM with specified parameters and prepares the
         prompt templates for execution.
         """
-        # Configure caching to optimize LLM interactions and reduce redundant computations
-        cache_dir = Path(__file__).parent.parent / '.cache'
-        cache_dir.mkdir(parents=True, exist_ok=True)
+        super().__init__()
         
-        set_llm_cache(
-            SQLiteCache(
-                database_path=cache_dir / f'{Path(__file__).stem}_cache.db'
-            )
-        )
-
-        #Initialize the Anthropic LLM with the specified model and configurations
-        self.llm = ChatAnthropic(
-            model=ANTHROPIC_MODEL,
-            cache=True,
-            max_retries=3,
-            temperature=0.0,
-        )
-
         # Define the workflow for the IPFS validation chain
         workflow = StateGraph(state_schema=MessagesState)
         workflow.add_node("model", self.__call_model)

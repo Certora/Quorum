@@ -1,19 +1,6 @@
-from pydantic import BaseModel
-
 from Quorum.checks.check import Check
 import Quorum.utils.pretty_printer as pp
-
-
-class ListingDetails(BaseModel):
-    asset: str
-    assetSymbol: str = None
-    priceFeedAddress: str = None
-
-
-class FunctionCallDetails(BaseModel):
-    pool: str
-    asset: str
-    asset_seed: str
+from Quorum.llm.chains.first_deposit_chain import FirstDepositChain, ListingArray
 
 
 class NewListingCheck(Check):
@@ -26,9 +13,23 @@ class NewListingCheck(Check):
         no new listings were found.
         """
         functions = self._get_functions_from_source_codes()
-        if function := functions.get("newListings", functions.get("newListingsCustom")):
+        if functions.get("newListings", functions.get("newListingsCustom")):
             pp.pretty_print(f"New listings detected for {self.proposal_address}", pp.Colors.WARNING)
-            self._write_to_file("new_listings.json", data=function)
+            proposal_code = self.source_codes[0].file_content
+            proposal_code_str = '\n'.join(proposal_code)
+            listings: ListingArray | None = FirstDepositChain().execute(proposal_code_str)
+            if listings is None:
+                pp.pretty_print(f"Failed to retrieve new listings for {self.proposal_address}", pp.Colors.FAILURE)
+                return
+            for listing in listings.listings:
+                if listing.approve_indicator and listing.supply_indicator:
+                    pp.pretty_print(
+                        f"New listing detected for {listing}", pp.Colors.SUCCESS
+                    )
+                else:
+                    pp.pretty_print(f"New listing detected for {listing.asset_symbol} but no approval or supply detected", pp.Colors.FAILURE)
+            self._write_to_file("new_listings.json", listings.model_dump())
+                     
         else:
             pp.pretty_print(f"No new listings detected for {self.proposal_address}", pp.Colors.INFO)
     
