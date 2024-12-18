@@ -1,9 +1,7 @@
 {
     "Aave": {
         "AVAX": {
-            "Proposals": [
-                "0x96cecD5D7A4b740f6a8eF2787fe88E0Bd480d79f"
-            ]
+            "Proposals": []
         },
         "ETH": {
             "Proposals": [
