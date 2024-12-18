@@ -1,26 +1,14 @@
 import pytest
 
-import Quorum.tests.utils as utils
+import Quorum.tests.conftest as conftest
 
 from Quorum.utils.chain_enum import Chain
 from Quorum.apis.price_feeds import PriceFeedData, ChainLinkAPI, ChronicleAPI, CoinGeckoAPI
 
 import json
-from pathlib import Path
-import shutil
-
-from typing import Generator
 
 
-EXPECTED_DIR = utils.EXPECTED_DIR / 'test_price_feed_providers'
-
-
-@pytest.fixture
-def tmp_cache() -> Generator[Path, None, None]:
-    cache = Path(__file__).parent / 'tmp_cache'
-    cache.mkdir()
-    yield cache
-    shutil.rmtree(cache)
+EXPECTED_DIR = conftest.EXPECTED_DIR / 'test_price_feed_providers'
 
 
 def test_chainlink(tmp_cache):
