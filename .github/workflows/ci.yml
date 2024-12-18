@@ -14,14 +14,6 @@ jobs:
     
     env:
       ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
-      POLYSCAN_API_KEY: ${{ secrets.POLYSCAN_API_KEY }}
-      OPTSCAN_API_KEY: ${{ secrets.OPTSCAN_API_KEY }}
-      ARBSCAN_API_KEY: ${{ secrets.ARBSCAN_API_KEY }}
-      BASESCAN_API_KEY: ${{ secrets.BASESCAN_API_KEY }}
-      GNOSCAN_API_KEY: ${{ secrets.GNOSCAN_API_KEY }}
-      SCRSCAN_API_KEY: ${{ secrets.SCRSCAN_API_KEY }}
-      BSCSCAN_API_KEY: ${{ secrets.BSCSCAN_API_KEY }}
-      ZKSCAN_API_KEY: ${{ secrets.ZKSCAN_API_KEY }}
       QUORUM_PATH: "."
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
