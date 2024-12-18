@@ -4,6 +4,7 @@ from pathlib import Path
 
 
 RESOURCES_DIR = Path(__file__).parent / 'resources'
+EXPECTED_DIR = Path(__file__).parent / 'expected'
 SOURCE_CODES_DIR = RESOURCES_DIR / 'source_codes'
 
 
