@@ -1,0 +1,10 @@
+{
+    "name": "BAT / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x0b83B36bDb49E5010c2AeE53b3cbD131Fd24261C",
+    "proxy_address": "0x0d16d4528239e9ee52fa531af613AcdB23D88c94",
+    "decimals": 18
+}

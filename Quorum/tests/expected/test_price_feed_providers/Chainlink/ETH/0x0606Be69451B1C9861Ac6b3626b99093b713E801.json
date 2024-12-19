@@ -1,0 +1,10 @@
+{
+    "name": "FIL / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x0260343eB7bEf134b8892Ee66712fd3D5a3f6274",
+    "proxy_address": "0x0606Be69451B1C9861Ac6b3626b99093b713E801",
+    "decimals": 18
+}

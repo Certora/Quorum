@@ -1,0 +1,10 @@
+{
+    "name": "BAL / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x84BB206a5B39DBB5Ea378074c9cBEde397F575dD",
+    "proxy_address": "0xC1438AA3823A6Ba0C159CfA8D98dF5A994bA120b",
+    "decimals": 18
+}

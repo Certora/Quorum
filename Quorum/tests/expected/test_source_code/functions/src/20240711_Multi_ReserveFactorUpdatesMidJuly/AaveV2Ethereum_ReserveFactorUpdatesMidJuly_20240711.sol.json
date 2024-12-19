@@ -1,0 +1,370 @@
+{
+    "execute": {
+        "body": {
+            "id": 86,
+            "nodeType": "Block",
+            "src": "1100:525:0",
+            "statements": [
+                {
+                    "expression": {
+                        "arguments": [
+                            {
+                                "expression": {
+                                    "id": 41,
+                                    "name": "AaveV2EthereumAssets",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "src": "1141:20:0",
+                                    "typeDescriptions": {}
+                                },
+                                "id": 42,
+                                "memberLocation": "1162:14:0",
+                                "memberName": "DAI_UNDERLYING",
+                                "nodeType": "MemberAccess",
+                                "src": "1141:35:0",
+                                "typeDescriptions": {}
+                            },
+                            {
+                                "id": 43,
+                                "name": "DAI_RF",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "src": "1178:6:0",
+                                "typeDescriptions": {}
+                            }
+                        ],
+                        "expression": {
+                            "expression": {
+                                "id": 38,
+                                "name": "POOL_CONFIGURATOR",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "src": "1106:17:0",
+                                "typeDescriptions": {}
+                            },
+                            "id": 40,
+                            "memberLocation": "1124:16:0",
+                            "memberName": "setReserveFactor",
+                            "nodeType": "MemberAccess",
+                            "src": "1106:34:0",
+                            "typeDescriptions": {}
+                        },
+                        "id": 44,
+                        "nameLocations": [],
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1106:79:0",
+                        "tryCall": false,
+                        "typeDescriptions": {}
+                    },
+                    "id": 45,
+                    "nodeType": "ExpressionStatement",
+                    "src": "1106:79:0"
+                },
+                {
+                    "expression": {
+                        "arguments": [
+                            {
+                                "expression": {
+                                    "id": 49,
+                                    "name": "AaveV2EthereumAssets",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "src": "1226:20:0",
+                                    "typeDescriptions": {}
+                                },
+                                "id": 50,
+                                "memberLocation": "1247:15:0",
+                                "memberName": "LINK_UNDERLYING",
+                                "nodeType": "MemberAccess",
+                                "src": "1226:36:0",
+                                "typeDescriptions": {}
+                            },
+                            {
+                                "id": 51,
+                                "name": "LINK_RF",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "src": "1264:7:0",
+                                "typeDescriptions": {}
+                            }
+                        ],
+                        "expression": {
+                            "expression": {
+                                "id": 46,
+                                "name": "POOL_CONFIGURATOR",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "src": "1191:17:0",
+                                "typeDescriptions": {}
+                            },
+                            "id": 48,
+                            "memberLocation": "1209:16:0",
+                            "memberName": "setReserveFactor",
+                            "nodeType": "MemberAccess",
+                            "src": "1191:34:0",
+                            "typeDescriptions": {}
+                        },
+                        "id": 52,
+                        "nameLocations": [],
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1191:81:0",
+                        "tryCall": false,
+                        "typeDescriptions": {}
+                    },
+                    "id": 53,
+                    "nodeType": "ExpressionStatement",
+                    "src": "1191:81:0"
+                },
+                {
+                    "expression": {
+                        "arguments": [
+                            {
+                                "expression": {
+                                    "id": 57,
+                                    "name": "AaveV2EthereumAssets",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "src": "1313:20:0",
+                                    "typeDescriptions": {}
+                                },
+                                "id": 58,
+                                "memberLocation": "1334:15:0",
+                                "memberName": "USDC_UNDERLYING",
+                                "nodeType": "MemberAccess",
+                                "src": "1313:36:0",
+                                "typeDescriptions": {}
+                            },
+                            {
+                                "id": 59,
+                                "name": "USDC_RF",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "src": "1351:7:0",
+                                "typeDescriptions": {}
+                            }
+                        ],
+                        "expression": {
+                            "expression": {
+                                "id": 54,
+                                "name": "POOL_CONFIGURATOR",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "src": "1278:17:0",
+                                "typeDescriptions": {}
+                            },
+                            "id": 56,
+                            "memberLocation": "1296:16:0",
+                            "memberName": "setReserveFactor",
+                            "nodeType": "MemberAccess",
+                            "src": "1278:34:0",
+                            "typeDescriptions": {}
+                        },
+                        "id": 60,
+                        "nameLocations": [],
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1278:81:0",
+                        "tryCall": false,
+                        "typeDescriptions": {}
+                    },
+                    "id": 61,
+                    "nodeType": "ExpressionStatement",
+                    "src": "1278:81:0"
+                },
+                {
+                    "expression": {
+                        "arguments": [
+                            {
+                                "expression": {
+                                    "id": 65,
+                                    "name": "AaveV2EthereumAssets",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "src": "1400:20:0",
+                                    "typeDescriptions": {}
+                                },
+                                "id": 66,
+                                "memberLocation": "1421:15:0",
+                                "memberName": "USDT_UNDERLYING",
+                                "nodeType": "MemberAccess",
+                                "src": "1400:36:0",
+                                "typeDescriptions": {}
+                            },
+                            {
+                                "id": 67,
+                                "name": "USDT_RF",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "src": "1438:7:0",
+                                "typeDescriptions": {}
+                            }
+                        ],
+                        "expression": {
+                            "expression": {
+                                "id": 62,
+                                "name": "POOL_CONFIGURATOR",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "src": "1365:17:0",
+                                "typeDescriptions": {}
+                            },
+                            "id": 64,
+                            "memberLocation": "1383:16:0",
+                            "memberName": "setReserveFactor",
+                            "nodeType": "MemberAccess",
+                            "src": "1365:34:0",
+                            "typeDescriptions": {}
+                        },
+                        "id": 68,
+                        "nameLocations": [],
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1365:81:0",
+                        "tryCall": false,
+                        "typeDescriptions": {}
+                    },
+                    "id": 69,
+                    "nodeType": "ExpressionStatement",
+                    "src": "1365:81:0"
+                },
+                {
+                    "expression": {
+                        "arguments": [
+                            {
+                                "expression": {
+                                    "id": 73,
+                                    "name": "AaveV2EthereumAssets",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "src": "1487:20:0",
+                                    "typeDescriptions": {}
+                                },
+                                "id": 74,
+                                "memberLocation": "1508:15:0",
+                                "memberName": "WBTC_UNDERLYING",
+                                "nodeType": "MemberAccess",
+                                "src": "1487:36:0",
+                                "typeDescriptions": {}
+                            },
+                            {
+                                "id": 75,
+                                "name": "WBTC_RF",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "src": "1525:7:0",
+                                "typeDescriptions": {}
+                            }
+                        ],
+                        "expression": {
+                            "expression": {
+                                "id": 70,
+                                "name": "POOL_CONFIGURATOR",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "src": "1452:17:0",
+                                "typeDescriptions": {}
+                            },
+                            "id": 72,
+                            "memberLocation": "1470:16:0",
+                            "memberName": "setReserveFactor",
+                            "nodeType": "MemberAccess",
+                            "src": "1452:34:0",
+                            "typeDescriptions": {}
+                        },
+                        "id": 76,
+                        "nameLocations": [],
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1452:81:0",
+                        "tryCall": false,
+                        "typeDescriptions": {}
+                    },
+                    "id": 77,
+                    "nodeType": "ExpressionStatement",
+                    "src": "1452:81:0"
+                },
+                {
+                    "expression": {
+                        "arguments": [
+                            {
+                                "expression": {
+                                    "id": 81,
+                                    "name": "AaveV2EthereumAssets",
+                                    "nodeType": "Identifier",
+                                    "overloadedDeclarations": [],
+                                    "src": "1574:20:0",
+                                    "typeDescriptions": {}
+                                },
+                                "id": 82,
+                                "memberLocation": "1595:15:0",
+                                "memberName": "WETH_UNDERLYING",
+                                "nodeType": "MemberAccess",
+                                "src": "1574:36:0",
+                                "typeDescriptions": {}
+                            },
+                            {
+                                "id": 83,
+                                "name": "WETH_RF",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "src": "1612:7:0",
+                                "typeDescriptions": {}
+                            }
+                        ],
+                        "expression": {
+                            "expression": {
+                                "id": 78,
+                                "name": "POOL_CONFIGURATOR",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "src": "1539:17:0",
+                                "typeDescriptions": {}
+                            },
+                            "id": 80,
+                            "memberLocation": "1557:16:0",
+                            "memberName": "setReserveFactor",
+                            "nodeType": "MemberAccess",
+                            "src": "1539:34:0",
+                            "typeDescriptions": {}
+                        },
+                        "id": 84,
+                        "nameLocations": [],
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "1539:81:0",
+                        "tryCall": false,
+                        "typeDescriptions": {}
+                    },
+                    "id": 85,
+                    "nodeType": "ExpressionStatement",
+                    "src": "1539:81:0"
+                }
+            ]
+        },
+        "id": 87,
+        "implemented": true,
+        "kind": "function",
+        "modifiers": [],
+        "name": "execute",
+        "nameLocation": "1081:7:0",
+        "nodeType": "FunctionDefinition",
+        "parameters": {
+            "id": 36,
+            "nodeType": "ParameterList",
+            "parameters": [],
+            "src": "1088:2:0"
+        },
+        "returnParameters": {
+            "id": 37,
+            "nodeType": "ParameterList",
+            "parameters": [],
+            "src": "1100:0:0"
+        },
+        "src": "1072:553:0",
+        "stateMutability": "nonpayable",
+        "virtual": false,
+        "visibility": "external"
+    }
+}
