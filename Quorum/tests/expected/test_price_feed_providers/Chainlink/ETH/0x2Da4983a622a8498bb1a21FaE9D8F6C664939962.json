@@ -1,0 +1,10 @@
+{
+    "name": "ZRX / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0x3547473DA7deB396ACF07D57340a8ef931d7414E",
+    "proxy_address": "0x2Da4983a622a8498bb1a21FaE9D8F6C664939962",
+    "decimals": 18
+}

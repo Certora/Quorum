@@ -1,0 +1,10 @@
+{
+    "name": "AMPL / ETH",
+    "pair": [
+        "",
+        ""
+    ],
+    "address": "0xcC1843B09Ba15b829095Cbca8D7aB460d669236a",
+    "proxy_address": "0x492575FDD11a0fCf2C6C719867890a7648d526eB",
+    "decimals": 18
+}
