@@ -23,25 +23,28 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main():
-    args = parse_args()
-
-    pprinter.pretty_print(f'Generating a report using template in {args.template}', pprinter.Colors.INFO)
-    env = Environment(loader=FileSystemLoader(args.template.parent))
+def create_report(proposal_id: int, template: Path):
+    pprinter.pretty_print(f'Generating a report using template in {template}', pprinter.Colors.INFO)
+    env = Environment(loader=FileSystemLoader(template.parent))
     env.globals.update(zip=zip)
-    template = env.get_template(args.template.name)
+    template = env.get_template(template.name)
     
-    pprinter.pretty_print(f'Retrieving tag information for proposal {args.proposal_id}', pprinter.Colors.INFO)
-    tags = aave_tags.get_aave_tags(args.proposal_id)
+    pprinter.pretty_print(f'Retrieving tag information for proposal {proposal_id}', pprinter.Colors.INFO)
+    tags = aave_tags.get_aave_tags(proposal_id)
     pprinter.pretty_print(f'Tag information retrieved', pprinter.Colors.INFO)
 
     report = template.render(tags)
 
-    with open((report_path:=f'v3-{args.proposal_id}.md'), 'w') as f:
+    with open((report_path:=f'v3-{proposal_id}.md'), 'w') as f:
         f.write(report)
 
     pprinter.pretty_print(f'Created report at {report_path}.', pprinter.Colors.SUCCESS)
 
+
+def main():
+    args = parse_args()
+    create_report(args.proposal_id, args.template)
+    
 
 if __name__ == '__main__':
     main()

@@ -41,3 +41,11 @@ def test_price_feed(source_codes: list[SourceCode], tmp_output_path: Path):
     price_feed_check.verify_price_feed()
 
     assert sorted([p.name for p in price_feed_check.check_folder.iterdir()]) == ['AaveV2Ethereum']
+
+
+@pytest.mark.parametrize('source_codes', ['ETH/0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637'], indirect=True)
+def test_new_listing(source_codes: list[SourceCode], tmp_output_path: Path):
+    new_listing_check = Checks.NewListingCheck('Aave', Chain.ETH, '', source_codes)
+    new_listing_check.new_listing_check()
+
+    assert next(new_listing_check.check_folder.iterdir(), None) is None
