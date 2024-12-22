@@ -19,7 +19,7 @@ class ChainLinkAPI(PriceFeedProviderBase):
         Chain.MET: "https://reference-data-directory.vercel.app/feeds-ethereum-mainnet-andromeda-1.json",
         Chain.OPT: "https://reference-data-directory.vercel.app/feeds-ethereum-mainnet-optimism-1.json",
         Chain.POLY: "https://reference-data-directory.vercel.app/feeds-matic-mainnet.json",
-        Chain.SCR: "https://reference-data-directory.vercel.app/feeds-ethereum-mainnet-scroll-1.json",
+        Chain.SCROLL: "https://reference-data-directory.vercel.app/feeds-ethereum-mainnet-scroll-1.json",
         Chain.ZK: "https://reference-data-directory.vercel.app/feeds-ethereum-mainnet-zksync-1.json"
     }
     

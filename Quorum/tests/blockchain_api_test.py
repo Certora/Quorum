@@ -5,7 +5,7 @@ from Quorum.apis.block_explorers.chains_api import ChainAPI
 @pytest.mark.parametrize(
     "chain, contract_address",
     [
-        (Chain.SCR, "0x32f924C0e0F1Abf5D1ff35B05eBc5E844dEdD2A9"),
+        (Chain.SCROLL, "0x32f924C0e0F1Abf5D1ff35B05eBc5E844dEdD2A9"),
         (Chain.ZK, "0x162C97F6B4FA5a915A44D430bb7AE0eE716b3b87")
     ]
 )
