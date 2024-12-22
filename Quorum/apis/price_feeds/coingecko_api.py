@@ -21,7 +21,7 @@ class CoinGeckoAPI(PriceFeedProviderBase):
         Chain.MET: 'metis-andromeda',
         Chain.OPT: 'optimistic-ethereum',
         Chain.POLY: 'polygon-pos',
-        Chain.SCR: 'scroll',
+        Chain.SCROLL: 'scroll',
         Chain.ZK: 'zksync',
     }
 
