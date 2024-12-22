@@ -23,7 +23,7 @@ def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[
     parser = argparse.ArgumentParser(description="Fetch and compare smart contract source code.")
     parser.add_argument('--config', type=load_config, help="Path to JSON configuration file.")
     parser.add_argument('--customer', type=str, help="Customer name or identifier.")
-    parser.add_argument('--chain', type=str, choices=[chain.value for chain in Chain], help="Blockchain chain.")
+    parser.add_argument('--chain', type=Chain, choices=[chain.value for chain in Chain], help="Blockchain chain.")
     parser.add_argument('--proposal_address', type=arg_valid.validate_address, help="Ethereum proposal address.")
     args = parser.parse_args()
 
@@ -48,7 +48,7 @@ def load_config(config_path: str) -> dict[str, Any] | None:
         pp.pretty_print(f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE)
 
 
-def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str], providers: list[PriceFeedProviderBase]) -> None:
+def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], providers: list[PriceFeedProviderBase]) -> None:
     """
     Check and compare source code files for given proposals.
 
@@ -60,7 +60,6 @@ def proposals_check(customer: str, chain_name: str, proposal_addresses: list[str
         proposal_addresses (list[str]): List of proposal addresses.
         providers (list[PriceFeedProviderInterface]): List of price feed providers.
     """
-    chain = Chain[chain_name.upper()]
     api = ChainAPI(chain)
     
     pp.pretty_print(f"Processing customer {customer}, for chain: {chain}", pp.Colors.INFO)
@@ -90,7 +89,7 @@ def main() -> None:
     This function determines whether to run in single-task mode using command line arguments
     or multi-task mode using a JSON configuration file.
     """
-    config_data, customer, chain_name, proposal_address = parse_args()
+    config_data, customer, chain, proposal_address = parse_args()
 
     if config_data:
         # Multi-task mode using JSON configuration
@@ -98,18 +97,20 @@ def main() -> None:
             ground_truth_config = ConfigLoader.load_customer_config(customer)
             GitManager(customer, ground_truth_config).clone_or_update()
             price_feed_providers = ground_truth_config.get("price_feed_providers", [])
-            for chain_name, proposals in chain_info.items():
+            for chain, proposals in chain_info.items():
+                # Validate chain is supported by cast to Chain enum
+                chain = Chain(chain)
                 if proposals["Proposals"]: 
-                    proposals_check(customer, chain_name, proposals["Proposals"], price_feed_providers)
+                    proposals_check(customer, chain, proposals["Proposals"], price_feed_providers)
     else:
         # Single-task mode using command line arguments
-        if not (customer and chain_name and proposal_address):
+        if not (customer and chain and proposal_address):
             raise ValueError("Customer, chain, and proposal_address must be specified if not using a config file.")
         
         ground_truth_config = ConfigLoader.load_customer_config(customer)
         GitManager(customer, ground_truth_config).clone_or_update()
         price_feed_providers = ground_truth_config.get("price_feed_providers", [])    
-        proposals_check(customer, chain_name, [proposal_address], price_feed_providers)
+        proposals_check(customer, chain, [proposal_address], price_feed_providers)
 
 
 if __name__ == "__main__":
