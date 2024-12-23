@@ -1,12 +1,12 @@
 name: CI
 
 on:
-  pull_request:
-    branches:
-      - main
+  pull_request_review:
+    types: [submitted]
 
 jobs:
   Regression:
+    if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
     
     container:
@@ -35,6 +35,7 @@ jobs:
 
   
   Update-Version:
+    if: github.event.review.state == 'approved'
     needs: Regression
     runs-on: ubuntu-latest
     permissions:
