@@ -55,7 +55,9 @@ jobs:
           git config --global user.name "$GITHUB_ACTOR"
 
       - name: Commit and push version change
+        env:
+            ENV_GITHUB_HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
           git add .
           git commit -m "Auto change version."
-          git push origin HEAD:$GITHUB_HEAD_REF -f
+          git push origin HEAD:$ENV_GITHUB_HEAD_REF -f
