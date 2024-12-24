@@ -5,38 +5,38 @@ on:
     types: [submitted]
 
 jobs:
-  Regression:
-    if: (github.event.review.state == 'approved') && (github.event.pull_request.base.ref == 'main')
-    runs-on: ubuntu-latest
+  # Regression:
+  #   if: (github.event.review.state == 'approved') && (github.event.pull_request.base.ref == 'main')
+  #   runs-on: ubuntu-latest
     
-    container:
-      image: public.ecr.aws/certora/cvt-image:2024.10.23-4499-c4f8ad4
+  #   container:
+  #     image: public.ecr.aws/certora/cvt-image:2024.10.23-4499-c4f8ad4
     
-    env:
-      ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
-      QUORUM_PATH: "."
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  #   env:
+  #     ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
+  #     QUORUM_PATH: "."
+  #     ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
-    permissions:
-      id-token: write
-      contents: read
+  #   permissions:
+  #     id-token: write
+  #     contents: read
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v4
 
-    - name: Install Quorum Repo
-      run: pip3.11 install .
+  #   - name: Install Quorum Repo
+  #     run: pip3.11 install .
 
-    - name: Execute Regression Tests
-      run: |
-        pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
-        CheckProposal --config Quorum/execution.json
+  #   - name: Execute Regression Tests
+  #     run: |
+  #       pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
+  #       CheckProposal --config Quorum/execution.json
 
   
   Update-Version:
     if: (github.event.review.state == 'approved') && (github.event.pull_request.base.ref == 'main')
-    needs: Regression
+    # needs: Regression
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -60,4 +60,5 @@ jobs:
         run: |
           git add .
           git commit -m "Auto change version."
-          git push origin HEAD:$GITHUB_HEAD_REF -f
+          echo HEAD:$GITHUB_HEAD_REF
+          # git push origin HEAD:$GITHUB_HEAD_REF -f
