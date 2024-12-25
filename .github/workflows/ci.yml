@@ -34,7 +34,6 @@ jobs:
 
   
   Update-Version:
-    if: (github.event.review.state == 'approved') && (github.event.pull_request.base.ref == 'main')
     needs: Regression
     runs-on: ubuntu-latest
     permissions:
