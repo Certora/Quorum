@@ -111,7 +111,7 @@ class PriceFeedCheck(Check):
             addresses = set(re.findall(self.address_pattern, clean_text))
             
             for address in addresses:
-                if feed := self.__check_price_feed_address(address.lower(), source_code.file_name):
+                if feed := self.__check_price_feed_address(address, source_code.file_name):
                     verified_variables.append(feed)
             
             if verified_variables:
