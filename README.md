@@ -150,14 +150,14 @@ Example `ground_truth.json`:
             "https://github.com/aave-dao/aave-v3-origin"
         ],
         "review_repo": "https://github.com/bgd-labs/aave-proposals-v3",
-        "price_feed_providers": ["Chainlink", "Chronicle", "Coingecko"]
+        "price_feed_providers": ["Chainlink", "Coingecko"]
     }
 }
 ```
 
 This configuration is used by the tool to manage the ground truth information for each customer. The `dev_repos` array contains the URLs of the repositories associated with the customer. The `review_repo` field specifies the repository to compare against when checking proposals. The `price_feed_providers` array lists the feed price providers to check against.
 
-current supported price feed providers are:
+### current supported price feed providers are
 - Chainlink
 - Chronicle
 - Coingecko
