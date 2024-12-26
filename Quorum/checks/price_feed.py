@@ -8,6 +8,31 @@ from Quorum.apis.block_explorers.source_code import SourceCode
 import Quorum.utils.pretty_printer as pp
 
 
+def remove_solidity_comments(source_code: str) -> str:
+    """
+    Removes single-line and multi-line comments from Solidity source code.
+    
+    Args:
+        source_code (str): The Solidity source code as a single string.
+    
+    Returns:
+        str: The source code with comments removed.
+    """
+    # Regex pattern to match single-line comments (//...)
+    single_line_comment_pattern = r'//.*?$'
+    
+    # Regex pattern to match multi-line comments (/*...*/)
+    multi_line_comment_pattern = r'/\*.*?\*/'
+    
+    # First, remove multi-line comments
+    source_code = re.sub(multi_line_comment_pattern, '', source_code, flags=re.DOTALL)
+    
+    # Then, remove single-line comments
+    source_code = re.sub(single_line_comment_pattern, '', source_code, flags=re.MULTILINE)
+    
+    return source_code
+
+
 class PriceFeedCheck(Check):
     """
     The PriceFeedCheck class is responsible for verifying the price feed addresses in the source code
@@ -37,12 +62,13 @@ class PriceFeedCheck(Check):
         self.address_pattern = r'0x[a-fA-F0-9]{40}'
         self.providers = providers
 
-    def __check_price_feed_address(self, address: str) -> dict | None:
+    def __check_price_feed_address(self, address: str, file_name: str) -> dict | None:
         """
         Check if the given address is present in the price feed providers.
 
         Args:
             address (str): The address to be checked.
+            file_name (str): The name of the source code file where the address was found.
 
         Returns:
             dict | None: The price feed data if the address is found, otherwise None.
@@ -57,7 +83,7 @@ class PriceFeedCheck(Check):
                 return price_feed.model_dump()
             
         pp.pretty_print(
-            f"Address {address} not found in any price feed provider: {[p.get_name() for p in self.providers]}",
+            f"Address {address} from {file_name} not found in any price feed provider: {[p.get_name() for p in self.providers]}",
             pp.Colors.INFO
         )
         return None
@@ -75,10 +101,17 @@ class PriceFeedCheck(Check):
             verified_sources_path = f"{Path(source_code.file_name).stem.removesuffix('.sol')}/verified_sources.json"
             verified_variables = []
 
+            # Combine all lines into a single string
             contract_text = '\n'.join(source_code.file_content)
-            addresses = set(re.findall(self.address_pattern, contract_text))
+            
+            # Remove comments from the source code
+            clean_text = remove_solidity_comments(contract_text)
+            
+            # Extract unique addresses using regex
+            addresses = set(re.findall(self.address_pattern, clean_text))
+            
             for address in addresses:
-                if feed := self.__check_price_feed_address(address):
+                if feed := self.__check_price_feed_address(address.lower(), source_code.file_name):
                     verified_variables.append(feed)
             
             if verified_variables:
