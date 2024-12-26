@@ -53,19 +53,6 @@ jobs:
           CheckProposal --config Quorum/execution.json
 
   Update-Version:
-    env:
-      ALLOWED_EMAILS: ${{ secrets.ALLOWED_EMAILS }}
-
-    # Same condition check as above
-    if: >
-      (
-        (github.event_name == 'pull_request_review' && github.event.review.state == 'approved')
-        || 
-        contains(github.env.ALLOWED_EMAILS, github.event.pull_request.user.login)
-      )
-      &&
-      (github.event.pull_request.base.ref == 'main')
-
     needs: Regression
     runs-on: ubuntu-latest
     
@@ -85,8 +72,9 @@ jobs:
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git config --global user.name "$GITHUB_ACTOR"
 
-      - name: Commit and push version change
-        run: |
-          git add .
-          git commit -m "Auto change version."
-          git push origin HEAD:$GITHUB_HEAD_REF -f
+          - name: Commit and push version change
+          run: |
+            git add version
+            # Use "[skip ci]" so this commit does NOT trigger a new run
+            git commit -m "chore: update version [skip ci]"
+            git push origin HEAD:"${GITHUB_HEAD_REF}" --force
