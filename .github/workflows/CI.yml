@@ -1,8 +1,6 @@
 name: CI
 
 on:
-  pull_request_review:
-    types: [submitted]
   pull_request:
     branches:
       - main
@@ -11,35 +9,15 @@ on:
 jobs:
   Regression:
     env:
-      ALLOWED_EMAILS: ${{ secrets.ALLOWED_EMAILS }}
       ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
       QUORUM_PATH: "."
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-
-    # Only run this job if:
-    #  - The event is a PR review AND it's approved
-    #    OR
-    #  - The PR author's username is in ALLOWED_EMAILS
-    # AND
-    #  - The base branch is main
-    if: >
-      (
-        (github.event_name == 'pull_request_review' && github.event.review.state == 'approved')
-        || 
-        contains(github.env.ALLOWED_EMAILS, github.event.pull_request.user.login)
-      )
-      &&
-      (github.event.pull_request.base.ref == 'main')
-
     runs-on: ubuntu-latest
-    
     container:
       image: public.ecr.aws/certora/cvt-image:2024.10.23-4499-c4f8ad4
-
     permissions:
       id-token: write
       contents: read
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -51,42 +29,3 @@ jobs:
         run: |
           pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
           CheckProposal --config Quorum/execution.json
-
-  Update-Version:
-    env:
-      ALLOWED_EMAILS: ${{ secrets.ALLOWED_EMAILS }}
-
-    # Same condition check as above
-    if: >
-      (
-        (github.event_name == 'pull_request_review' && github.event.review.state == 'approved')
-        || 
-        contains(github.env.ALLOWED_EMAILS, github.event.pull_request.user.login)
-      )
-      &&
-      (github.event.pull_request.base.ref == 'main')
-
-    needs: Regression
-    runs-on: ubuntu-latest
-    
-    permissions:
-      id-token: write
-      contents: write
-      actions: write
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Change version
-        run: python3 -c "from datetime import datetime; print(datetime.now().strftime('%Y%m%d.%H%M%S.%f'))" > version
-
-      - name: Configure Git
-        run: |
-          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git config --global user.name "$GITHUB_ACTOR"
-
-      - name: Commit and push version change
-        run: |
-          git add .
-          git commit -m "Auto change version."
-          git push origin HEAD:$GITHUB_HEAD_REF -f
