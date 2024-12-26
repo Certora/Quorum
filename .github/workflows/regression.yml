@@ -1,18 +1,19 @@
 name: Regression
 
-on:
-  pull_request_review:
-    types: [submitted]
-  workflow_dispatch:
-
 # on:
-#   pull_request:
-#     branches:
-#       - main
+#   pull_request_review:
+#     types: [submitted]
+#   workflow_dispatch:
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   Regression:
-    if: (github.event.review.state == 'approved') && (github.event.pull_request.base.ref == 'main')
+    # if: (github.event.review.state == 'approved') && (github.event.pull_request.base.ref == 'main')
     runs-on: ubuntu-latest
     
     container:
