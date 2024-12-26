@@ -65,7 +65,19 @@ def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], 
     pp.pretty_print(f"Processing customer {customer}, for chain: {chain}", pp.Colors.INFO)
     for proposal_address in proposal_addresses:
         pp.pretty_print(f"Processing proposal {proposal_address}", pp.Colors.INFO)
-        source_codes = api.get_source_code(proposal_address)
+
+        try:
+            source_codes = api.get_source_code(proposal_address)
+        except ValueError as e:
+            error_message = (
+                f"Payload address {proposal_address} is not verified on {chain.name} explorer.\n"
+                "We do not recommend to approve this proposal until the code is approved!\n"
+                "Try contacting the proposer and ask them to verify the contract.\n"
+                "No further checks are being performed on this payload."
+            )
+            pp.pretty_print(error_message, pp.Colors.FAILURE)
+            # Skip further checks for this proposal 
+            continue
 
         # Diff check
         missing_files = Checks.DiffCheck(customer, chain, proposal_address, source_codes).find_diffs()
