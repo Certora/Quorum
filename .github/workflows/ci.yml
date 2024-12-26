@@ -6,7 +6,7 @@ on:
 
 jobs:
   Regression:
-    if: ( (github.event.review.state == 'approved') || (github.event.pull_request.user.email == 'nivcerotra@gmail.com')) && (github.event.pull_request.base.ref == 'main')
+    if: ((github.event.review.state == 'approved') || (github.event.pull_request.user.email == 'nivcerotra@gmail.com')) && (github.event.pull_request.base.ref == 'main')
     runs-on: ubuntu-latest
     
     container:
@@ -35,7 +35,7 @@ jobs:
 
   
   Update-Version:
-    if: (github.event.review.state == 'approved') && (github.event.pull_request.base.ref == 'main')
+    if: ((github.event.review.state == 'approved') || (github.event.pull_request.user.email == 'nivcerotra@gmail.com')) && (github.event.pull_request.base.ref == 'main')
     needs: Regression
     runs-on: ubuntu-latest
     permissions:
