@@ -28,4 +28,4 @@ jobs:
       run: |
         git add .
         git commit -m "Auto change version."
-        git push -f
+        git push origin HEAD:$GITHUB_HEAD_REF -f
