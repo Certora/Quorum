@@ -55,18 +55,17 @@ jobs:
   Update-Version:
     needs: Regression
     runs-on: ubuntu-latest
-    
     permissions:
       id-token: write
       contents: write
       actions: write
-
+    
     steps:
       - uses: actions/checkout@v4
-
+      
       - name: Change version
         run: python3 -c "from datetime import datetime; print(datetime.now().strftime('%Y%m%d.%H%M%S.%f'))" > version
-
+      
       - name: Configure Git
         run: |
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
@@ -74,7 +73,6 @@ jobs:
 
       - name: Commit and push version change
         run: |
-          git add version
-          # Use "[skip ci]" so this commit does NOT trigger a new run
-          git commit -m "chore: update version [skip ci]"
+          git add .
+          git commit -m "Auto change version."
           git push origin HEAD:$GITHUB_HEAD_REF -f
