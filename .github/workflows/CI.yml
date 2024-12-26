@@ -72,9 +72,9 @@ jobs:
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git config --global user.name "$GITHUB_ACTOR"
 
-          - name: Commit and push version change
-          run: |
-            git add version
-            # Use "[skip ci]" so this commit does NOT trigger a new run
-            git commit -m "chore: update version [skip ci]"
-            git push origin HEAD:"${GITHUB_HEAD_REF}" --force
+      - name: Commit and push version change
+        run: |
+          git add version
+          # Use "[skip ci]" so this commit does NOT trigger a new run
+          git commit -m "chore: update version [skip ci]"
+          git push origin HEAD:"${GITHUB_HEAD_REF}" --force
