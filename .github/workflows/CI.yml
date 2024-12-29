@@ -1,6 +1,8 @@
 name: CI
 
 on:
+  pull_request_review:
+    types: [submitted]
   pull_request:
     branches:
       - main
@@ -8,6 +10,13 @@ on:
 
 jobs:
   Regression:
+    if: |
+      (
+        (github.event_name == 'pull_request_review' && github.event.review.state == 'approved') ||
+        github.event.pull_request.user.login == 'nivcertora' ||
+        github.event.pull_request.user.login == 'liav-certora'
+      ) &&
+      github.event.pull_request.base.ref == 'main'
     env:
       ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
       QUORUM_PATH: "."
