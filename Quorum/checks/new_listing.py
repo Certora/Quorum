@@ -1,6 +1,8 @@
 from Quorum.checks.check import Check
 import Quorum.utils.pretty_printer as pp
+import Quorum.config as config
 from Quorum.llm.chains.first_deposit_chain import FirstDepositChain, ListingArray
+
 
 
 class NewListingCheck(Check):
@@ -15,6 +17,15 @@ class NewListingCheck(Check):
         functions = self._get_functions_from_source_codes()
         if functions.get("newListings", functions.get("newListingsCustom")):
             pp.pretty_print(f"New listings detected for {self.proposal_address}", pp.Colors.WARNING)
+            
+            # Check if Anthropic API key is configured
+            if not config.ANTHROPIC_API_KEY:
+                pp.pretty_print(
+                    "first deposit check is skipped. If you have an LLM API key, you can add it to you env to enable this check",
+                    pp.Colors.WARNING
+                )
+                return
+            
             proposal_code = self.source_codes[0].file_content
             proposal_code_str = '\n'.join(proposal_code)
             listings: ListingArray | None = FirstDepositChain().execute(proposal_code_str)
