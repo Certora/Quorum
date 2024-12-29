@@ -78,7 +78,7 @@ class PriceFeedCheck(Check):
                 
                 color = pp.Colors.SUCCESS
                 message = f"Found {address} on {provider.get_name()}\n"
-                message += f"info: {price_feed}"
+                message += str(price_feed)
                 if price_feed.proxy_address and price_feed.proxy_address.lower() != address.lower():
                     message += f"Proxy address: {price_feed.proxy_address}\n"
                 if address.lower() != price_feed.address.lower():
