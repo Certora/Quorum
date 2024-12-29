@@ -20,7 +20,7 @@ class NewListingCheck(Check):
             # Check if Anthropic API key is configured
             if not config.ANTHROPIC_API_KEY:
                 pp.pretty_print(
-                    "first deposit check is skipped. If you have an LLM API key, you can add it to you env to enable this check",
+                    "First deposit check is skipped. If you have a LLM API key, you can add it to your environment variables to enable this check",
                     pp.Colors.WARNING
                 )
                 return
