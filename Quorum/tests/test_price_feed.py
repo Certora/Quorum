@@ -17,6 +17,7 @@ def test_price_feed(source_codes: list[SourceCode], tmp_output_path: Path):
 
     assert sorted([p.name for p in price_feed_check.check_folder.iterdir()]) == ['AaveV2Ethereum']
 
+
 def test_source_code_clean():
     code = """
 // SPDX-License-Identifier: MIT
@@ -58,6 +59,7 @@ contract AaveV2Ethereum_ReserveFactorUpdatesMidJuly_20240711 is IProposalGeneric
 import {IProposalGenericExecutor} from 'aave-helpers/interfaces/IProposalGenericExecutor.sol';
 import {AaveV2Ethereum, AaveV2EthereumAssets, ILendingPoolConfigurator} from 'aave-address-book/AaveV2Ethereum.sol';
 
+
 contract AaveV2Ethereum_ReserveFactorUpdatesMidJuly_20240711 is IProposalGenericExecutor {
   ILendingPoolConfigurator public constant POOL_CONFIGURATOR =
     ILendingPoolConfigurator(AaveV2Ethereum.POOL_CONFIGURATOR);
@@ -78,4 +80,5 @@ contract AaveV2Ethereum_ReserveFactorUpdatesMidJuly_20240711 is IProposalGeneric
     POOL_CONFIGURATOR.setReserveFactor(AaveV2EthereumAssets.WETH_UNDERLYING, WETH_RF);
   }
 }"""
+    # Strip leading/trailing whitespace for accurate comparison
     assert cleaned.strip() == expected.strip()
