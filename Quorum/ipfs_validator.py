@@ -2,6 +2,7 @@ from Quorum.utils.chain_enum import Chain
 import Quorum.utils.arg_validations as arg_valid
 from Quorum.apis.block_explorers.chains_api import ChainAPI
 from Quorum.llm.chains.ipfs_validation_chain import IPFSValidationChain
+import Quorum.config as config
 
 from pathlib import Path
 import argparse
@@ -49,6 +50,9 @@ def get_raw_ipfs(proposal_id: int) -> str:
 
 
 def main():
+    # Check if the Anthropic API key is set in environment variables
+    if not config.ANTHROPIC_API_KEY:
+        raise ValueError("ANTHROPIC_API_KEY environment variable is not set. Please set it to use this functionality.")
     args = parse_args()
 
     # Initialize Chain API and fetch source codes
