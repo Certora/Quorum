@@ -49,7 +49,7 @@ class ChainAPI:
             chain_id = self.CHAIN_ID_MAP[chain]
             api_key = os.getenv("ETHSCAN_API_KEY")
             if not api_key:
-                raise ValueError(f"{chain}SCAN_API_KEY environment variable is not set.")
+                raise ValueError("ETHSCAN_API_KEY environment variable is not set.")
             
             self.base_url = self.BASE_URL.format(chain_id=chain_id, api_key=api_key)
         
