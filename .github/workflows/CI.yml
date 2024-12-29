@@ -8,15 +8,16 @@ on:
       - main
   workflow_dispatch:
 
+    # |
+    # (
+    #   (github.event_name == 'pull_request_review' && github.event.review.state == 'approved') ||
+    #   github.event.pull_request.user.login == 'niv@certora.com' ||
+    #   github.event.pull_request.user.login == 'liav@certora.com'
+    # ) &&
+    # github.event.pull_request.base.ref == 'main'
+
 jobs:
   Regression:
-    if: |
-      (
-        (github.event_name == 'pull_request_review' && github.event.review.state == 'approved') ||
-        github.event.pull_request.user.login == 'niv@certora.com' ||
-        github.event.pull_request.user.login == 'liav@certora.com'
-      ) &&
-      github.event.pull_request.base.ref == 'main'
     env:
       ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
       QUORUM_PATH: "."
@@ -38,3 +39,6 @@ jobs:
         run: |
           pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
           CheckProposal --config Quorum/execution.json
+      
+      - name: Print
+        run: echo "${{ github.event.pull_request.user.login }}"
