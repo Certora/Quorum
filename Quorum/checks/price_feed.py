@@ -83,7 +83,7 @@ class PriceFeedCheck(Check):
                 return price_feed.model_dump()
             
         pp.pretty_print(
-            f"Address {address} from {file_name} not found in any price feed provider: {[p.get_name() for p in self.providers]}",
+            f"Address {address} not found in any address validation provider: {[p.get_name() for p in self.providers]}",
             pp.Colors.INFO
         )
         return None

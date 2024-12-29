@@ -8,6 +8,7 @@
             "https://github.com/aave-dao/aave-v3-origin"
         ],
         "review_repo": "https://github.com/bgd-labs/aave-proposals-v3",
-        "price_feed_providers": ["Chainlink", "Coingecko"]
+        "price_feed_providers": ["Chainlink"],
+        "token_validation_providers": ["Coingecko"]
     }
 }
