@@ -53,7 +53,12 @@ contract AaveV2Ethereum_ReserveFactorUpdatesMidJuly_20240711 is IProposalGeneric
 }
     """
     cleaned = Checks.price_feed.remove_solidity_comments(code)
-    expected = """contract AaveV2Ethereum_ReserveFactorUpdatesMidJuly_20240711 is IProposalGenericExecutor {
+    expected = """pragma solidity ^0.8.0;
+
+import {IProposalGenericExecutor} from 'aave-helpers/interfaces/IProposalGenericExecutor.sol';
+import {AaveV2Ethereum, AaveV2EthereumAssets, ILendingPoolConfigurator} from 'aave-address-book/AaveV2Ethereum.sol';
+
+contract AaveV2Ethereum_ReserveFactorUpdatesMidJuly_20240711 is IProposalGenericExecutor {
   ILendingPoolConfigurator public constant POOL_CONFIGURATOR =
     ILendingPoolConfigurator(AaveV2Ethereum.POOL_CONFIGURATOR);
 
@@ -73,4 +78,4 @@ contract AaveV2Ethereum_ReserveFactorUpdatesMidJuly_20240711 is IProposalGeneric
     POOL_CONFIGURATOR.setReserveFactor(AaveV2EthereumAssets.WETH_UNDERLYING, WETH_RF);
   }
 }"""
-    assert cleaned.replace(" ", "") == expected.replace(" ", "")
+    assert cleaned.strip() == expected.strip()
