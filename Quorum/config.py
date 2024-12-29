@@ -2,6 +2,7 @@ import os
 import shutil
 from pathlib import Path
 
+import Quorum.utils.pretty_printer as pp
 
 main_path = os.getenv("QUORUM_PATH")
 if not main_path:
@@ -19,4 +20,10 @@ if not GROUND_TRUTH_PATH.exists():
     shutil.copy(DEFAULT_REPOS, GROUND_TRUTH_PATH)
 
 ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
+if not ANTHROPIC_API_KEY:
+    pp.pretty_print(
+        "Warning: ANTHROPIC_API_KEY environment variable is not set. All dependent checks will be skipped.",
+        pp.Colors.WARNING
+    )
+
 ANTHROPIC_MODEL = os.getenv('ANTROPIC_MDOEL', 'claude-3-5-sonnet-20241022')
