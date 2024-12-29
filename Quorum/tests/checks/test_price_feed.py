@@ -52,7 +52,7 @@ contract AaveV2Ethereum_ReserveFactorUpdatesMidJuly_20240711 is IProposalGeneric
   }
 }
     """
-    cleaned = Checks.clean_source_code(code)
+    cleaned = Checks.price_feed.remove_solidity_comments(code)
     expected = """contract AaveV2Ethereum_ReserveFactorUpdatesMidJuly_20240711 is IProposalGenericExecutor {
   ILendingPoolConfigurator public constant POOL_CONFIGURATOR =
     ILendingPoolConfigurator(AaveV2Ethereum.POOL_CONFIGURATOR);
