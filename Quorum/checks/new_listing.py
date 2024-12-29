@@ -4,7 +4,6 @@ import Quorum.config as config
 from Quorum.llm.chains.first_deposit_chain import FirstDepositChain, ListingArray
 
 
-
 class NewListingCheck(Check):
 
     def new_listing_check(self) -> None:
