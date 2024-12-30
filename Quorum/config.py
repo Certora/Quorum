@@ -25,7 +25,6 @@ if not GROUND_TRUTH_PATH.exists():
 if not EXECUTION_PATH.exists():
     shutil.copy(DEFAULT_EXECUTION, EXECUTION_PATH)
 
-
 ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
 if not ANTHROPIC_API_KEY:
     pp.pretty_print(
