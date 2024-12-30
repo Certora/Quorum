@@ -25,7 +25,8 @@ class ChainAPI:
         Chain.OPT: 10,
         Chain.POLY: 137,
         Chain.SCROLL: 534352,
-        Chain.ZK: 324
+        Chain.ZK: 324,
+        Chain.LINEA: 59144,
     }
     
     BASE_URL = "https://api.etherscan.io/v2/api?chainid={chain_id}&apikey={api_key}"

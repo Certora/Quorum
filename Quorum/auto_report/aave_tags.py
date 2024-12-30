@@ -26,7 +26,8 @@ AAVE_CHAIN_MAPPING = {
     '56': ChainInfo('BNB Smart Chain', 'https://bscscan.com/address'),
     '100': ChainInfo('Gnosis', 'https://gnosisscan.io/address'),
     '534352': ChainInfo('Scroll', 'https://scrollscan.com/address'),
-    '324': ChainInfo('zkSync Era', 'https://era.zksync.network/address')
+    '324': ChainInfo('zkSync Era', 'https://era.zksync.network/address'),
+    "59144": ChainInfo('Linea', 'https://lineascan.build/'),
 }
 
 
