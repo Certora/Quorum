@@ -29,7 +29,6 @@ class PriceFeedData(BaseModel):
     
     def __str__(self) -> str:
         s = ""
-        s += f"Address: {self.address}\n"
         if self.name:
             s += f"Name: {self.name}\n"
         if self.pair:
@@ -38,9 +37,7 @@ class PriceFeedData(BaseModel):
                 if pair_str != ",":
                     s += f"Pairs: {pair_str}\n"
             else:
-                s += f"Pair: {self.pair}\n"
-        if self.proxy_address:
-            s += f"Proxy Address: {self.proxy_address}\n"
+                s += f"Symbol: {self.pair}\n"
         if self.decimals:
             s += f"Decimals: {self.decimals}\n"
         return s

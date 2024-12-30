@@ -75,10 +75,20 @@ class PriceFeedCheck(Check):
         """
         for provider in self.providers:
             if (price_feed := provider.get_price_feed(self.chain, address)):
+                
+                color = pp.Colors.SUCCESS
+                message = f"Found {address} on {provider.get_name()}\n"
+                message += str(price_feed)
+                if price_feed.proxy_address and price_feed.proxy_address.lower() != address.lower():
+                    message += f"Proxy address: {price_feed.proxy_address}\n"
+                if address.lower() != price_feed.address.lower():
+                    color = pp.Colors.FAILURE
+                    message += f"This is an implementation contract with a proxy address\n"
+                    message += f"Origin Address: {price_feed.address}\n"
+
                 pp.pretty_print(
-                    f"Found {address} on {provider.get_name()}\n"
-                    f"info: {price_feed}",
-                    pp.Colors.SUCCESS
+                    message,
+                    color
                 )
                 return price_feed.model_dump()
             
