@@ -71,7 +71,7 @@ OR
 python3 Quorum/check_proposal.py --customer "CustomerName" --chain "ChainName" --proposal_address "Address"
 ```
 
-Replace `CustomerName` with the customer identifier, `ChainName` with the blockchain chain (e.g., "ETH", "AVAX"), and `Address` with the proposal address.
+Replace `CustomerName` with the customer identifier, `ChainName` with the blockchain chain, and `Address` with the proposal address.
 
 ### Example Usage with Config File
 
@@ -82,37 +82,49 @@ Example config file `config.json`:
 ```json
 {
     "Aave": {
-        "AVAX": {
-            "Proposals": ["0x564Dfd09eBB63F7e468401AffE2d8c2cDD08D68D"]
+        "Ethereum": {
+            "Proposals": [
+                "0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637"
+            ]
         },
-        "ETH": {
-            "Proposals": ["0x683FdF51d5898F92317F870B25a6A4dF67dC58Ab", "0x065DF1F9d0aeDEa11E6d059ce29e91d2Abed59fA"]
+        "Arbitrum": {
+            "Proposals": [
+                "0x22ca2Dd3063189F9E7e76fA3078E2d916B3998b7"
+            ]
         },
-        "GNO": {
-            "Proposals": ["0xF0221Fc5a2F825bbF6F994f30743aD5AAC66cd4E"]
-        },
-        "ARB": {
+        "Avalanche": {
             "Proposals": []
         },
-        "BASE": {
+        "Base": {
+            "Proposals": [
+                "0x6B96B41a531713a141F6EcBbae80715601d0e456"
+            ]
+        },
+        "BNBChain": {
+            "Proposals": [
+                "0xb4F2786984093eaE1D6Be2B4F8c8e3c2cb018b54"
+            ]
+        },
+        "Gnosis": {
             "Proposals": []
         },
-        "BSC": {
+        "Metis": {
             "Proposals": []
         },
-        "MET": {
+        "Optimism": {
             "Proposals": []
         },
-        "OPT": {
-            "Proposals": []
+        "Polygon": {
+            "Proposals": [
+                "0x2dbBe7E30CD959A192FeFCEd9A5ae681d540deB4"
+            ]
         },
-        "POLY": {
-            "Proposals": []
+        "Scroll": {
+            "Proposals": [
+                "0x9d9892256dF8f97d0c15F4494aa5D44D376CC749"
+            ]
         },
-        "SCR": {
-            "Proposals": []
-        },
-        "ZK": {
+        "zkSync": {
             "Proposals": []
         }
     }

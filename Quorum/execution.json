@@ -1,42 +1,37 @@
 {
     "Aave": {
-        "AVAX": {
+        "Ethereum": {
             "Proposals": []
         },
-        "ETH": {
-            "Proposals": [
-                "0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637"
-            ]
-        },
-        "GNO": {
+        "Arbitrum": {
             "Proposals": []
         },
-        "ARB": {
-            "Proposals": [
-                "0x22ca2Dd3063189F9E7e76fA3078E2d916B3998b7"
-            ]
-        },
-        "BASE": {
-            "Proposals": [
-                "0x6B96B41a531713a141F6EcBbae80715601d0e456"
-            ]
-        },
-        "BSC": {
-            "Proposals": ["0xb4F2786984093eaE1D6Be2B4F8c8e3c2cb018b54"]
-        },
-        "MET": {
+        "Avalanche": {
             "Proposals": []
         },
-        "OPT": {
+        "Base": {
             "Proposals": []
         },
-        "POLY": {
-            "Proposals": [
-                "0x2dbBe7E30CD959A192FeFCEd9A5ae681d540deB4"
-            ]
+        "BNBChain": {
+            "Proposals": []
         },
-        "SCROLL": {
-            "Proposals": ["0x9d9892256dF8f97d0c15F4494aa5D44D376CC749"]
+        "Gnosis": {
+            "Proposals": []
+        },
+        "Metis": {
+            "Proposals": []
+        },
+        "Optimism": {
+            "Proposals": []
+        },
+        "Polygon": {
+            "Proposals": []
+        },
+        "Scroll": {
+            "Proposals": []
+        },
+        "zkSync": {
+            "Proposals": []
         }
     }
 }

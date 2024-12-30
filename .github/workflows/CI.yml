@@ -39,4 +39,4 @@ jobs:
       - name: Execute Regression Tests
         run: |
           pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
-          CheckProposal --config Quorum/execution.json
+          CheckProposal --config Quorum/regression.json
