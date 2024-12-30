@@ -37,7 +37,7 @@ class PriceFeedData(BaseModel):
                 if pair_str != ",":
                     s += f"Pairs: {pair_str}\n"
             else:
-                s += f"Pair: {self.pair}\n"
+                s += f"Symbol: {self.pair}\n"
         if self.decimals:
             s += f"Decimals: {self.decimals}\n"
         return s
