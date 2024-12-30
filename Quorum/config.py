@@ -1,7 +1,6 @@
 import os
 import shutil
 from pathlib import Path
-import dotenv
 
 import Quorum.utils.pretty_printer as pp
 from Quorum.utils.load_env import load_env_variables
