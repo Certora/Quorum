@@ -16,8 +16,15 @@ if not MAIN_PATH.exists():
 GROUND_TRUTH_PATH = MAIN_PATH / "ground_truth.json"
 DEFAULT_REPOS = Path(__file__).parent / "ground_truth.json"
 
+EXECUTION_PATH = MAIN_PATH / "execution.json"
+DEFAULT_EXECUTION = Path(__file__).parent / "execution.json"
+
 if not GROUND_TRUTH_PATH.exists():
     shutil.copy(DEFAULT_REPOS, GROUND_TRUTH_PATH)
+
+if not EXECUTION_PATH.exists():
+    shutil.copy(DEFAULT_EXECUTION, EXECUTION_PATH)
+
 
 ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
 if not ANTHROPIC_API_KEY:
