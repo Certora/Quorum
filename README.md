@@ -149,6 +149,31 @@ CheckProposal --config path/to/config.json
 
 The `ground_truth.json` file defines the repositories for each customer. It should be located under the `QUORUM_PATH`. If not found, a default `ground_truth.json` configuration will be created.
 
+
+Template for `ground_truth.json`:
+
+```json
+{
+    "ProtocolName": {
+        "dev_repos": [
+            "https://github.com/organization/repository1",
+            "https://github.com/organization/repository2"
+        ],
+        "review_repo": "https://github.com/organization/review-repository",
+        "price_feed_providers": ["Chainlink", "Chronicle"],
+        "token_validation_providers": ["Coingecko"]
+    }
+}
+```
+
+Fields explanation:
+- `ProtocolName`: Your protocol or organization name
+- `dev_repos`: List of GitHub repositories containing your protocol's source code
+- `review_repo`: Repository containing pre-deployment code for review
+- `price_feed_providers`: List of supported price feed providers (Chainlink, Chronicle)
+- `token_validation_providers`: List of supported token validation providers (Coingecko)
+```
+
 Example `ground_truth.json`:
 
 ```json
