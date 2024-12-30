@@ -31,13 +31,13 @@ AAVE_CHAIN_MAPPING = {
 }
 
 
-def __extract_payload_address(session: requests.Session, chain_id: str, controller: str, payload_id: int) -> str:
+def __extract_payload_addresses(session: requests.Session, chain_id: str, controller: str, payload_id: int) -> list[str]:
     resp = session.get(f'{BASE_BGD_CACHE_REPO}/{chain_id}/{controller}/payloads/{payload_id}.json')
     resp.raise_for_status()
 
     payload_data = resp.json()
 
-    return payload_data['payload']['actions'][0]['target']
+    return [a['target'] for a in payload_data['payload']['actions']]
 
 
 def get_aave_tags(proposal_id: int) -> dict:
@@ -63,12 +63,13 @@ def get_aave_tags(proposal_id: int) -> dict:
             # These are necessary fields in the payload data to construct the payload fields.
             if not all(k in p for k in ['chain', 'payloadsController', 'payloadId']):
                 continue
-            address = __extract_payload_address(session, p['chain'], p['payloadsController'], p['payloadId'])
-            tags['chain'].append(AAVE_CHAIN_MAPPING[p['chain']].name)
-            tags['payload_link'].append(f'{AAVE_CHAIN_MAPPING[p["chain"]].block_explorer_link}/{address}')
-            tags['payload_seatbelt_link'].append(
-                f'{SEATBELT_PAYLOADS_URL}/{p["chain"]}/{p["payloadsController"]}/{p["payloadId"]}.md'
-            )
+            addresses = __extract_payload_addresses(session, p['chain'], p['payloadsController'], p['payloadId'])
+            for i, address in enumerate(addresses, 1):
+                tags['chain'].append(AAVE_CHAIN_MAPPING[p['chain']].name + (f' {i}' if i != 1 else ''))
+                tags['payload_link'].append(f'{AAVE_CHAIN_MAPPING[p["chain"]].block_explorer_link}/{address}')
+                tags['payload_seatbelt_link'].append(
+                    f'{SEATBELT_PAYLOADS_URL}/{p["chain"]}/{p["payloadsController"]}/{p["payloadId"]}.md'
+                )
         
         tags['transaction_hash'] = create_event.get('transactionHash', 'N/A')
         tags['transaction_link'] = f'https://etherscan.io/tx/{tags["transaction_hash"]}'
