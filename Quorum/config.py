@@ -1,8 +1,11 @@
 import os
 import shutil
 from pathlib import Path
+import dotenv
 
 import Quorum.utils.pretty_printer as pp
+
+dotenv.load_dotenv(override=True)
 
 main_path = os.getenv("QUORUM_PATH")
 if not main_path:
