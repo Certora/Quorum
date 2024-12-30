@@ -4,8 +4,9 @@ from pathlib import Path
 import dotenv
 
 import Quorum.utils.pretty_printer as pp
+from Quorum.utils.load_env import load_env_variables
 
-dotenv.load_dotenv(override=True)
+load_env_variables()
 
 main_path = os.getenv("QUORUM_PATH")
 if not main_path:

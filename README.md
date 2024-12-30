@@ -49,6 +49,14 @@ export ANTHROPIC_API_KEY="your_anthropic_api_key"
 
 Replace `your_etherscan_api_key`, `your_anthropic_api_key` with your actual API keys.
 
+Alternatively, you can set these environment variables in a `.env` file in the current working directory where you use the tool:
+
+```sh
+ETHSCAN_API_KEY=your_etherscan_api_key
+ANTHROPIC_API_KEY=your_anthropic_api_key
+```
+
+
 Additionally, set the `QUORUM_PATH` environment variable to specify where the repositories and diffs will be saved:
 
 ```sh
