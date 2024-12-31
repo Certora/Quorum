@@ -1,6 +1,7 @@
 import os
 import requests
-import json
+from json.decoder import JSONDecodeError
+import json5 as json
 
 from Quorum.utils.chain_enum import Chain
 from Quorum.apis.block_explorers.source_code import SourceCode
@@ -80,7 +81,7 @@ class ChainAPI:
         result = data['result'][0]["SourceCode"]
         try:
             json_data = json.loads(result)
-        except json.JSONDecodeError:
+        except JSONDecodeError:
             # Handle non-JSON formatted responses
             json_data = json.loads(result.removeprefix("{").removesuffix("}"))
         

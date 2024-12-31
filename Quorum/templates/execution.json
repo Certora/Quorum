@@ -1,0 +1,37 @@
+{
+    "<protocol_name>": { // Insert protocol / organization name here as specified in the ground_truth.json
+        "Ethereum": {
+            "Proposals": [] // Insert Ethereum proposals address here
+        },
+        "Arbitrum": {
+            "Proposals": [] // Insert Arbitrum proposals address here
+        },
+        "Avalanche": {
+            "Proposals": [] // Insert Avalanche proposals address here
+        },
+        "Base": {
+            "Proposals": [] // Insert Base proposals address here
+        },
+        "BNBChain": {
+            "Proposals": [] // Insert BNBChain proposals address here
+        },
+        "Gnosis": {
+            "Proposals": [] // Insert Gnosis proposals address here
+        },
+        "Metis": {
+            "Proposals": [] // Insert Metis proposals address here
+        },
+        "Optimism": {
+            "Proposals": [] // Insert Optimism proposals address here
+        },
+        "Polygon": {
+            "Proposals": [] // Insert Polygon proposals address here
+        },
+        "Scroll": {
+            "Proposals": [] // Insert Scroll proposals address here
+        },
+        "zkSync": {
+            "Proposals": [] // Insert zkSync proposals address here
+        }
+    }
+}

@@ -2,7 +2,7 @@ import pytest
 
 import Quorum.tests.conftest as conftest
 
-import Quorum.auto_report.create_report as create_report
+import Quorum.entry_points.create_report as create_report
 
 from pathlib import Path
 
