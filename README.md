@@ -8,8 +8,9 @@ Quorum is an open-source Python utility designed to verify the integrity of smar
 - **Verify Code Against Known Reviewed Repositories:** Generate diffs against specifically defined trusted auditor's repositories.
 - **Global Variable Check:** Ensure all global variables in unmatched contracts are either constant or immutable.
 - **Feed Price Check:** Verify the feed price of a contract is mentioned on ChainLink.
-- **New Listing Check:** Check if proposal contain a new Listing.
+- **New Listing Check:** Check if proposal contains a new Listing.
 - **Automated Repository Management:** Clone or update repositories based on customer configurations.
+- **Quick Setup Command:** Streamline initial configuration with a single setup command that generates necessary files and guides proper setup.
 
 ## Prerequisites
 - Python 3.11 or higher
@@ -28,43 +29,89 @@ Or clone the repository:
 git clone git@github.com:Certora/Quorum.git
 ```
 
+## Quick Setup
+
+To simplify the initial configuration, Quorum provides a setup command that generates essential configuration files and guides you through the setup process.
+
+### Using the Setup Command
+
+Run the following command in your desired working directory (defaults to the current directory if not specified):
+
+```sh
+SetupQuorum [working_directory]
+```
+
+- **`working_directory`**: *(Optional)* Path to the desired working directory. Defaults to the current directory if not provided.
+
+**Example:**
+
+```sh
+SetupQuorum ./my_quorum_project
+```
+
+This command will:
+- Copy the following template files to your working directory:
+  - `ground_truth.json`
+  - `execution.json`
+  - `.env.example`
+  - `Readme.md`
+- Provide guidance through comments within the configuration files and detailed Readme file to help you properly configure Quorum.
+
+### Post-Setup Configuration
+
+After running the setup command, perform the following steps:
+
+1. **Configure Environment Variables:**
+
+   Edit the `.env` file to include your actual API keys and desired paths:
+
+   ```sh
+   export ETHSCAN_API_KEY="your_etherscan_api_key"
+   export ANTHROPIC_API_KEY="your_anthropic_api_key"
+   export QUORUM_PATH="/path/to/your/quorum_directory"
+   ```
+
+2. **Fill Out Configuration Files:**
+
+   - **`ground_truth.json`**: Define repositories and providers for each protocol.
+   - **`execution.json`**: Specify proposal addresses for each network.
+   - **`Readme.md`**: Follow the included guide to understand installation, configuration, available flags, and the checks performed by Quorum.
+
 ## Clarifications
 
-As part of tool process, the tool will use solcx to parse the contract code to AST. the version of solcx used is the latest. If the contract code is not compatible with the latest version of solcx, the tool will not be able to parse the contract code and will not be able to proceed with the global variable and new listing checks.
+As part of the tool's process, Quorum uses `solcx` to parse contract code to AST. The version of `solcx` used is the latest. If the contract code is not compatible with the latest version of `solcx`, the tool will not be able to parse the contract code and will not be able to proceed with the global variable and new listing checks.
 
 ## Environment Variables
 
-Before using Quorum, you need to configure the following environment variable for the Etherscan API key. This key is necessary to access the respective blockchain explorers:
+Quorum requires specific environment variables to function correctly. These variables can be set in your shell or defined in a `.env` file.
+
+### Required Environment Variables
 
 - **ETHSCAN_API_KEY:** API key for Etherscan.
+- **ANTHROPIC_API_KEY:** API key for Anthropic (required for advanced new listing first deposit checks).
+- **QUORUM_PATH:** Path to specify where the repositories and diffs will be saved.
 
-And for the new advanced new listing first deposit check, you need to configure the ANTHROPIC_API_KEY This key is necessary to access the Antropic API.
+### Setting Environment Variables
 
-You can set these environment variables in your shell:
+**Using Shell:**
 
 ```sh
 export ETHSCAN_API_KEY="your_etherscan_api_key"
 export ANTHROPIC_API_KEY="your_anthropic_api_key"
+export QUORUM_PATH="/path/to/artifacts"
 ```
 
-Replace `your_etherscan_api_key`, `your_anthropic_api_key` with your actual API keys.
+**Using `.env` File:**
 
-Alternatively, you can set these environment variables in a `.env` file in the current working directory where you use the tool:
-(Please review /Quorum/.env.example)
+After running the setup command, a `.env` file will be present. fill in the required values:
+
+Then edit `.env`:
 
 ```sh
 ETHSCAN_API_KEY=your_etherscan_api_key
 ANTHROPIC_API_KEY=your_anthropic_api_key
+QUORUM_PATH="/path/to/artifacts"
 ```
-
-
-Additionally, set the `QUORUM_PATH` environment variable to specify where the repositories and diffs will be saved:
-
-```sh
-export QUORUM_PATH="/path/to/artifacts"
-```
-
-Replace `/path/to/artifacts` with the path where you want the tool to save cloned repositories and diff files.
 
 ## Usage
 
@@ -86,7 +133,7 @@ Replace `CustomerName` with the customer identifier, `ChainName` with the blockc
 
 You can also execute multiple tasks using a configuration file:
 
-Example config file `config.json`:
+**Example config file `config.json`:**
 
 ```json
 {
@@ -140,7 +187,7 @@ Example config file `config.json`:
 }
 ```
 
-To run using the config file:
+**To run using the config file:**
 
 ```sh
 python3 Quorum/check_proposal.py --config path/to/config.json
@@ -158,8 +205,7 @@ CheckProposal --config path/to/config.json
 
 The `ground_truth.json` file defines the repositories for each customer. It should be located under the `QUORUM_PATH`. If not found, a default `ground_truth.json` configuration will be created.
 
-
-Template for `ground_truth.json`:
+### Template for `ground_truth.json`:
 
 ```json
 {
@@ -175,40 +221,20 @@ Template for `ground_truth.json`:
 }
 ```
 
-Fields explanation:
+**Fields explanation:**
 - `ProtocolName`: Your protocol or organization name
 - `dev_repos`: List of GitHub repositories containing your protocol's source code
 - `review_repo`: Repository containing pre-deployment code for review
 - `price_feed_providers`: List of supported price feed providers (Chainlink, Chronicle)
 - `token_validation_providers`: List of supported token validation providers (Coingecko)
-```
 
-Example `ground_truth.json`:
+### Current Supported Providers
 
-```json
-{
-    "Aave": 
-    {
-        "dev_repos":
-        [
-            "https://github.com/bgd-labs/aave-helpers",
-            "https://github.com/bgd-labs/aave-address-book",
-            "https://github.com/aave-dao/aave-v3-origin"
-        ],
-        "review_repo": "https://github.com/bgd-labs/aave-proposals-v3",
-        "price_feed_providers": ["Chainlink"],
-        "token_validation_providers": ["Coingecko"]
-    }
-}
-```
-
-This configuration is used by the tool to manage the ground truth information for each customer. The `dev_repos` array contains the URLs of the repositories associated with the customer. The `review_repo` field specifies the repository to compare against when checking proposals. The `price_feed_providers` array lists the feed price providers to check against (e.g., "Chainlink", "Chronicle"). The `token_validation_providers` array lists the token validation providers to check against (e.g., "Coingecko").
-
-### current supported price feed providers are
+**Price Feed Providers:**
 - Chainlink
 - Chronicle
 
-## Current supported token validation providers are
+**Token Validation Providers:**
 - Coingecko
 
 ## Artifacts Structure
@@ -221,29 +247,29 @@ Quorum generates and organizes artifacts in a structured manner under the `QUORU
 QUORUM_PATH/
 ├── ground_truth.json
 ├── CustomerName/
-|     ├── modules/
-|     │   ├── repository1/
-|     │   ├── repository2/
-|     │   ├── ...
-|     ├── checks/
-|     |   ├── ChainName/
-|     |   │   ├── ProposalAddress1/
-|     |   │   │   ├── DiffCheck_datetime/
-|     |   │   │   │   ├── file1.patch
-|     |   │   │   │   ├── file2.patch
-|     |   │   │   ├── FeedPriceCheck_datetime/
-|     |   │   │   │   ├── file1.json
-|     |   │   │   ├── GlobalVariableCheck_datetime/
-|     |   │   │   │   ├── file1.json
-|     |   │   │   │   ├── ...
-|     |   │   │   ├── NewListingCheck_datetime/
-|     |   │   │   │   ├── file1.json
-|     |   │   │   ├── ...
-|     |   │   ├── ProposalAddress2/
-|     |   |   ├── ...
-|     |   ├── ...
-|     |   ├── ProposalAddressN/
-|     |   |   ├── ...
+│   ├── modules/
+│   │   ├── repository1/
+│   │   ├── repository2/
+│   │   ├── ...
+│   ├── checks/
+│   │   ├── ChainName/
+│   │   │   ├── ProposalAddress1/
+│   │   │   │   ├── DiffCheck_datetime/
+│   │   │   │   │   ├── file1.patch
+│   │   │   │   │   ├── file2.patch
+│   │   │   │   ├── FeedPriceCheck_datetime/
+│   │   │   │   │   ├── file1.json
+│   │   │   │   ├── GlobalVariableCheck_datetime/
+│   │   │   │   │   ├── file1.json
+│   │   │   │   │   ├── ...
+│   │   │   │   ├── NewListingCheck_datetime/
+│   │   │   │   │   ├── file1.json
+│   │   │   │   ├── ...
+│   │   │   ├── ProposalAddress2/
+│   │   │   ├── ...
+│   │   ├── ...
+│   │   ├── ProposalAddressN/
+│   │   │   ├── ...
 ```
 
 ### Description

@@ -14,9 +14,6 @@ if not main_path:
 
 MAIN_PATH = Path(main_path).absolute()
 
-# Print all list of items under the Quorum directory
-os.system(f"ls -l {MAIN_PATH}")
-
 if not MAIN_PATH.exists():
     MAIN_PATH.mkdir(parents=True)
 
