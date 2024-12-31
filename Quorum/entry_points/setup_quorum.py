@@ -46,7 +46,11 @@ def setup_quorum(working_dir: Path):
 
         shutil.copy(src, dest)
         pp.pretty_print(f"Copied {file_name} to {dest}", pp.Colors.SUCCESS)
-
+    
+    # Add export QUORUM_PATH="path_to_your_quorum_directory" to the new .env file
+    with open(target_dir / '.env', 'a') as f:
+        f.write(f'\nexport QUORUM_PATH="{target_dir}"\n')
+    
     pp.pretty_print("Quorum setup completed successfully!", pp.Colors.SUCCESS)
 
 
