@@ -11,3 +11,4 @@ jinja2
 langchain-anthropic
 langgraph
 langchain_community
+python-dotenv
