@@ -14,16 +14,20 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='This tool generates automatic proposal reports.')
     parser.add_argument('--proposal_id', required=True, type=int, help='The proposal id to generate report to.')
     parser.add_argument('--template', default=DEFAULT_TEMPLATE_PATH, help='The report template to use.')
+    parser.add_argument('--save_to', type=Path, help='Specify where to save the report.')
 
     args = parser.parse_args()
 
     if not Path(args.template).exists():
         raise FileNotFoundError(f'could not find template at {args.template}.')
+    
+    if args.save_to is None:
+        args.save_to = Path(f'v3-{args.proposal_id}.md')
 
-    return parser.parse_args()
+    return args
 
 
-def create_report(proposal_id: int, template: Path):
+def create_report(proposal_id: int, template: Path, save_to: Path):
     pprinter.pretty_print(f'Generating a report using template in {template}', pprinter.Colors.INFO)
     env = Environment(loader=FileSystemLoader(template.parent))
     env.globals.update(zip=zip)
@@ -35,15 +39,15 @@ def create_report(proposal_id: int, template: Path):
 
     report = template.render(tags)
 
-    with open((report_path:=f'v3-{proposal_id}.md'), 'w') as f:
+    with open(save_to, 'w') as f:
         f.write(report)
 
-    pprinter.pretty_print(f'Created report at {report_path}.', pprinter.Colors.SUCCESS)
+    pprinter.pretty_print(f'Created report at {save_to}.', pprinter.Colors.SUCCESS)
 
 
 def main():
     args = parse_args()
-    create_report(args.proposal_id, args.template)
+    create_report(args.proposal_id, args.template, args.save_to)
     
 
 if __name__ == '__main__':
