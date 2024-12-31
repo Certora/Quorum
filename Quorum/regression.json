@@ -11,7 +11,9 @@
             ]
         },
         "Avalanche": {
-            "Proposals": []
+            "Proposals": [
+                "0x41Fad3911a819646FF385e392AD05046e64661F8"
+            ]
         },
         "Base": {
             "Proposals": [
@@ -24,13 +26,19 @@
             ]
         },
         "Gnosis": {
-            "Proposals": []
+            "Proposals": [
+                "0x2679BF679Cc73C8e7809F6a944Dd8aBd2fA18805"
+            ]
         },
         "Metis": {
-            "Proposals": []
+            "Proposals": [
+                "0x2481f10CbeAfD144f192D84e70b784084066D943"
+            ]
         },
         "Optimism": {
-            "Proposals": []
+            "Proposals": [
+                "0x41A66C5aF61F71cF33b6a1Ceb2caA911Aef4EfAa"
+            ]
         },
         "Polygon": {
             "Proposals": [
@@ -43,7 +51,9 @@
             ]
         },
         "zkSync": {
-            "Proposals": []
+            "Proposals": [
+                "0xBF9Cb1382b612Eb89F77dc7f97472c16D6e33147"
+            ]
         }
     }
 }
