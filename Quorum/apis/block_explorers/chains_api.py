@@ -81,7 +81,7 @@ class ChainAPI:
         result = data['result'][0]["SourceCode"]
         try:
             json_data = json.loads(result)
-        except JSONDecodeError:
+        except (JSONDecodeError, ValueError):
             # Handle non-JSON formatted responses
             json_data = json.loads(result.removeprefix("{").removesuffix("}"))
         
