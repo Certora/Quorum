@@ -21,7 +21,7 @@ jobs:
       github.event.pull_request.base.ref == 'main'
     env:
       ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
-      QUORUM_PATH: "tests"
+      QUORUM_PATH: "./tests"
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
     runs-on: ubuntu-latest
     container:

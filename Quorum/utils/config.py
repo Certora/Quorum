@@ -6,11 +6,16 @@ from Quorum.utils.load_env import load_env_variables
 
 load_env_variables()
 
+
+
 main_path = os.getenv("QUORUM_PATH")
 if not main_path:
     raise ValueError("QUORUM_PATH environment variable not set")
 
 MAIN_PATH = Path(main_path).absolute()
+
+# Print all list of items under the Quorum directory
+os.system(f"ls -l {MAIN_PATH}")
 
 if not MAIN_PATH.exists():
     MAIN_PATH.mkdir(parents=True)
