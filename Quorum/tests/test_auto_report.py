@@ -14,7 +14,7 @@ def test_auto_report():
     with open(EXPECTED_DIR / 'v3-132.md') as f:
         expected = f.read()
     
-    create_report.create_report(132, create_report.DEFAULT_TEMPLATE_PATH)
+    create_report.create_report(132, create_report.DEFAULT_TEMPLATE_PATH, Path('v3-132.md'))
     with open(Path('v3-132.md')) as f:
         actual = f.read()
     
