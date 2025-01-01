@@ -55,7 +55,7 @@ This command will:
   - `execution.json`
   - `.env.example`
   - `README.md`
-- Provide guidance through comments within the configuration files and detailed Readme file to help you properly configure Quorum.
+- Provide guidance through comments within the configuration files, and a detailed README file to help you properly configure Quorum.
 
 ### Post-Setup Configuration
 
