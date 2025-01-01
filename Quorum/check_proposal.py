@@ -45,7 +45,7 @@ def load_config(config_path: str) -> dict[str, Any] | None:
             config_data = json.load(file)
         return config_data
     except (FileNotFoundError, json.JSONDecodeError) as e:
-        pp.pretty_print(f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE)
+        pp.pprint(f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE)
 
 
 def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], providers: list[PriceFeedProviderBase]) -> None:
@@ -62,37 +62,42 @@ def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], 
     """
     api = ChainAPI(chain)
     
-    pp.pretty_print(f"Processing customer {customer}, for chain: {chain}", pp.Colors.INFO)
     for proposal_address in proposal_addresses:
-        pp.pretty_print(f"Processing proposal {proposal_address}", pp.Colors.INFO)
+        pp.pprint(f'Analyzing payload {proposal_address}', pp.Colors.INFO)
 
         try:
             source_codes = api.get_source_code(proposal_address)
-        except ValueError as e:
+        except ValueError as _:
             error_message = (
-                f"Payload address {proposal_address} is not verified on {chain.name} explorer.\n"
-                "We do not recommend to approve this proposal until the code is approved!\n"
-                "Try contacting the proposer and ask them to verify the contract.\n"
-                "No further checks are being performed on this payload."
+                f'Payload address {proposal_address} is not verified on {chain.name} explorer.\n'
+                'We do not recommend to approve this proposal until the code is approved!\n'
+                'Try contacting the proposer and ask them to verify the contract.\n'
+                'No further checks are being performed on this payload.'
             )
-            pp.pretty_print(error_message, pp.Colors.FAILURE)
+            pp.pprint(error_message, pp.Colors.FAILURE)
             # Skip further checks for this proposal 
             continue
 
         # Diff check
+        pp.pprint('Check 1 - Comparing payload contract and imports with the source of truth', pp.Colors.INFO)
         missing_files = Checks.DiffCheck(customer, chain, proposal_address, source_codes).find_diffs()
-
+        
         # Review diff check
+        pp.pprint(f'Check 2 - Verifying missing files against customer review repo', pp.Colors.INFO)
         Checks.ReviewDiffCheck(customer, chain, proposal_address, missing_files).find_diffs()
 
         # Global variables check
+        pp.pprint('Check 3 - Global variables', pp.Colors.INFO)
         Checks.GlobalVariableCheck(customer, chain, proposal_address, missing_files).check_global_variables()
 
         # Feed price check
+        pp.pprint('Check 4 - Explicit addresses validation', pp.Colors.INFO)
         Checks.PriceFeedCheck(customer, chain, proposal_address, missing_files, providers).verify_price_feed()
 
         # New listing check
+        pp.pprint('Check 5 - First deposit for new listing', pp.Colors.INFO)
         Checks.NewListingCheck(customer, chain, proposal_address, missing_files).new_listing_check()
+
 
 def main() -> None:
     """
@@ -106,9 +111,12 @@ def main() -> None:
     if config_data:
         # Multi-task mode using JSON configuration
         for customer, chain_info in config_data.items():
+            pp.pprint('Run Preparation', pp.Colors.INFO)
             ground_truth_config = ConfigLoader.load_customer_config(customer)
             GitManager(customer, ground_truth_config).clone_or_update()
             price_feed_providers = ground_truth_config.get("price_feed_providers", [])
+            pp.pprint('Run Metadata', pp.Colors.INFO)
+            pp.pprint(f'Customer: {customer}\nChains and payloads:\n{chain_info}', pp.Colors.INFO)
             for chain, proposals in chain_info.items():
                 # Validate chain is supported by cast to Chain enum
                 chain = Chain(chain)
@@ -118,10 +126,12 @@ def main() -> None:
         # Single-task mode using command line arguments
         if not (customer and chain and proposal_address):
             raise ValueError("Customer, chain, and proposal_address must be specified if not using a config file.")
-        
+        pp.pprint('Run Preparation', pp.Colors.INFO)
         ground_truth_config = ConfigLoader.load_customer_config(customer)
         GitManager(customer, ground_truth_config).clone_or_update()
-        price_feed_providers = ground_truth_config.get("price_feed_providers", [])    
+        price_feed_providers = ground_truth_config.get("price_feed_providers", [])
+        pp.pprint('Run Metadata', pp.Colors.INFO)
+        pp.pprint(f'Customer: {customer}\nChains and payloads:\n{chain}: {proposal_address}', pp.Colors.INFO)
         proposals_check(customer, chain, [proposal_address], price_feed_providers)
 
 

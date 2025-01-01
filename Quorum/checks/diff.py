@@ -123,21 +123,29 @@ class DiffCheck(Check):
             missing_files (list[SourceCode]): A list of SourceCode objects representing missing files.
             files_with_diffs (list[Compared]): A list of Compared objects representing files with differences.
         """
-        total_number_of_files = len(self.source_codes)
-        number_of_missing_files = len(missing_files)
-        number_of_files_with_diffs = len(files_with_diffs)
+        num_total_files = len(self.source_codes)
+        num_missing_files = len(missing_files)
+        num_diff_files = len(files_with_diffs)
+        num_identical = num_total_files - num_missing_files - num_diff_files
 
-        msg = f"Compared {total_number_of_files - number_of_missing_files}/{total_number_of_files} files for proposal {self.proposal_address}"
-        if number_of_missing_files == 0:
-            pp.pretty_print(msg, pp.Colors.SUCCESS)
-        else:
-            pp.pretty_print(msg, pp.Colors.WARNING)
-            for source_code in missing_files:
-                pp.pretty_print(f"Missing file: {source_code.file_name} in local repo", pp.Colors.WARNING)
+        # Identical files message.
+        pp.pprint(f'Files found identical: {num_identical}/{num_total_files}', pp.Colors.SUCCESS)
 
-        if number_of_files_with_diffs == 0:
-            pp.pretty_print("No differences found.", pp.Colors.SUCCESS)
-        else:
-            pp.pretty_print(f"Found differences in {number_of_files_with_diffs} files", pp.Colors.FAILURE)
-            for compared_pair in files_with_diffs:
-                pp.pretty_print(f"Local: {compared_pair.local_file}\nProposal: {compared_pair.proposal_file}\nDiff: {compared_pair.diff}", pp.Colors.FAILURE)
+        # Diffs files message.
+        if num_diff_files > 0:
+            diffs_msg = ('Proposal files found to deviate from their source of truth counterpart: '
+                        f'{num_diff_files}/{num_total_files}\n')
+            for i, compared_pair in enumerate(files_with_diffs, 1):
+                diffs_msg += (f'{i}. Proposal file: {compared_pair.proposal_file}\n'
+                              f'Source of truth file: {compared_pair.local_file}\n'
+                              f'Diff can be found here: {compared_pair.diff}\n')
+            pp.pprint(diffs_msg, pp.Colors.FAILURE)
+
+        # Missing files message.
+        if num_missing_files > 0:
+            missing_msg = ('Proposal files missing from source of truth: '
+                        f'{num_missing_files}/{num_total_files}\n')
+            for i, source_code in enumerate(missing_files, 1):
+                missing_msg += f'{i}. File: {source_code.file_name}\n'
+            pp.pprint(missing_msg, pp.Colors.WARNING)
+
