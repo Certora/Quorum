@@ -8,7 +8,7 @@ def get_working_directory() -> Path:
     parser = argparse.ArgumentParser(description="Setup Quorum project.")
     parser.add_argument(
         '--working_dir',
-        default=Path.cwd(),
+        default=Path.cwd() / 'quorum_project',
         type=Path,
         help="Directory to set up the Quorum project."
     )
