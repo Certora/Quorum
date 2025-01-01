@@ -94,7 +94,7 @@ class PriceFeedCheck(Check):
             for address in addresses:
                 if res := self.__check_price_feed_address(address):
                     verified_variables.append(res.price_feed)
-                    overall_verified_vars.update(res)
+                    overall_verified_vars.add(res)
                 else:
                     overall_unverified_vars.add(address)
 
