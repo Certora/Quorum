@@ -54,7 +54,7 @@ This command will:
   - `ground_truth.json`
   - `execution.json`
   - `.env.example`
-  - `Readme.md`
+  - `README.md`
 - Provide guidance through comments within the configuration files and detailed Readme file to help you properly configure Quorum.
 
 ### Post-Setup Configuration
