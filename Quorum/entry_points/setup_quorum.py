@@ -18,7 +18,7 @@ def get_working_directory() -> Path:
 
 def setup_quorum(working_dir: Path):
     """
-    Initializes a Quorum environment by copying template files to the specified directory.
+    Initializes Quorum environment by copying template files to the specified directory.
 
     Args:
         working_dir (Path): Target directory for setting up Quorum.
