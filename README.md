@@ -61,7 +61,8 @@ This command will:
 
 After running the setup command, perform the following steps:
 
-1. **Configure Environment Variables:**
+1. **Configure Environment Variables:** (Optional)
+   This step is optional if you prefer to set environment variables manually as described in the [Environment Variables](#environment-variables) section.
 
    Edit the `.env` file to include your actual API keys and desired paths:
 
@@ -75,7 +76,7 @@ After running the setup command, perform the following steps:
 
    - **`ground_truth.json`**: Define repositories and providers for each protocol.
    - **`execution.json`**: Specify proposal addresses for each network.
-   - **`Readme.md`**: Follow the included guide to understand installation, configuration, available flags, and the checks performed by Quorum.
+   - **`README.md`**: Follow the included guide to understand installation, configuration, available flags, and the checks performed by Quorum.
 
 ## Clarifications
 
