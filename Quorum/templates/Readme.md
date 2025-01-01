@@ -73,6 +73,6 @@ export QUORUM_PATH="path_to_your_quorum_directory"
 
 1. Fill in `ground_truth.json` with the appropriate data for each protocol.
 2. Update `execution.json` with the proposal addresses for each network.
-3. `.env` set the required environment variables.
+3. Set the required environment variables at `.env`.
 
 By following these instructions, you will ensure that the Quorum project is correctly configured and ready to use.
