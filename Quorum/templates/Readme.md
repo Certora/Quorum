@@ -54,7 +54,7 @@ This file contains the execution details for different protocols and networks. F
 
 ## .env
 
-This file contains environment variables that need to be set for the project to run.
+This file contains environment variables that needs to be set for the project to run.
 fill in the required values.
 
 ### Instructions
