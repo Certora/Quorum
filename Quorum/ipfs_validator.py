@@ -72,10 +72,13 @@ def main():
     answer = ipfs_validation_chain.execute(
         prompt_templates = args.prompt_templates, ipfs=ipfs, payload=payload
     )
-
-    # Output the LLM's response
-    print(answer)
     
-
+    if answer.incompatibilities:
+        print("Found incompatibilities:")
+        for incompatibility in answer.incompatibilities:
+            print(incompatibility)
+    else:
+        print("LLM found no incompatibilities. Please Check manually.")
+    
 if __name__ == '__main__':
     main()
