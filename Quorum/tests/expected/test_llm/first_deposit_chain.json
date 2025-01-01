@@ -1,0 +1,39 @@
+{
+    "listings": [
+        {
+            "asset_symbol": "USDT",
+            "asset_address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+            "supply_seed_amount": null,
+            "supply_indicator": false,
+            "approve_indicator": false
+        },
+        {
+            "asset_symbol": "WBTC",
+            "asset_address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+            "supply_seed_amount": null,
+            "supply_indicator": false,
+            "approve_indicator": false
+        },
+        {
+            "asset_symbol": "WETH",
+            "asset_address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "supply_seed_amount": null,
+            "supply_indicator": false,
+            "approve_indicator": false
+        },
+        {
+            "asset_symbol": "YFI",
+            "asset_address": "0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e",
+            "supply_seed_amount": null,
+            "supply_indicator": false,
+            "approve_indicator": false
+        },
+        {
+            "asset_symbol": "ZRX",
+            "asset_address": "0xE41d2489571d322189246DaFA5ebDe1F4699F498",
+            "supply_seed_amount": null,
+            "supply_indicator": false,
+            "approve_indicator": false
+        }
+    ]
+}
