@@ -19,9 +19,10 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "CheckProposal=Quorum.check_proposal:main",
-            "IPFSValidator=Quorum.ipfs_validator:main",
-            "CreateReport=Quorum.auto_report.create_report:main"
+            "CheckProposal=Quorum.entry_points.check_proposal:main",
+            "IPFSValidator=Quorum.entry_points.ipfs_validator:main",
+            "CreateReport=Quorum.entry_points.create_report:main",
+            "SetupQuorum=Quorum.entry_points.setup_quorum:main",
         ],
     },
 )

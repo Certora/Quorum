@@ -1,5 +1,6 @@
 import argparse
-import json
+from json import JSONDecodeError
+import json5 as json
 from typing import Any, Optional
 
 from Quorum.utils.chain_enum import Chain
@@ -44,7 +45,7 @@ def load_config(config_path: str) -> dict[str, Any] | None:
         with open(config_path, 'r') as file:
             config_data = json.load(file)
         return config_data
-    except (FileNotFoundError, json.JSONDecodeError) as e:
+    except (FileNotFoundError, JSONDecodeError) as e:
         pp.pprint(f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE)
 
 

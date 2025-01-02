@@ -3,7 +3,7 @@ from enum import StrEnum
 from typing import Optional
 from pydantic import BaseModel, Field
 from pathlib import Path
-import json
+import json5 as json
 import requests
 
 from Quorum.utils.chain_enum import Chain

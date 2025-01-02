@@ -1,9 +1,9 @@
 from abc import ABC
 from datetime import datetime
-import json
+import json5 as json
 from pathlib import Path
 
-import Quorum.config as config
+import Quorum.utils.config as config
 from Quorum.apis.block_explorers.source_code import SourceCode
 from Quorum.utils.chain_enum import Chain
 

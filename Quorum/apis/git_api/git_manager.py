@@ -1,7 +1,7 @@
 from pathlib import Path
 from git import Repo
 
-import Quorum.config as config
+import Quorum.utils.config as config
 import Quorum.utils.pretty_printer as pp
 
 class GitManager:
