@@ -12,3 +12,4 @@ langchain-anthropic
 langgraph
 langchain_community
 python-dotenv
+json5

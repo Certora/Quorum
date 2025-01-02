@@ -1,0 +1,26 @@
+{
+    // Protocol or organization with the same name to be specified in the execution json
+    "<protocol_name>":
+    {
+        // Main list of repositories for import diff checks
+        "dev_repos": [
+            "<https://github.com/org/repo1>",
+            "<https://github.com/org/repo2>"
+        ],
+
+        // Pre-deployment review repository for code verification
+        "review_repo": "<https://github.com/org/review-repo>",
+
+        // Supported price feed providers for address validation e.g. Chainlink, Chronicle
+        "price_feed_providers": [
+            "<price_feed_provider1>",
+            "<price_feed_provider2>"
+        ],
+
+        // Token validation services for address verification e.g. Coingecko
+        "token_validation_providers": [
+            "<token_validation_provider1>",
+            "<token_validation_provider2>"
+        ]
+    }
+}

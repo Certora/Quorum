@@ -4,7 +4,7 @@ import Quorum.tests.conftest as conftest
 
 from Quorum.apis.block_explorers.source_code import SourceCode
 
-import json
+import json5 as json
 
 
 EXPECTED_DIR = conftest.EXPECTED_DIR / 'test_source_code'
