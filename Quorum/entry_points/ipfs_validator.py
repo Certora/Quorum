@@ -1,8 +1,9 @@
 from Quorum.utils.chain_enum import Chain
-import Quorum.utils.arg_validations as arg_valid
 from Quorum.apis.block_explorers.chains_api import ChainAPI
 from Quorum.llm.chains.ipfs_validation_chain import IPFSValidationChain
 import Quorum.utils.config as config
+import Quorum.utils.arg_validations as arg_valid
+import Quorum.utils.pretty_printer as pp
 
 from pathlib import Path
 import argparse
@@ -72,10 +73,13 @@ def main():
     answer = ipfs_validation_chain.execute(
         prompt_templates = args.prompt_templates, ipfs=ipfs, payload=payload
     )
-
-    # Output the LLM's response
-    print(answer)
     
-
+    if answer.incompatibilities:
+        pp.pretty_print("Found incompatibilities:", pp.Colors.FAILURE)
+        for incompatibility in answer.incompatibilities:
+            pp.pretty_print(incompatibility, pp.Colors.FAILURE)
+    else:
+        pp.pretty_print("LLM found no incompatibilities. Please Check manually.", pp.Colors.WARNING)
+    
 if __name__ == '__main__':
     main()
