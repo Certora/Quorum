@@ -1,11 +1,30 @@
-from Quorum.llm.jinja_utils import render_prompt
-from Quorum.llm.chains.cached_llm import CachedLLM
+from typing import Optional
+from pydantic import BaseModel, Field
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
-from langchain_core.output_parsers import StrOutputParser
 
+from Quorum.llm.jinja_utils import render_prompt
+from Quorum.llm.chains.cached_llm import CachedLLM
+
+class Incompatibility(BaseModel):
+    """
+    Incompatibility is a Pydantic model that represents a mismatch between the IPFS and Solidity payloads.
+    """
+    subject: str = Field(..., description="The subject of the incompatibility (e.g. disagreement between IPFS and Solidity).")
+    subject_in_ipfs: str = Field(..., description="The subject details as described in the IPFS payload.")
+    subject_in_solidity: str = Field(..., description="The subject details as described in the Solidity payload.")
+    description: str = Field(..., description="A detailed description of the incompatibility.")
+
+class IncompatibilityArray(BaseModel):
+    """
+    IncompatibilityArray is a Pydantic model that represents a list of incompatibilities between the IPFS and Solidity payloads.
+    """
+    incompatibilities: Optional[list[Incompatibility]] = Field(
+        default=None,
+        description="A list of incompatibilities between the IPFS and Solidity payloads."
+    )
 
 class IPFSValidationChain(CachedLLM):
     """
@@ -24,6 +43,8 @@ class IPFSValidationChain(CachedLLM):
         prompt templates for execution.
         """
         super().__init__()
+
+        self.structured_llm = self.llm.with_structured_output(IncompatibilityArray)
         
         # Define the workflow for the IPFS validation chain
         workflow = StateGraph(state_schema=MessagesState)
@@ -43,7 +64,7 @@ class IPFSValidationChain(CachedLLM):
         response = self.llm.invoke(messages)
         return {"messages": response}
 
-    def execute(self, prompt_templates: list[str], ipfs: str, payload: str, thread_id: int = 1) -> str:
+    def execute(self, prompt_templates: list[str], ipfs: str, payload: str, thread_id: int = 1) -> IncompatibilityArray:
         """
         Executes the IPFS validation workflow by rendering prompts, interacting with the LLM,
         and retrieving the final validation report.
@@ -74,4 +95,4 @@ class IPFSValidationChain(CachedLLM):
                 config={"configurable": {"thread_id": f"{thread_id}"}},
             )
 
-        return StrOutputParser().parse(history["messages"][-1].content)
+        return self.structured_llm.invoke([h.content for h in history["messages"]])
