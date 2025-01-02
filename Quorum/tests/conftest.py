@@ -42,7 +42,7 @@ def tmp_cache() -> Generator[Path, None, None]:
     shutil.rmtree(cache)
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def load_ipfs_and_code() -> tuple[str, str]:
     llm_dir = RESOURCES_DIR / "llm" / "ipfs_validation_chain"
     ipfs_path = llm_dir / "ipfs.txt"
