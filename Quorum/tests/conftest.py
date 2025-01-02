@@ -44,9 +44,9 @@ def tmp_cache() -> Generator[Path, None, None]:
 
 @pytest.fixture
 def load_ipfs_and_code() -> tuple[str, str]:
-    llm_dir = RESOURCES_DIR / 'llm' / "ipfs_validation_chain"
-    ipfs_path = llm_dir / 'ipfs.txt'
-    source_code_path = llm_dir / 'source_code.sol'
+    llm_dir = RESOURCES_DIR / "llm" / "ipfs_validation_chain"
+    ipfs_path = llm_dir / "ipfs.txt"
+    source_code_path = llm_dir / "source_code.sol"
     
     ipfs_content = ipfs_path.read_text()
     source_code = source_code_path.read_text()
