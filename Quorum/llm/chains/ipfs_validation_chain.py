@@ -22,7 +22,7 @@ class IncompatibilityArray(BaseModel):
     IncompatibilityArray is a Pydantic model that represents a list of incompatibilities between the IPFS and Solidity payloads.
     """
     incompatibilities: Optional[list[Incompatibility]] = Field(
-        ...,
+        default=None,
         description="A list of incompatibilities between the IPFS and Solidity payloads."
     )
 
