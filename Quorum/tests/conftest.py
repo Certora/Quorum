@@ -58,3 +58,12 @@ def expected_first_deposit_results():
     with open(expected_path) as f:
         expected = json.load(f)
     return expected
+
+@pytest.fixture
+def first_deposit_chain_input():
+    llm_resource_dir = RESOURCES_DIR / "llm" / "first_deposit_chain"
+    source_code_path = llm_resource_dir / "source_code.sol"
+
+    source_code = source_code_path.read_text(encoding="utf-8")
+
+    return source_code
