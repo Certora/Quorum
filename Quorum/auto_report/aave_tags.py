@@ -1,6 +1,6 @@
 import requests
 from dataclasses import dataclass
-import json
+import json5 as json
 
 
 BASE_BGD_CACHE_REPO = 'https://raw.githubusercontent.com/bgd-labs/v3-governance-cache/refs/heads/main/cache'

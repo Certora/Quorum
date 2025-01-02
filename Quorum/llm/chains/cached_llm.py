@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from Quorum.config import ANTHROPIC_MODEL, ANTHROPIC_API_KEY
+from Quorum.utils.config import ANTHROPIC_MODEL, ANTHROPIC_API_KEY
 
 from langchain_anthropic import ChatAnthropic
 from langchain_community.cache import SQLiteCache

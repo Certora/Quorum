@@ -1,7 +1,7 @@
 import pytest
 
 from Quorum.apis.block_explorers.source_code import SourceCode
-import Quorum.config as config
+import Quorum.utils.config as config
 
 from pathlib import Path
 import shutil
