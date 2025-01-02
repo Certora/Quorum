@@ -35,7 +35,8 @@ def setup_quorum(working_dir: Path):
         pp.pretty_print(f"Creating directory: {target_dir}", pp.Colors.INFO)
         target_dir.mkdir(parents=True, exist_ok=True)
 
-    template_files = ['ground_truth.json', 'execution.json', '.env.example', 'README.md']
+    # Collect all file names to copy from the templates directory
+    template_files = [f.name for f in templates_dir.iterdir() if f.is_file()]
 
     for file_name in template_files:
         src = templates_dir / file_name
