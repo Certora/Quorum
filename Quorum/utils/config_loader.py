@@ -22,13 +22,13 @@ def load_customer_config(customer: str) -> Dict[str, any]:
     """
     customer_config = config_data.get(customer)
     if not customer_config:
-        pp.pretty_print(f"Customer {customer} not found in ground truth data.", pp.Colors.FAILURE)
+        pp.pprint(f"Customer {customer} not found in ground truth data.", pp.Colors.FAILURE)
         raise ValueError(f"Customer {customer} not found in ground truth data.")
     providers = customer_config.get("price_feed_providers", [])
     providers += customer_config.get("token_validation_providers", [])
     unsupported = set(providers) - SUPPORTED_PROVIDERS
     if unsupported:
-        pp.pretty_print(f"Unsupported providers for {customer}: {', '.join(unsupported)}", pp.Colors.FAILURE)
+        pp.pprint(f"Unsupported providers for {customer}: {', '.join(unsupported)}", pp.Colors.FAILURE)
         providers = list(set(providers) & SUPPORTED_PROVIDERS)
         customer_config["price_feed_providers"] = providers
     

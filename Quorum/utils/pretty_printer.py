@@ -7,7 +7,7 @@ class Colors(StrEnum):
     INFO = ''
     RESET = '\033[0m'
 
-def pretty_print(message: str, status: Colors):
+def pprint(message: str, status: Colors):
     separator_line = status + '-' * 80 + Colors.RESET
     print(separator_line)
     print(status + message + Colors.RESET)

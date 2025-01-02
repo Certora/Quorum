@@ -1,6 +1,4 @@
-import re
 from pathlib import Path
-
 
 from Quorum.checks.check import Check
 from Quorum.apis.block_explorers.source_code import SourceCode
@@ -75,11 +73,16 @@ class GlobalVariableCheck(Check):
                                                                        to lists of violated variables.
         """
         if not source_code_to_violated_variables:
-            pp.pretty_print("All global variables are constant or immutable.", pp.Colors.SUCCESS)
-        else:
-            pp.pretty_print("Global variable checks failed:", pp.Colors.FAILURE)
-            for file_name, violated_variables in source_code_to_violated_variables.items():
-                pp.pretty_print(f"File {file_name} contains variables that are not constant or immutable"
-                                ,pp.Colors.FAILURE)
-                self._write_to_file(Path(file_name).stem.removesuffix(".sol"), violated_variables)
+            pp.pprint('All global variables are constant or immutable.', pp.Colors.SUCCESS)
+            return
+        
+        msg = ("Some global variables aren't constant or immutable. A storage collision may occur!\n"
+               f'The following variables found to be storage variables: ')
+        i = 1
+        for file_name, violated_variables in source_code_to_violated_variables.items():
+            for var in violated_variables:
+                msg += f"\t{i}. File {file_name}: {var['name']}"
+                i += 1
+            self._write_to_file(Path(file_name).stem.removesuffix('.sol'), violated_variables)
+        pp.pprint(msg, pp.Colors.FAILURE)
        

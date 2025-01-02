@@ -2,7 +2,7 @@ import pytest
 
 
 from Quorum.apis.block_explorers.source_code import SourceCode
-import Quorum.checks as Checks
+from Quorum.checks.price_feed import PriceFeedCheck
 from Quorum.utils.chain_enum import Chain
 from Quorum.apis.price_feeds import ChainLinkAPI
 
@@ -11,7 +11,7 @@ from pathlib import Path
 
 @pytest.mark.parametrize('source_codes', ['ETH/0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637'], indirect=True)
 def test_price_feed(source_codes: list[SourceCode], tmp_output_path: Path):
-    price_feed_check = Checks.PriceFeedCheck('Aave', Chain.ETH, '', source_codes, [
+    price_feed_check = PriceFeedCheck('Aave', Chain.ETH, '', source_codes, [
         ChainLinkAPI()])
     price_feed_check.verify_price_feed()
 
@@ -53,7 +53,7 @@ contract AaveV2Ethereum_ReserveFactorUpdatesMidJuly_20240711 is IProposalGeneric
   }
 }
     """
-    cleaned = Checks.price_feed.remove_solidity_comments(code)
+    cleaned = PriceFeedCheck.remove_solidity_comments(code)
     expected = """pragma solidity ^0.8.0;
 
 import {IProposalGenericExecutor} from 'aave-helpers/interfaces/IProposalGenericExecutor.sol';

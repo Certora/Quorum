@@ -28,21 +28,21 @@ def parse_args() -> argparse.Namespace:
 
 
 def create_report(proposal_id: int, template: Path, generate_report_path: Path):
-    pprinter.pretty_print(f'Generating a report using template in {template}', pprinter.Colors.INFO)
+    pprinter.pprint(f'Generating a report using template in {template}', pprinter.Colors.INFO)
     env = Environment(loader=FileSystemLoader(template.parent))
     env.globals.update(zip=zip)
     template = env.get_template(template.name)
     
-    pprinter.pretty_print(f'Retrieving tag information for proposal {proposal_id}', pprinter.Colors.INFO)
+    pprinter.pprint(f'Retrieving tag information for proposal {proposal_id}', pprinter.Colors.INFO)
     tags = aave_tags.get_aave_tags(proposal_id)
-    pprinter.pretty_print(f'Tag information retrieved', pprinter.Colors.INFO)
+    pprinter.pprint(f'Tag information retrieved', pprinter.Colors.INFO)
 
     report = template.render(tags)
 
     with open(generate_report_path, 'w') as f:
         f.write(report)
 
-    pprinter.pretty_print(f'Created report at {generate_report_path}.', pprinter.Colors.SUCCESS)
+    pprinter.pprint(f'Created report at {generate_report_path}.', pprinter.Colors.SUCCESS)
 
 
 def main():

@@ -47,7 +47,7 @@ class SourceCode:
             self._parsed_contract = contract_ast[contract_name]['ast']
 
         except Exception as e:
-            pp.pretty_print(f"Error parsing source code for {self.file_name}: {e}\n"
+            pp.pprint(f"Error parsing source code for {self.file_name}: {e}\n"
                             f"Some of the checks will not apply to this contract!!!",
                             pp.Colors.FAILURE)
         finally:
