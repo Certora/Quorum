@@ -2,7 +2,7 @@ from Quorum.utils.chain_enum import Chain
 import Quorum.utils.arg_validations as arg_valid
 from Quorum.apis.block_explorers.chains_api import ChainAPI
 from Quorum.llm.chains.ipfs_validation_chain import IPFSValidationChain
-import Quorum.config as config
+import Quorum.utils.config as config
 
 from pathlib import Path
 import argparse

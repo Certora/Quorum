@@ -7,7 +7,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
 
-DEFAULT_TEMPLATE_PATH = Path(__file__).parent / 'AaveReportTemplate.md.j2'
+DEFAULT_TEMPLATE_PATH = Path(__file__).parent.parent / 'auto_report/AaveReportTemplate.md.j2'
 
 
 def parse_args() -> argparse.Namespace:

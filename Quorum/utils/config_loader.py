@@ -1,6 +1,6 @@
-import json
+import json5 as json
 from typing import Dict
-import Quorum.config as config
+import Quorum.utils.config as config
 import Quorum.utils.pretty_printer as pp
 import Quorum.apis.price_feeds as price_feeds
 

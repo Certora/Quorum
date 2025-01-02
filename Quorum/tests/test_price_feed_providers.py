@@ -5,7 +5,7 @@ import Quorum.tests.conftest as conftest
 from Quorum.utils.chain_enum import Chain
 from Quorum.apis.price_feeds import PriceFeedData, ChainLinkAPI, ChronicleAPI, CoinGeckoAPI
 
-import json
+import json5 as json
 
 
 EXPECTED_DIR = conftest.EXPECTED_DIR / 'test_price_feed_providers'
