@@ -1,12 +1,11 @@
 import pytest
+import shutil
+import json5 as json
+from pathlib import Path
+from typing import Generator
 
 from Quorum.apis.block_explorers.source_code import SourceCode
 import Quorum.utils.config as config
-
-from pathlib import Path
-import shutil
-
-from typing import Generator
 
 
 RESOURCES_DIR = Path(__file__).parent / 'resources'
@@ -52,3 +51,10 @@ def load_ipfs_and_code() -> tuple[str, str]:
     source_code = source_code_path.read_text()
     
     return ipfs_content, source_code
+
+@pytest.fixture
+def expected_first_deposit_results():
+    expected_path = EXPECTED_DIR / 'test_llm' / 'first_deposit_chain.json'
+    with open(expected_path) as f:
+        expected = json.load(f)
+    return expected
