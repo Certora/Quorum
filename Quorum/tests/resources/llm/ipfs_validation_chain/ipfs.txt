@@ -44,7 +44,7 @@ USDT.e   | Avalanche v2 | 65.00%   | 70.00%
 wAVAX    | Avalanche v2 | 65.00%   | 70.00%
 WBTC.e   | Avalanche v2 | 70.00%   | 75.00%
 WETH.e   | Avalanche v2 | 65.00%   | 70.00%
-DAI      | Ethereum v2  | 70.00%   | 75.00%
+DAI      | Ethereum v2  | 70.00%   | 70.00%
 LINK     | Ethereum v2  | 75.00%   | 80.00%
 USDC     | Ethereum v2  | 70.00%   | 75.00%
 USDT     | Ethereum v2  | 70.00%   | 75.00%

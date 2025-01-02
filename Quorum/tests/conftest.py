@@ -42,14 +42,14 @@ def tmp_cache() -> Generator[Path, None, None]:
 
 
 @pytest.fixture(scope="module")
-def load_ipfs_and_code() -> tuple[str, str]:
-    llm_dir = RESOURCES_DIR / "llm" / "ipfs_validation_chain"
-    ipfs_path = llm_dir / "ipfs.txt"
-    source_code_path = llm_dir / "source_code.sol"
-    
+def load_ipfs_validation_chain_inputs() -> tuple[str, str]:
+    llm_resource_dir = RESOURCES_DIR / "llm" / "ipfs_validation_chain"
+    ipfs_path = llm_resource_dir / "ipfs.txt"
+    source_code_path = llm_resource_dir / "source_code.sol"
+
     ipfs_content = ipfs_path.read_text(encoding="utf-8")
     source_code = source_code_path.read_text(encoding="utf-8")
-    
+
     return ipfs_content, source_code
 
 @pytest.fixture
