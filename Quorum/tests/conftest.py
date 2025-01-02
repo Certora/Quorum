@@ -48,7 +48,7 @@ def load_ipfs_and_code() -> tuple[str, str]:
     ipfs_path = llm_dir / "ipfs.txt"
     source_code_path = llm_dir / "source_code.sol"
     
-    ipfs_content = ipfs_path.read_text()
-    source_code = source_code_path.read_text()
+    ipfs_content = ipfs_path.read_text(encoding="utf-8")
+    source_code = source_code_path.read_text(encoding="utf-8")
     
     return ipfs_content, source_code
