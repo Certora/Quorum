@@ -81,7 +81,7 @@ class GlobalVariableCheck(Check):
         i = 1
         for file_name, violated_variables in source_code_to_violated_variables.items():
             for var in violated_variables:
-                msg += f"{i}. File {file_name}: {var['name']}"
+                msg += f"\t{i}. File {file_name}: {var['name']}"
                 i += 1
             self._write_to_file(Path(file_name).stem.removesuffix('.sol'), violated_variables)
         pp.pprint(msg, pp.Colors.FAILURE)

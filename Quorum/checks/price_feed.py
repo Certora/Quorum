@@ -113,9 +113,9 @@ class PriceFeedCheck(Check):
         msg = (f'{len(price_feed_validation_res)}/{num_addresses} '
                                      'were identified as price feeds of the configured providers:\n')
         for i, var_res in enumerate(price_feed_validation_res, 1):
-            msg += (f'{i}. {var_res.address} found on {var_res.found_on}\n'
-                                          f"Name: {var_res.price_feed['name']}\n"
-                                          f"Decimals: {var_res.price_feed['decimals']}\n")
+            msg += (f'\t{i}. {var_res.address} found on {var_res.found_on}\n'
+                    f"\t   Name: {var_res.price_feed['name']}\n"
+                    f"\t   Decimals: {var_res.price_feed['decimals']}\n")
         pp.pprint(msg, pp.Colors.SUCCESS)
 
         # Print token validation
@@ -123,17 +123,17 @@ class PriceFeedCheck(Check):
         msg = (f'{len(token_validation_res)}/{num_addresses} '
                                 'were identified as tokens of the configured providers:\n')
         for i, var_res in enumerate(token_validation_res, 1):
-            msg += (f'{i}. {var_res.address} found on {var_res.found_on}\n'
-                    f"Name: {var_res.price_feed['name']}\n"
-                    f"Symbol: {var_res.price_feed['pair']}\n"
-                    f"Decimals: {var_res.price_feed['decimals']}\n")
+            msg += (f'\t{i}. {var_res.address} found on {var_res.found_on}\n'
+                    f"\t   Name: {var_res.price_feed['name']}\n"
+                    f"\t   Symbol: {var_res.price_feed['pair']}\n"
+                    f"\t   Decimals: {var_res.price_feed['decimals']}\n")
         pp.pprint(msg, pp.Colors.SUCCESS)
 
         # Print not found
         msg = (f'{len(overall_unverified_vars)}/{num_addresses} '
                'explicit addresses were not identified using any provider:\n')
         for i, address in enumerate(overall_unverified_vars, 1):
-            msg += f'{i}. {address}\n'
+            msg += f'\t{i}. {address}\n'
         pp.pprint(msg, pp.Colors.FAILURE)
 
     @staticmethod    
@@ -160,4 +160,3 @@ class PriceFeedCheck(Check):
         source_code = re.sub(single_line_comment_pattern, '', source_code, flags=re.MULTILINE)
         
         return source_code
-

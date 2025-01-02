@@ -136,9 +136,9 @@ class DiffCheck(Check):
             diffs_msg = ('Proposal files found to deviate from their source of truth counterpart: '
                         f'{num_diff_files}/{num_total_files}\n')
             for i, compared_pair in enumerate(files_with_diffs, 1):
-                diffs_msg += (f'{i}. Proposal file: {compared_pair.proposal_file}\n'
-                              f'Source of truth file: {compared_pair.local_file}\n'
-                              f'Diff can be found here: {compared_pair.diff}\n')
+                diffs_msg += (f'\t{i}. Proposal file: {compared_pair.proposal_file}\n'
+                              f'\t   Source of truth file: {compared_pair.local_file}\n'
+                              f'\t   Diff can be found here: {compared_pair.diff}\n')
             pp.pprint(diffs_msg, pp.Colors.FAILURE)
 
         # Missing files message.
@@ -146,6 +146,6 @@ class DiffCheck(Check):
             missing_msg = ('Proposal files missing from source of truth: '
                         f'{num_missing_files}/{num_total_files}\n')
             for i, source_code in enumerate(missing_files, 1):
-                missing_msg += f'{i}. File: {source_code.file_name}\n'
+                missing_msg += f'\t{i}. File: {source_code.file_name}\n'
             pp.pprint(missing_msg, pp.Colors.WARNING)
 

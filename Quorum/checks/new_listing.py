@@ -36,9 +36,9 @@ class NewListingCheck(Check):
             msg = f'{len(listings.listings)} new asset listings were detected:\n'
             for i, listing in enumerate(listings.listings, 1):
                 if listing.approve_indicator and listing.supply_indicator:
-                    msg += f'{i}. New listing detected for {listing.asset_symbol}\n'
+                    msg += f'\t{i}. New listing detected for {listing.asset_symbol}\n'
                 else:
-                    msg += f'{i}. New listing detected for {listing.asset_symbol} but no approval or supply detected\n'
+                    msg += f'\t{i}. New listing detected for {listing.asset_symbol} but no approval or supply detected\n'
             pp.pprint(msg, pp.Colors.INFO)
             self._write_to_file('new_listings.json', listings.model_dump())
 

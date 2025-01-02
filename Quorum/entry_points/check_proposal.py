@@ -116,7 +116,7 @@ def main() -> None:
             ground_truth_config = ConfigLoader.load_customer_config(customer)
             GitManager(customer, ground_truth_config).clone_or_update()
             price_feed_providers = ground_truth_config.get("price_feed_providers", [])
-            
+
             pp.pprint('Run Metadata', pp.Colors.INFO)
             pp.pprint(f'Customer: {customer}\nChains and payloads:\n{chain_info}', pp.Colors.INFO)
             for chain, proposals in chain_info.items():
