@@ -2,7 +2,7 @@ from pathlib import Path
 import re
 from dataclasses import dataclass
 
-from Quorum.apis.price_feeds import PriceFeedProviderBase, CoinGeckoAPI
+from Quorum.apis.price_feeds import PriceFeedProviderBase, PriceFeedData, CoinGeckoAPI
 from Quorum.utils.chain_enum import Chain
 from Quorum.checks.check import Check
 from Quorum.apis.block_explorers.source_code import SourceCode
@@ -44,7 +44,7 @@ class PriceFeedCheck(Check):
         '''
         address: str
         found_on: str
-        price_feed: dict
+        price_feed: PriceFeedData
 
         def __hash__(self):
             return hash(self.address)
@@ -61,7 +61,7 @@ class PriceFeedCheck(Check):
         """
         for provider in self.providers:
             if (price_feed := provider.get_price_feed(self.chain, address)):
-                return PriceFeedCheck.PriceFeedResult(address, provider.get_name(), price_feed.model_dump())
+                return PriceFeedCheck.PriceFeedResult(address, provider.get_name(), price_feed)
         return None
 
     def verify_price_feed(self) -> None:
@@ -93,7 +93,7 @@ class PriceFeedCheck(Check):
 
             for address in addresses:
                 if res := self.__check_price_feed_address(address):
-                    verified_variables.append(res.price_feed)
+                    verified_variables.append(res.price_feed.model_dump())
                     overall_verified_vars.add(res)
                 else:
                     overall_unverified_vars.add(address)
@@ -114,8 +114,8 @@ class PriceFeedCheck(Check):
                                      'were identified as price feeds of the configured providers:\n')
         for i, var_res in enumerate(price_feed_validation_res, 1):
             msg += (f'\t{i}. {var_res.address} found on {var_res.found_on}\n'
-                    f"\t   Name: {var_res.price_feed['name']}\n"
-                    f"\t   Decimals: {var_res.price_feed['decimals']}\n")
+                    f'\t   Name: {var_res.price_feed.name}\n'
+                    f'\t   Decimals: {var_res.price_feed.decimals}\n')
         pp.pprint(msg, pp.Colors.SUCCESS)
 
         # Print token validation
@@ -124,9 +124,9 @@ class PriceFeedCheck(Check):
                                 'were identified as tokens of the configured providers:\n')
         for i, var_res in enumerate(token_validation_res, 1):
             msg += (f'\t{i}. {var_res.address} found on {var_res.found_on}\n'
-                    f"\t   Name: {var_res.price_feed['name']}\n"
-                    f"\t   Symbol: {var_res.price_feed['pair']}\n"
-                    f"\t   Decimals: {var_res.price_feed['decimals']}\n")
+                    f'\t   Name: {var_res.price_feed.name}\n'
+                    f'\t   Symbol: {var_res.price_feed.pair}\n'
+                    f'\t   Decimals: {var_res.price_feed.decimals}\n')
         pp.pprint(msg, pp.Colors.SUCCESS)
 
         # Print not found
