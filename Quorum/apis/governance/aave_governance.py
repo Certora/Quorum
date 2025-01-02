@@ -64,6 +64,11 @@ class BGDProposalData(BaseModel):
     events: List[EventData] = Field(default_factory=list)
 
 
+class PayloadAddresses(BaseModel):
+    chain: str
+    addresses: List[str]
+
+
 # ==============================
 #  Mapping for Chains
 # ==============================
@@ -119,3 +124,14 @@ class AaveGovernanceAPI:
         payload_data = resp.json()
         # We only need the 'target' field from each action
         return [a['target'] for a in payload_data['payload']['actions']]
+
+    def get_all_payload_addresses(self, proposal_id: int) -> List[PayloadAddresses]:
+        """
+        Retrieves a list of payload addresses for each chain in the proposal.
+        """
+        data = self.get_proposal_data(proposal_id)
+        results = []
+        for p in data.proposal.payloads:
+            addresses = self.get_payload_addresses(p.chain, p.payloads_controller, p.payload_id)
+            results.append(PayloadAddresses(chain=p.chain, addresses=addresses))
+        return results
