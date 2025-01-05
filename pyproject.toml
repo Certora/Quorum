@@ -5,6 +5,7 @@ description = "Quorum is an open-source Python utility designed to verify the in
 readme = "README.md"
 license = "MIT"
 authors = ["Niv Vaknin <niv@certora.com>"]
+packages = [{ include = "Quorum"}]
 
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
