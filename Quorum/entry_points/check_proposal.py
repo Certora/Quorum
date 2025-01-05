@@ -64,7 +64,7 @@ def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], 
     api = ChainAPI(chain)
     
     for proposal_address in proposal_addresses:
-        pp.pprint(f'Analyzing payload {proposal_address}', pp.Colors.INFO)
+        pp.pprint(f'Analyzing payload {proposal_address} on {chain}', pp.Colors.INFO, is_heading=True)
 
         try:
             source_codes = api.get_source_code(proposal_address)
@@ -75,29 +75,47 @@ def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], 
                 'Try contacting the proposer and ask them to verify the contract.\n'
                 'No further checks are being performed on this payload.'
             )
+            
             pp.pprint(error_message, pp.Colors.FAILURE)
+            pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
             # Skip further checks for this proposal 
             continue
 
         # Diff check
         pp.pprint('Check 1 - Comparing payload contract and imports with the source of truth', pp.Colors.INFO)
         missing_files = Checks.DiffCheck(customer, chain, proposal_address, source_codes).find_diffs()
-        
+        pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
+
         # Review diff check
         pp.pprint(f'Check 2 - Verifying missing files against customer review repo', pp.Colors.INFO)
         Checks.ReviewDiffCheck(customer, chain, proposal_address, missing_files).find_diffs()
+        pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
 
         # Global variables check
         pp.pprint('Check 3 - Global variables', pp.Colors.INFO)
         Checks.GlobalVariableCheck(customer, chain, proposal_address, missing_files).check_global_variables()
+        pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
 
         # Feed price check
         pp.pprint('Check 4 - Explicit addresses validation', pp.Colors.INFO)
         Checks.PriceFeedCheck(customer, chain, proposal_address, missing_files, providers).verify_price_feed()
+        pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
 
         # New listing check
         pp.pprint('Check 5 - First deposit for new listing', pp.Colors.INFO)
         Checks.NewListingCheck(customer, chain, proposal_address, missing_files).new_listing_check()
+        pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
+
+
+def format_metadata(customer: str, chain_info: dict[str, list[str]]) -> str:
+    msg = f'Customer: {customer}\nChains and payloads:\n'
+    for chain, addresses in chain_info.items():
+        if len(addresses) == 0:
+            continue
+        msg += f'* {chain}:\n'
+        for address in addresses:
+            msg += f'\t- {address}\n'
+    return msg
 
 
 def main() -> None:
@@ -112,18 +130,20 @@ def main() -> None:
     if config_data:
         # Multi-task mode using JSON configuration
         for customer, chain_info in config_data.items():
-            pp.pprint('Run Preparation', pp.Colors.INFO)
+            pp.pprint('Run Preparation', pp.Colors.INFO, is_heading=True)
             ground_truth_config = ConfigLoader.load_customer_config(customer)
             GitManager(customer, ground_truth_config).clone_or_update()
-            price_feed_providers = ground_truth_config.get("price_feed_providers", [])
-
-            pp.pprint('Run Metadata', pp.Colors.INFO)
-            pp.pprint(f'Customer: {customer}\nChains and payloads:\n{chain_info}', pp.Colors.INFO)
+            price_feed_providers = ground_truth_config.get('price_feed_providers', [])
+            pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
+            
+            pp.pprint('Run Metadata', pp.Colors.INFO, is_heading=True)
+            pp.pprint(format_metadata(customer, chain_info), pp.Colors.INFO)
+            pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
             for chain, proposals in chain_info.items():
                 # Validate chain is supported by cast to Chain enum
                 chain = Chain(chain)
-                if proposals["Proposals"]: 
-                    proposals_check(customer, chain, proposals["Proposals"], price_feed_providers)
+                if proposals['Proposals']: 
+                    proposals_check(customer, chain, proposals['Proposals'], price_feed_providers)
     else:
         # Single-task mode using command line arguments
         if not (customer and chain and proposal_address):

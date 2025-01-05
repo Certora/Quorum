@@ -1,6 +1,9 @@
 from enum import StrEnum
 
 
+SEPARATOR_LINE = '\n' + '-' * 110 + '\n'
+
+
 class Colors(StrEnum):
     SUCCESS = '\033[92m'
     FAILURE = '\033[91m'
@@ -9,8 +12,8 @@ class Colors(StrEnum):
     RESET = '\033[0m'
 
 
-def pprint(message: str, status: Colors):
-    separator_line = status + '-' * 80 + Colors.RESET
-    print(separator_line)
-    print(status + message + Colors.RESET)
-    print(separator_line)
+def pprint(message: str, status: Colors, is_heading: bool = False):
+    s = status + message + Colors.RESET
+    if is_heading:
+        s += '\n' + '-' * len(message)
+    print(s)
