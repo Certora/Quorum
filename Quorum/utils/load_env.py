@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
 import Quorum.utils.pretty_printer as pp
@@ -8,7 +9,7 @@ def load_env_variables():
     env_before = dict(os.environ)
 
     # Load .env with override=True
-    load_dotenv(override=True)
+    load_dotenv(dotenv_path = Path.cwd() / '.env', override=True)
 
     # Capture the environment variables after loading .env
     env_after = dict(os.environ)
