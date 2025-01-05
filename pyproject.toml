@@ -53,7 +53,7 @@ exclude = '''
 )/
 '''
 include = '''
-Quorum/
+^Quorum/.*\.py$
 '''
 
 [tool.flake8]
