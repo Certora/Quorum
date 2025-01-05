@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Quorum is an open-source Python utility designed to verify the integrity of smart contracts deployed on blockchains."
 readme = "README.md"
 license = "MIT"
-authors = ["Niv Vaknin niv@cerotra.com"]
+authors = ["Niv Vaknin <niv@certora.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
