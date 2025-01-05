@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Quorum"
+description = "Quorum: A tool for managing proposals and reports"
+authors = [
+    {name = "Niv Vaknin", email = "niv@certora.com"},
+    {name = "Liav Katry", email = "liav@certora.com"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["Quorum", "Proposals", "Reports"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dynamic = ["version", "dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+version = {file = ["version"]}
+
+[project.urls]
+Homepage = "https://github.com/Certora/Quorum"
+Source = "https://github.com/Certora/Quorum"
+
+[project.scripts]
+CheckProposal = "Quorum.entry_points.check_proposal:main"
+IPFSValidator = "Quorum.entry_points.ipfs_validator:main"
+CreateReport = "Quorum.entry_points.create_report:main"
+SetupQuorum = "Quorum.entry_points.setup_quorum:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+Quorum = ["ground_truth.json", "*.j2"]
