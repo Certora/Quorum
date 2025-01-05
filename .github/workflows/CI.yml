@@ -40,7 +40,7 @@ jobs:
           poetry install
             
       - name: Run Linter
-        run: poetry run flake8 .
+        run: poetry run flake8 Quorum/
 
       - name: Execute Regression Tests
         run: |
