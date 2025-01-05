@@ -10,6 +10,7 @@ on:
 
 jobs:
   Regression:
+    requires: Linter
     if: |
       (
         (github.event_name == 'pull_request_review' && github.event.review.state == 'approved') ||
@@ -33,10 +34,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Quorum Repo
-        run: pip3.11 install .
+      - name: Install Dependencies via Poetry
+        run: |
+          pip install poetry
+          poetry install
+            
+      - name: Run Linter
+        run: poetry run flake8 .
 
       - name: Execute Regression Tests
         run: |
-          pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
-          CheckProposal --config Quorum/tests/regression.json
+          poetry run pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
+          poetry run CheckProposal --config Quorum/tests/regression.json

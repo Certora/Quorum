@@ -1,0 +1,43 @@
+[project]
+name = "quorum"
+version = "0.1.0"
+description = "Quorum is an open-source Python utility designed to verify the integrity of smart contracts deployed on blockchains."
+authors = [
+    {name = "Niv Vaknin"}
+]
+packages = [
+    { include = "Quorum" }
+]
+license = {text = "Quorum is released under the [MIT License](LICENSE)."}
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+dependencies = [
+    "requests",
+    "GitPython",
+    "py-solc-x",
+    "pydantic",
+    "eth-abi",
+    "eth-utils",
+    "pytest",
+    "eth-hash[pycryptodome]",
+    "langchain",
+    "jinja2",
+    "langchain-anthropic",
+    "langgraph",
+    "langchain_community", 
+    "python-dotenv",
+    "json5"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.1.1"
+
+[tool.poetry.scripts]
+CheckProposal = "Quorum.entry_points.check_proposal:main"
+IPFSValidator = "Quorum.entry_points.ipfs_validator:main"
+CreateReport = "Quorum.entry_points.create_report:main"
+SetupQuorum = "Quorum.entry_points.setup_quorum:main"
