@@ -8,32 +8,35 @@ import requests
 
 from Quorum.utils.chain_enum import Chain
 
+
 class PriceFeedProvider(StrEnum):
     """
     Enumeration for supported price feed providers.
     """
-    CHAINLINK = 'Chainlink'
-    CHRONICLE = 'Chronicle'
-    COINGECKO = 'Coingecko'
+
+    CHAINLINK = "Chainlink"
+    CHRONICLE = "Chronicle"
+    COINGECKO = "Coingecko"
+
 
 class PriceFeedData(BaseModel):
-    name: Optional[str] = Field(None, alias='name')
-    pair: Optional[str | list] = Field(None, alias='symbol')
-    address: str = Field(..., alias='contractAddress')
-    proxy_address: Optional[str] = Field(None, alias='proxyAddress')
-    decimals: Optional[int] = Field(None, alias='decimals')
+    name: Optional[str] = Field(None, alias="name")
+    pair: Optional[str | list] = Field(None, alias="symbol")
+    address: str = Field(..., alias="contractAddress")
+    proxy_address: Optional[str] = Field(None, alias="proxyAddress")
+    decimals: Optional[int] = Field(None, alias="decimals")
 
     class Config:
         populate_by_name = True  # Allows population using field names
-        extra = 'ignore'  # Ignores extra fields not defined in the model
-    
+        extra = "ignore"  # Ignores extra fields not defined in the model
+
     def __str__(self) -> str:
         s = ""
         if self.name:
             s += f"Name: {self.name}\n"
         if self.pair:
             if isinstance(self.pair, list):
-                pair_str = ','.join(self.pair)
+                pair_str = ",".join(self.pair)
                 if pair_str != ",":
                     s += f"Pairs: {pair_str}\n"
             else:
@@ -41,7 +44,7 @@ class PriceFeedData(BaseModel):
         if self.decimals:
             s += f"Decimals: {self.decimals}\n"
         return s
-        
+
 
 class PriceFeedProviderBase(ABC):
     """
@@ -59,7 +62,7 @@ class PriceFeedProviderBase(ABC):
         self.session = requests.Session()
         self.memory: dict[str, PriceFeedData] = {}
 
-    def get_price_feed(self, chain: Chain, address: str) -> PriceFeedData | None: 
+    def get_price_feed(self, chain: Chain, address: str) -> PriceFeedData | None:
         """
         Get price feed data for a given address on a blockchain network.
 
@@ -72,7 +75,7 @@ class PriceFeedProviderBase(ABC):
         """
         cache_file = self.cache_dir / f"{chain.value}" / f"{address}.json"
         if cache_file.exists():
-            with open(cache_file, 'r') as file:
+            with open(cache_file, "r") as file:
                 data: dict = json.load(file)
             self.memory[address] = PriceFeedData(**data)
         else:
@@ -81,12 +84,12 @@ class PriceFeedProviderBase(ABC):
                 if not self.memory[address]:
                     return None
                 cache_file.parent.mkdir(parents=True, exist_ok=True)
-                with open(cache_file, 'w') as file:
+                with open(cache_file, "w") as file:
                     json.dump(
                         self.memory[address].model_dump(mode="json"), file, indent=4
                     )
         return self.memory[address]
-    
+
     @abstractmethod
     def _get_price_feed_info(self, chain: Chain, address: str) -> PriceFeedData:
         pass

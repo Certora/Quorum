@@ -8,23 +8,37 @@ from langgraph.graph import START, MessagesState, StateGraph
 from Quorum.llm.jinja_utils import render_prompt
 from Quorum.llm.chains.cached_llm import CachedLLM
 
+
 class Incompatibility(BaseModel):
     """
     Incompatibility is a Pydantic model that represents a mismatch between the IPFS and Solidity payloads.
     """
-    subject: str = Field(..., description="The subject of the incompatibility (e.g. disagreement between IPFS and Solidity).")
-    subject_in_ipfs: str = Field(..., description="The subject details as described in the IPFS payload.")
-    subject_in_solidity: str = Field(..., description="The subject details as described in the Solidity payload.")
-    description: str = Field(..., description="A detailed description of the incompatibility.")
+
+    subject: str = Field(
+        ...,
+        description="The subject of the incompatibility (e.g. disagreement between IPFS and Solidity).",
+    )
+    subject_in_ipfs: str = Field(
+        ..., description="The subject details as described in the IPFS payload."
+    )
+    subject_in_solidity: str = Field(
+        ..., description="The subject details as described in the Solidity payload."
+    )
+    description: str = Field(
+        ..., description="A detailed description of the incompatibility."
+    )
+
 
 class IncompatibilityArray(BaseModel):
     """
     IncompatibilityArray is a Pydantic model that represents a list of incompatibilities between the IPFS and Solidity payloads.
     """
+
     incompatibilities: Optional[list[Incompatibility]] = Field(
         default=None,
-        description="A list of incompatibilities between the IPFS and Solidity payloads."
+        description="A list of incompatibilities between the IPFS and Solidity payloads.",
     )
+
 
 class IPFSValidationChain(CachedLLM):
     """
@@ -36,6 +50,7 @@ class IPFSValidationChain(CachedLLM):
     Attributes:
         chain (SequentialChain): A LangChain SequentialChain that manages the sequence of LLM interactions.
     """
+
     def __init__(self):
         """
         Initializes the IPFSValidationChain by setting up the LLM, caching mechanism, and the sequential
@@ -45,7 +60,7 @@ class IPFSValidationChain(CachedLLM):
         super().__init__()
 
         self.structured_llm = self.llm.with_structured_output(IncompatibilityArray)
-        
+
         # Define the workflow for the IPFS validation chain
         workflow = StateGraph(state_schema=MessagesState)
         workflow.add_node("model", self.__call_model)
@@ -64,7 +79,9 @@ class IPFSValidationChain(CachedLLM):
         response = self.llm.invoke(messages)
         return {"messages": response}
 
-    def execute(self, prompt_templates: list[str], ipfs: str, payload: str, thread_id: int = 1) -> IncompatibilityArray:
+    def execute(
+        self, prompt_templates: list[str], ipfs: str, payload: str, thread_id: int = 1
+    ) -> IncompatibilityArray:
         """
         Executes the IPFS validation workflow by rendering prompts, interacting with the LLM,
         and retrieving the final validation report.
@@ -86,8 +103,7 @@ class IPFSValidationChain(CachedLLM):
         for template in prompt_templates:
 
             prompt_rendered = render_prompt(
-                template,
-                {"ipfs": ipfs, "payload": payload}
+                template, {"ipfs": ipfs, "payload": payload}
             )
 
             history = self.app.invoke(

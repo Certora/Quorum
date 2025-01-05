@@ -8,10 +8,10 @@ import Quorum.utils.pretty_printer as pp
 def get_working_directory() -> Path:
     parser = argparse.ArgumentParser(description="Setup Quorum project.")
     parser.add_argument(
-        '--working_dir',
-        default=Path.cwd() / 'quorum_project',
+        "--working_dir",
+        default=Path.cwd() / "quorum_project",
         type=Path,
-        help="Directory to set up the Quorum project."
+        help="Directory to set up the Quorum project.",
     )
     args = parser.parse_args()
     return args.working_dir
@@ -28,7 +28,7 @@ def setup_quorum(working_dir: Path):
         shutil.Error: If copying files fails.
         OSError: If directory creation fails.
     """
-    templates_dir = Path(__file__).parent.parent / 'templates'
+    templates_dir = Path(__file__).parent.parent / "templates"
     target_dir = working_dir.resolve()
 
     if not target_dir.exists():
@@ -40,7 +40,11 @@ def setup_quorum(working_dir: Path):
 
     for file_name in template_files:
         src = templates_dir / file_name
-        dest = target_dir / '.env' if file_name == '.env.example' else target_dir / file_name
+        dest = (
+            target_dir / ".env"
+            if file_name == ".env.example"
+            else target_dir / file_name
+        )
 
         if dest.exists():
             pp.pretty_print(f"File exists: {dest}. Skipping.", pp.Colors.WARNING)
@@ -48,11 +52,11 @@ def setup_quorum(working_dir: Path):
 
         shutil.copy(src, dest)
         pp.pretty_print(f"Copied {file_name} to {dest}", pp.Colors.SUCCESS)
-    
+
     # Add export QUORUM_PATH="path_to_your_quorum_directory" to the new .env file
-    with open(target_dir / '.env', 'a') as f:
+    with open(target_dir / ".env", "a") as f:
         f.write(f'\nexport QUORUM_PATH="{target_dir}"\n')
-    
+
     pp.pretty_print("Quorum setup completed successfully!", pp.Colors.SUCCESS)
 
 

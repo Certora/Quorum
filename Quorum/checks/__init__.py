@@ -4,4 +4,10 @@ from .global_variables import GlobalVariableCheck
 from .price_feed import PriceFeedCheck
 from .new_listing import NewListingCheck
 
-all = ["DiffCheck", "ReviewDiffCheck", "GlobalVariableCheck", "FeedPriceCheck", "NewListingCheck"]
+all = [
+    DiffCheck,
+    ReviewDiffCheck,
+    GlobalVariableCheck,
+    PriceFeedCheck,
+    NewListingCheck,
+]

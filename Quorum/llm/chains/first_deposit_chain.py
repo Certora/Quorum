@@ -22,15 +22,19 @@ class ListingDetails(BaseModel):
         approve_indicator (bool): Flag indicating whether an approval operation is
             being performed for the asset.
     """
+
     asset_symbol: str = Field(description="The asset symbol to be listed.")
     asset_address: str = Field(description="The asset address to be listed.")
-    supply_seed_amount: Optional[float] = Field(description="The amount of supply seed.")
+    supply_seed_amount: Optional[float] = Field(
+        description="The amount of supply seed."
+    )
     supply_indicator: bool = Field(
         description="The indicator for supply being call for the asset. True if supply is being called. False otherwise."
     )
     approve_indicator: bool = Field(
         description="The indicator for approval being call for the asset."
     )
+
 
 class ListingArray(BaseModel):
     """
@@ -46,7 +50,11 @@ class ListingArray(BaseModel):
             ListingDetails object specifying the complete configuration for that
             particular asset listing.
     """
-    listings: list[ListingDetails] = Field(description="The list of assets to be listed.")
+
+    listings: list[ListingDetails] = Field(
+        description="The list of assets to be listed."
+    )
+
 
 class FirstDepositChain(CachedLLM):
 
@@ -55,18 +63,18 @@ class FirstDepositChain(CachedLLM):
         structured_llm = self.llm.with_structured_output(ListingArray)
         prompt = ChatPromptTemplate.from_messages(
             [
-                ("system", "You are a helpful assistant. Answer all questions to the best of your ability."),
+                (
+                    "system",
+                    "You are a helpful assistant. Answer all questions to the best of your ability.",
+                ),
                 MessagesPlaceholder(variable_name="messages"),
             ]
         )
 
         self.app = prompt | structured_llm
 
-    
     def execute(
-            self,
-            source_code: str,
-            prompt_template: str = "first_deposit_prompt.j2"
+        self, source_code: str, prompt_template: str = "first_deposit_prompt.j2"
     ) -> ListingArray | None:
         """
         Executes the first deposit chain workflow by rendering prompts, interacting with the LLM,
@@ -83,11 +91,5 @@ class FirstDepositChain(CachedLLM):
         Returns:
             ListingArray: The final listing details from the LLM or None if the LLM fails to execute.
         """
-        prompt_rendered = render_prompt(
-            prompt_template,
-            {"source_code": source_code}
-        )
-        return self.app.invoke(
-            {"messages": [prompt_rendered]}
-        )
-        
+        prompt_rendered = render_prompt(prompt_template, {"source_code": source_code})
+        return self.app.invoke({"messages": [prompt_rendered]})

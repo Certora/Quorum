@@ -18,14 +18,27 @@ def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[
     Parse command line arguments for JSON configuration file or individual task parameters.
 
     Returns:
-        tuple[Optional[str], Optional[str], Optional[str], Optional[str]]: 
+        tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
         A tuple containing the path to the JSON configuration file, customer name, chain name, and proposal address.
     """
-    parser = argparse.ArgumentParser(description="Fetch and compare smart contract source code.")
-    parser.add_argument('--config', type=load_config, help="Path to JSON configuration file.")
-    parser.add_argument('--customer', type=str, help="Customer name or identifier.")
-    parser.add_argument('--chain', type=Chain, choices=[chain.value for chain in Chain], help="Blockchain chain.")
-    parser.add_argument('--proposal_address', type=arg_valid.validate_address, help="Ethereum proposal address.")
+    parser = argparse.ArgumentParser(
+        description="Fetch and compare smart contract source code."
+    )
+    parser.add_argument(
+        "--config", type=load_config, help="Path to JSON configuration file."
+    )
+    parser.add_argument("--customer", type=str, help="Customer name or identifier.")
+    parser.add_argument(
+        "--chain",
+        type=Chain,
+        choices=[chain.value for chain in Chain],
+        help="Blockchain chain.",
+    )
+    parser.add_argument(
+        "--proposal_address",
+        type=arg_valid.validate_address,
+        help="Ethereum proposal address.",
+    )
     args = parser.parse_args()
 
     return args.config, args.customer, args.chain, args.proposal_address
@@ -42,14 +55,21 @@ def load_config(config_path: str) -> dict[str, Any] | None:
         dict[str, Any]: Parsed JSON data.
     """
     try:
-        with open(config_path, 'r') as file:
+        with open(config_path, "r") as file:
             config_data = json.load(file)
         return config_data
     except (FileNotFoundError, JSONDecodeError) as e:
-        pp.pretty_print(f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE)
+        pp.pretty_print(
+            f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE
+        )
 
 
-def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], providers: list[PriceFeedProviderBase]) -> None:
+def proposals_check(
+    customer: str,
+    chain: Chain,
+    proposal_addresses: list[str],
+    providers: list[PriceFeedProviderBase],
+) -> None:
     """
     Check and compare source code files for given proposals.
 
@@ -62,14 +82,16 @@ def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], 
         providers (list[PriceFeedProviderInterface]): List of price feed providers.
     """
     api = ChainAPI(chain)
-    
-    pp.pretty_print(f"Processing customer {customer}, for chain: {chain}", pp.Colors.INFO)
+
+    pp.pretty_print(
+        f"Processing customer {customer}, for chain: {chain}", pp.Colors.INFO
+    )
     for proposal_address in proposal_addresses:
         pp.pretty_print(f"Processing proposal {proposal_address}", pp.Colors.INFO)
 
         try:
             source_codes = api.get_source_code(proposal_address)
-        except ValueError as e:
+        except ValueError:
             error_message = (
                 f"Payload address {proposal_address} is not verified on {chain.name} explorer.\n"
                 "We do not recommend to approve this proposal until the code is approved!\n"
@@ -77,23 +99,34 @@ def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], 
                 "No further checks are being performed on this payload."
             )
             pp.pretty_print(error_message, pp.Colors.FAILURE)
-            # Skip further checks for this proposal 
+            # Skip further checks for this proposal
             continue
 
         # Diff check
-        missing_files = Checks.DiffCheck(customer, chain, proposal_address, source_codes).find_diffs()
+        missing_files = Checks.DiffCheck(
+            customer, chain, proposal_address, source_codes
+        ).find_diffs()
 
         # Review diff check
-        Checks.ReviewDiffCheck(customer, chain, proposal_address, missing_files).find_diffs()
+        Checks.ReviewDiffCheck(
+            customer, chain, proposal_address, missing_files
+        ).find_diffs()
 
         # Global variables check
-        Checks.GlobalVariableCheck(customer, chain, proposal_address, missing_files).check_global_variables()
+        Checks.GlobalVariableCheck(
+            customer, chain, proposal_address, missing_files
+        ).check_global_variables()
 
         # Feed price check
-        Checks.PriceFeedCheck(customer, chain, proposal_address, missing_files, providers).verify_price_feed()
+        Checks.PriceFeedCheck(
+            customer, chain, proposal_address, missing_files, providers
+        ).verify_price_feed()
 
         # New listing check
-        Checks.NewListingCheck(customer, chain, proposal_address, missing_files).new_listing_check()
+        Checks.NewListingCheck(
+            customer, chain, proposal_address, missing_files
+        ).new_listing_check()
+
 
 def main() -> None:
     """
@@ -113,16 +146,20 @@ def main() -> None:
             for chain, proposals in chain_info.items():
                 # Validate chain is supported by cast to Chain enum
                 chain = Chain(chain)
-                if proposals["Proposals"]: 
-                    proposals_check(customer, chain, proposals["Proposals"], price_feed_providers)
+                if proposals["Proposals"]:
+                    proposals_check(
+                        customer, chain, proposals["Proposals"], price_feed_providers
+                    )
     else:
         # Single-task mode using command line arguments
         if not (customer and chain and proposal_address):
-            raise ValueError("Customer, chain, and proposal_address must be specified if not using a config file.")
-        
+            raise ValueError(
+                "Customer, chain, and proposal_address must be specified if not using a config file."
+            )
+
         ground_truth_config = ConfigLoader.load_customer_config(customer)
         GitManager(customer, ground_truth_config).clone_or_update()
-        price_feed_providers = ground_truth_config.get("price_feed_providers", [])    
+        price_feed_providers = ground_truth_config.get("price_feed_providers", [])
         proposals_check(customer, chain, [proposal_address], price_feed_providers)
 
 
