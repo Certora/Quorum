@@ -1,8 +1,24 @@
 import requests
+
+from Quorum.utils.chain_enum import Chain
 from Quorum.apis.governance.data_models import BGDProposalData, PayloadAddresses
 
 BASE_BGD_CACHE_REPO = 'https://raw.githubusercontent.com/bgd-labs/v3-governance-cache/refs/heads/main/cache'
 PROPOSALS_URL = f'{BASE_BGD_CACHE_REPO}/1/0x9AEE0B04504CeF83A65AC3f0e838D0593BCb2BC7/proposals'
+
+CHAIN_ID_TO_CHAIN = {
+    1: Chain.ETH,
+    42161: Chain.ARB,
+    43114: Chain.AVAX,
+    8453: Chain.BASE,
+    56: Chain.BSC,
+    100: Chain.GNO,
+    10: Chain.OPT,
+    137: Chain.POLY,
+    534352: Chain.SCROLL,
+    324: Chain.ZK,
+    59144: Chain.LINEA,
+}
 
 class AaveGovernanceAPI:
     """
@@ -65,5 +81,5 @@ class AaveGovernanceAPI:
         results = []
         for p in data.proposal.payloads:
             addresses = self.get_payload_addresses(p.chain, p.payloads_controller, p.payload_id)
-            results.append(PayloadAddresses(chain=p.chain, addresses=addresses))
+            results.append(PayloadAddresses(chain=CHAIN_ID_TO_CHAIN[p.chain], addresses=addresses))
         return results

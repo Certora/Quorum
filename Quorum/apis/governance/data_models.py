@@ -1,6 +1,8 @@
 from typing import List, Optional
 from pydantic import BaseModel, Field
 
+from Quorum.utils.chain_enum import Chain
+
 class IPFSData(BaseModel):
     title: Optional[str] = None
     discussions: Optional[str] = None
@@ -43,5 +45,5 @@ class BGDProposalData(BaseModel):
 
 
 class PayloadAddresses(BaseModel):
-    chain: str
+    chain: Chain
     addresses: List[str]
