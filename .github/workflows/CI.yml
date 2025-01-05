@@ -10,7 +10,6 @@ on:
 
 jobs:
   Regression:
-    requires: Linter
     if: |
       (
         (github.event_name == 'pull_request_review' && github.event.review.state == 'approved') ||
