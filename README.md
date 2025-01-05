@@ -1,7 +1,3 @@
-Below is an updated, more succinct **Readme** for Quorum, organized as a clear step-by-step guide for new users. It consolidates the existing information and provides a logical flow to help you get started quickly and confidently.
-
----
-
 # Quorum
 
 Quorum is an open-source Python utility that ensures the integrity of smart contracts deployed on blockchains. By comparing on-chain code against known official repositories, Quorum helps detect unauthorized changes, bolstering the security and trustworthiness of decentralized systems.
