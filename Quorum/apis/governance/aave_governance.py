@@ -7,17 +7,17 @@ BASE_BGD_CACHE_REPO = 'https://raw.githubusercontent.com/bgd-labs/v3-governance-
 PROPOSALS_URL = f'{BASE_BGD_CACHE_REPO}/1/0x9AEE0B04504CeF83A65AC3f0e838D0593BCb2BC7/proposals'
 
 CHAIN_ID_TO_CHAIN = {
-    1: Chain.ETH,
-    42161: Chain.ARB,
-    43114: Chain.AVAX,
-    8453: Chain.BASE,
-    56: Chain.BSC,
-    100: Chain.GNO,
-    10: Chain.OPT,
-    137: Chain.POLY,
-    534352: Chain.SCROLL,
-    324: Chain.ZK,
-    59144: Chain.LINEA,
+    '1': Chain.ETH,
+    '42161': Chain.ARB,
+    '43114': Chain.AVAX,
+    '8453': Chain.BASE,
+    '56': Chain.BSC,
+    '100': Chain.GNO,
+    '10': Chain.OPT,
+    '137': Chain.POLY,
+    '534352': Chain.SCROLL,
+    '324': Chain.ZK,
+    '59144': Chain.LINEA,
 }
 
 class AaveGovernanceAPI:
