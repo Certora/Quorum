@@ -1,18 +1,16 @@
 repos:
-  - repo: https://github.com/psf/black
-    rev: 23.3.0  # Use the latest stable version
-    hooks:
-      - id: black
-        language_version: python3.11
-
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.0.0  # Use the latest stable version
-    hooks:
-      - id: flake8
-        additional_dependencies:
-          - flake8-black==0.3.1
-
   - repo: https://github.com/pre-commit/mirrors-isort
     rev: v5.10.1  # Use the latest stable version
     hooks:
       - id: isort
+        args: ["--profile", "black"]
+  - repo: https://github.com/psf/black
+    rev: 24.10.0  # Use the latest stable version
+    hooks:
+      - id: black
+        args: ["--line-length=120"]
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0  # Use the latest stable version
+    hooks:
+      - id: flake8
+        args: ["Quorum/"]

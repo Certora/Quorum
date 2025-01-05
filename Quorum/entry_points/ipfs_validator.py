@@ -1,14 +1,14 @@
-from Quorum.utils.chain_enum import Chain
-from Quorum.apis.block_explorers.chains_api import ChainAPI
-from Quorum.llm.chains.ipfs_validation_chain import IPFSValidationChain
-import Quorum.utils.config as config
-import Quorum.utils.arg_validations as arg_valid
-import Quorum.utils.pretty_printer as pp
-
-from pathlib import Path
 import argparse
+from pathlib import Path
+
 import requests
 
+import Quorum.utils.arg_validations as arg_valid
+import Quorum.utils.config as config
+import Quorum.utils.pretty_printer as pp
+from Quorum.apis.block_explorers.chains_api import ChainAPI
+from Quorum.llm.chains.ipfs_validation_chain import IPFSValidationChain
+from Quorum.utils.chain_enum import Chain
 
 IPFS_CACHE = Path(__file__).parent / ".ipfs_cache"
 IPFS_CACHE.mkdir(exist_ok=True)
@@ -65,9 +65,7 @@ def get_raw_ipfs(proposal_id: int) -> str:
 def main():
     # Check if the Anthropic API key is set in environment variables
     if not config.ANTHROPIC_API_KEY:
-        raise ValueError(
-            "ANTHROPIC_API_KEY environment variable is not set. Please set it to use this functionality."
-        )
+        raise ValueError("ANTHROPIC_API_KEY environment variable is not set. Please set it to use this functionality.")
     args = parse_args()
 
     # Initialize Chain API and fetch source codes
@@ -84,18 +82,14 @@ def main():
     ipfs_validation_chain = IPFSValidationChain()
 
     # Execute the Chain
-    answer = ipfs_validation_chain.execute(
-        prompt_templates=args.prompt_templates, ipfs=ipfs, payload=payload
-    )
+    answer = ipfs_validation_chain.execute(prompt_templates=args.prompt_templates, ipfs=ipfs, payload=payload)
 
     if answer.incompatibilities:
         pp.pretty_print("Found incompatibilities:", pp.Colors.FAILURE)
         for incompatibility in answer.incompatibilities:
             pp.pretty_print(incompatibility, pp.Colors.FAILURE)
     else:
-        pp.pretty_print(
-            "LLM found no incompatibilities. Please Check manually.", pp.Colors.WARNING
-        )
+        pp.pretty_print("LLM found no incompatibilities. Please Check manually.", pp.Colors.WARNING)
 
 
 if __name__ == "__main__":

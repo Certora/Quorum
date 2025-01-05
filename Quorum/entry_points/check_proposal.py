@@ -1,16 +1,17 @@
 import argparse
 from json import JSONDecodeError
-import json5 as json
 from typing import Any, Optional
 
-from Quorum.utils.chain_enum import Chain
+import json5 as json
+
+import Quorum.checks as Checks
+import Quorum.utils.arg_validations as arg_valid
+import Quorum.utils.config_loader as ConfigLoader
+import Quorum.utils.pretty_printer as pp
+from Quorum.apis.block_explorers.chains_api import ChainAPI
 from Quorum.apis.git_api.git_manager import GitManager
 from Quorum.apis.price_feeds.price_feed_utils import PriceFeedProviderBase
-from Quorum.apis.block_explorers.chains_api import ChainAPI
-import Quorum.checks as Checks
-import Quorum.utils.pretty_printer as pp
-import Quorum.utils.config_loader as ConfigLoader
-import Quorum.utils.arg_validations as arg_valid
+from Quorum.utils.chain_enum import Chain
 
 
 def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
@@ -21,12 +22,8 @@ def parse_args() -> tuple[Optional[str], Optional[str], Optional[str], Optional[
         tuple[Optional[str], Optional[str], Optional[str], Optional[str]]:
         A tuple containing the path to the JSON configuration file, customer name, chain name, and proposal address.
     """
-    parser = argparse.ArgumentParser(
-        description="Fetch and compare smart contract source code."
-    )
-    parser.add_argument(
-        "--config", type=load_config, help="Path to JSON configuration file."
-    )
+    parser = argparse.ArgumentParser(description="Fetch and compare smart contract source code.")
+    parser.add_argument("--config", type=load_config, help="Path to JSON configuration file.")
     parser.add_argument("--customer", type=str, help="Customer name or identifier.")
     parser.add_argument(
         "--chain",
@@ -59,9 +56,7 @@ def load_config(config_path: str) -> dict[str, Any] | None:
             config_data = json.load(file)
         return config_data
     except (FileNotFoundError, JSONDecodeError) as e:
-        pp.pretty_print(
-            f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE
-        )
+        pp.pretty_print(f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE)
 
 
 def proposals_check(
@@ -83,9 +78,7 @@ def proposals_check(
     """
     api = ChainAPI(chain)
 
-    pp.pretty_print(
-        f"Processing customer {customer}, for chain: {chain}", pp.Colors.INFO
-    )
+    pp.pretty_print(f"Processing customer {customer}, for chain: {chain}", pp.Colors.INFO)
     for proposal_address in proposal_addresses:
         pp.pretty_print(f"Processing proposal {proposal_address}", pp.Colors.INFO)
 
@@ -103,29 +96,19 @@ def proposals_check(
             continue
 
         # Diff check
-        missing_files = Checks.DiffCheck(
-            customer, chain, proposal_address, source_codes
-        ).find_diffs()
+        missing_files = Checks.DiffCheck(customer, chain, proposal_address, source_codes).find_diffs()
 
         # Review diff check
-        Checks.ReviewDiffCheck(
-            customer, chain, proposal_address, missing_files
-        ).find_diffs()
+        Checks.ReviewDiffCheck(customer, chain, proposal_address, missing_files).find_diffs()
 
         # Global variables check
-        Checks.GlobalVariableCheck(
-            customer, chain, proposal_address, missing_files
-        ).check_global_variables()
+        Checks.GlobalVariableCheck(customer, chain, proposal_address, missing_files).check_global_variables()
 
         # Feed price check
-        Checks.PriceFeedCheck(
-            customer, chain, proposal_address, missing_files, providers
-        ).verify_price_feed()
+        Checks.PriceFeedCheck(customer, chain, proposal_address, missing_files, providers).verify_price_feed()
 
         # New listing check
-        Checks.NewListingCheck(
-            customer, chain, proposal_address, missing_files
-        ).new_listing_check()
+        Checks.NewListingCheck(customer, chain, proposal_address, missing_files).new_listing_check()
 
 
 def main() -> None:
@@ -147,15 +130,11 @@ def main() -> None:
                 # Validate chain is supported by cast to Chain enum
                 chain = Chain(chain)
                 if proposals["Proposals"]:
-                    proposals_check(
-                        customer, chain, proposals["Proposals"], price_feed_providers
-                    )
+                    proposals_check(customer, chain, proposals["Proposals"], price_feed_providers)
     else:
         # Single-task mode using command line arguments
         if not (customer and chain and proposal_address):
-            raise ValueError(
-                "Customer, chain, and proposal_address must be specified if not using a config file."
-            )
+            raise ValueError("Customer, chain, and proposal_address must be specified if not using a config file.")
 
         ground_truth_config = ConfigLoader.load_customer_config(customer)
         GitManager(customer, ground_truth_config).clone_or_update()

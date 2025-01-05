@@ -1,9 +1,11 @@
-import requests
 from collections import defaultdict
+
+import requests
 
 from Quorum.utils.chain_enum import Chain
 from Quorum.utils.singleton import singleton
-from .price_feed_utils import PriceFeedData, PriceFeedProviderBase, PriceFeedProvider
+
+from .price_feed_utils import PriceFeedData, PriceFeedProvider, PriceFeedProviderBase
 
 
 @singleton
@@ -54,9 +56,7 @@ class ChronicleAPI(PriceFeedProviderBase):
             for pair_info in data:
                 chronicle_price_feeds.append(PriceFeedData(**pair_info))
 
-        return next(
-            (feed for feed in chronicle_price_feeds if address == feed.address), None
-        )
+        return next((feed for feed in chronicle_price_feeds if address == feed.address), None)
 
     def get_name(self) -> PriceFeedProvider:
         return PriceFeedProvider.CHRONICLE

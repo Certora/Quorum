@@ -1,12 +1,12 @@
 from typing import Optional
-from pydantic import BaseModel, Field
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
+from pydantic import BaseModel, Field
 
-from Quorum.llm.jinja_utils import render_prompt
 from Quorum.llm.chains.cached_llm import CachedLLM
+from Quorum.llm.jinja_utils import render_prompt
 
 
 class Incompatibility(BaseModel):
@@ -18,15 +18,9 @@ class Incompatibility(BaseModel):
         ...,
         description="The subject of the incompatibility (e.g. disagreement between IPFS and Solidity).",
     )
-    subject_in_ipfs: str = Field(
-        ..., description="The subject details as described in the IPFS payload."
-    )
-    subject_in_solidity: str = Field(
-        ..., description="The subject details as described in the Solidity payload."
-    )
-    description: str = Field(
-        ..., description="A detailed description of the incompatibility."
-    )
+    subject_in_ipfs: str = Field(..., description="The subject details as described in the IPFS payload.")
+    subject_in_solidity: str = Field(..., description="The subject details as described in the Solidity payload.")
+    description: str = Field(..., description="A detailed description of the incompatibility.")
 
 
 class IncompatibilityArray(BaseModel):
@@ -71,17 +65,12 @@ class IPFSValidationChain(CachedLLM):
 
     # Define the function that calls the model
     def __call_model(self, state: MessagesState) -> MessagesState:
-        system_prompt = (
-            "You are a helpful assistant. "
-            "Answer all questions to the best of your ability."
-        )
+        system_prompt = "You are a helpful assistant. " "Answer all questions to the best of your ability."
         messages = [SystemMessage(content=system_prompt)] + state["messages"]
         response = self.llm.invoke(messages)
         return {"messages": response}
 
-    def execute(
-        self, prompt_templates: list[str], ipfs: str, payload: str, thread_id: int = 1
-    ) -> IncompatibilityArray:
+    def execute(self, prompt_templates: list[str], ipfs: str, payload: str, thread_id: int = 1) -> IncompatibilityArray:
         """
         Executes the IPFS validation workflow by rendering prompts, interacting with the LLM,
         and retrieving the final validation report.
@@ -101,10 +90,7 @@ class IPFSValidationChain(CachedLLM):
             str: The final response from the LLM, detailing the validation results.
         """
         for template in prompt_templates:
-
-            prompt_rendered = render_prompt(
-                template, {"ipfs": ipfs, "payload": payload}
-            )
+            prompt_rendered = render_prompt(template, {"ipfs": ipfs, "payload": payload})
 
             history = self.app.invoke(
                 {"messages": [HumanMessage(prompt_rendered)]},

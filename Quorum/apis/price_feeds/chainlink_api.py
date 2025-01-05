@@ -1,6 +1,7 @@
 from Quorum.utils.chain_enum import Chain
 from Quorum.utils.singleton import singleton
-from .price_feed_utils import PriceFeedData, PriceFeedProviderBase, PriceFeedProvider
+
+from .price_feed_utils import PriceFeedData, PriceFeedProvider, PriceFeedProviderBase
 
 
 @singleton
@@ -44,11 +45,7 @@ class ChainLinkAPI(PriceFeedProviderBase):
         data = response.json()
         price_feeds = [PriceFeedData(**feed) for feed in data]
         address_feed = next(
-            (
-                feed
-                for feed in price_feeds
-                if address in [feed.proxy_address, feed.address]
-            ),
+            (feed for feed in price_feeds if address in [feed.proxy_address, feed.address]),
             None,
         )
         return address_feed

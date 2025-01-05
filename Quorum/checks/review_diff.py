@@ -1,7 +1,7 @@
-from Quorum.checks.diff import DiffCheck
-from Quorum.apis.block_explorers.source_code import SourceCode
-from Quorum.utils.chain_enum import Chain
 import Quorum.utils.pretty_printer as pp
+from Quorum.apis.block_explorers.source_code import SourceCode
+from Quorum.checks.diff import DiffCheck
+from Quorum.utils.chain_enum import Chain
 
 
 class ReviewDiffCheck(DiffCheck):
@@ -17,8 +17,7 @@ class ReviewDiffCheck(DiffCheck):
 
     def find_diffs(self) -> list[SourceCode]:
         pp.pretty_print(
-            f"Verifying missing files against {self.customer} review repo "
-            f"(cloned under {self.target_repo})",
+            f"Verifying missing files against {self.customer} review repo " f"(cloned under {self.target_repo})",
             pp.Colors.INFO,
         )
         return super().find_diffs()

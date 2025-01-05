@@ -1,11 +1,11 @@
-from pathlib import Path
 import re
+from pathlib import Path
 
-from Quorum.apis.price_feeds import PriceFeedProviderBase
-from Quorum.utils.chain_enum import Chain
-from Quorum.checks.check import Check
-from Quorum.apis.block_explorers.source_code import SourceCode
 import Quorum.utils.pretty_printer as pp
+from Quorum.apis.block_explorers.source_code import SourceCode
+from Quorum.apis.price_feeds import PriceFeedProviderBase
+from Quorum.checks.check import Check
+from Quorum.utils.chain_enum import Chain
 
 
 def remove_solidity_comments(source_code: str) -> str:
@@ -28,9 +28,7 @@ def remove_solidity_comments(source_code: str) -> str:
     source_code = re.sub(multi_line_comment_pattern, "", source_code, flags=re.DOTALL)
 
     # Then, remove single-line comments
-    source_code = re.sub(
-        single_line_comment_pattern, "", source_code, flags=re.MULTILINE
-    )
+    source_code = re.sub(single_line_comment_pattern, "", source_code, flags=re.MULTILINE)
 
     return source_code
 
@@ -77,20 +75,14 @@ class PriceFeedCheck(Check):
         """
         for provider in self.providers:
             if price_feed := provider.get_price_feed(self.chain, address):
-
                 color = pp.Colors.SUCCESS
                 message = f"Found {address} on {provider.get_name()}\n"
                 message += str(price_feed)
-                if (
-                    price_feed.proxy_address
-                    and price_feed.proxy_address.lower() != address.lower()
-                ):
+                if price_feed.proxy_address and price_feed.proxy_address.lower() != address.lower():
                     message += f"Proxy address: {price_feed.proxy_address}\n"
                 if address.lower() != price_feed.address.lower():
                     color = pp.Colors.FAILURE
-                    message += (
-                        "This is an implementation contract with a proxy address\n"
-                    )
+                    message += "This is an implementation contract with a proxy address\n"
                     message += f"Origin Address: {price_feed.address}\n"
 
                 pp.pretty_print(message, color)
@@ -125,9 +117,7 @@ class PriceFeedCheck(Check):
             addresses = set(re.findall(self.address_pattern, clean_text))
 
             for address in addresses:
-                if feed := self.__check_price_feed_address(
-                    address, source_code.file_name
-                ):
+                if feed := self.__check_price_feed_address(address, source_code.file_name):
                     verified_variables.append(feed)
 
             if verified_variables:

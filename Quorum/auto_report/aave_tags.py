@@ -1,12 +1,10 @@
-import requests
 from dataclasses import dataclass
-import json5 as json
 
+import json5 as json
+import requests
 
 BASE_BGD_CACHE_REPO = "https://raw.githubusercontent.com/bgd-labs/v3-governance-cache/refs/heads/main/cache"
-PROPOSALS_URL = (
-    f"{BASE_BGD_CACHE_REPO}/1/0x9AEE0B04504CeF83A65AC3f0e838D0593BCb2BC7/proposals"
-)
+PROPOSALS_URL = f"{BASE_BGD_CACHE_REPO}/1/0x9AEE0B04504CeF83A65AC3f0e838D0593BCb2BC7/proposals"
 BASE_SEATBELT_REPO = "https://github.com/bgd-labs/seatbelt-gov-v3/blob/main/reports"
 SEATBELT_PAYLOADS_URL = f"{BASE_SEATBELT_REPO}/payloads"
 
@@ -36,9 +34,7 @@ AAVE_CHAIN_MAPPING = {
 def __extract_payload_addresses(
     session: requests.Session, chain_id: str, controller: str, payload_id: int
 ) -> list[str]:
-    resp = session.get(
-        f"{BASE_BGD_CACHE_REPO}/{chain_id}/{controller}/payloads/{payload_id}.json"
-    )
+    resp = session.get(f"{BASE_BGD_CACHE_REPO}/{chain_id}/{controller}/payloads/{payload_id}.json")
     resp.raise_for_status()
 
     payload_data = resp.json()
@@ -56,16 +52,12 @@ def get_aave_tags(proposal_id: int) -> dict:
 
         ipfs: dict = proposal_data.get("ipfs", {})
         proposal: dict = proposal_data.get("proposal", {})
-        create_event: dict = proposal_data.get("events", [{}])[
-            0
-        ]  # The create event is always the first.
+        create_event: dict = proposal_data.get("events", [{}])[0]  # The create event is always the first.
 
         tags = {}
         tags["proposal_id"] = str(proposal_id)
         tags["proposal_title"] = ipfs.get("title", "N/A")
-        tags["voting_link"] = (
-            f"https://vote.onaave.com/proposal/?proposalId={proposal_id}"
-        )
+        tags["voting_link"] = f"https://vote.onaave.com/proposal/?proposalId={proposal_id}"
         tags["gov_forum_link"] = ipfs.get("discussions", "N/A")
 
         tags["chain"], tags["payload_link"], tags["payload_seatbelt_link"] = [], [], []
@@ -73,16 +65,10 @@ def get_aave_tags(proposal_id: int) -> dict:
             # These are necessary fields in the payload data to construct the payload fields.
             if not all(k in p for k in ["chain", "payloadsController", "payloadId"]):
                 continue
-            addresses = __extract_payload_addresses(
-                session, p["chain"], p["payloadsController"], p["payloadId"]
-            )
+            addresses = __extract_payload_addresses(session, p["chain"], p["payloadsController"], p["payloadId"])
             for i, address in enumerate(addresses, 1):
-                tags["chain"].append(
-                    AAVE_CHAIN_MAPPING[p["chain"]].name + (f" {i}" if i != 1 else "")
-                )
-                tags["payload_link"].append(
-                    f'{AAVE_CHAIN_MAPPING[p["chain"]].block_explorer_link}/{address}'
-                )
+                tags["chain"].append(AAVE_CHAIN_MAPPING[p["chain"]].name + (f" {i}" if i != 1 else ""))
+                tags["payload_link"].append(f'{AAVE_CHAIN_MAPPING[p["chain"]].block_explorer_link}/{address}')
                 tags["payload_seatbelt_link"].append(
                     f'{SEATBELT_PAYLOADS_URL}/{p["chain"]}/{p["payloadsController"]}/{p["payloadId"]}.md'
                 )
@@ -96,10 +82,7 @@ def get_aave_tags(proposal_id: int) -> dict:
         tags["ipfs_hash"] = args.get("ipfsHash", "N/A")
 
         tags["createProposal_parameters_data"] = json.dumps(
-            {
-                k: proposal.get(k, "N/A")
-                for k in ["payloads", "votingPortal", "ipfsHash"]
-            },
+            {k: proposal.get(k, "N/A") for k in ["payloads", "votingPortal", "ipfsHash"]},
             indent=4,
         )
 

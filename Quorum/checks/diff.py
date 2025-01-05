@@ -1,12 +1,12 @@
 import difflib
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
-from dataclasses import dataclass
 
+import Quorum.utils.pretty_printer as pp
 from Quorum.apis.block_explorers.source_code import SourceCode
 from Quorum.checks.check import Check
 from Quorum.utils.chain_enum import Chain
-import Quorum.utils.pretty_printer as pp
 
 
 @dataclass
@@ -68,7 +68,6 @@ class DiffCheck(Check):
                 similarities = []
                 source_str = current_source_path.as_posix()
                 for local_file in local_files:
-
                     local_str = local_file.as_posix()
                     ratio = difflib.SequenceMatcher(None, source_str, local_str).ratio()
                     similarities.append((local_file, ratio))
@@ -95,9 +94,7 @@ class DiffCheck(Check):
         files_with_diffs = []
 
         for source_code in self.source_codes:
-            local_file = self.__find_most_common_path(
-                Path(source_code.file_name), self.target_repo
-            )
+            local_file = self.__find_most_common_path(Path(source_code.file_name), self.target_repo)
             if not local_file:
                 missing_files.append(source_code)
                 continue
@@ -127,9 +124,7 @@ class DiffCheck(Check):
         self.__print_diffs_results(missing_files, files_with_diffs)
         return missing_files
 
-    def __print_diffs_results(
-        self, missing_files: list[SourceCode], files_with_diffs: list[Compared]
-    ):
+    def __print_diffs_results(self, missing_files: list[SourceCode], files_with_diffs: list[Compared]):
         """
         Print the results of the diff check.
 

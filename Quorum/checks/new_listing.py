@@ -1,11 +1,10 @@
-from Quorum.checks.check import Check
-import Quorum.utils.pretty_printer as pp
 import Quorum.utils.config as config
+import Quorum.utils.pretty_printer as pp
+from Quorum.checks.check import Check
 from Quorum.llm.chains.first_deposit_chain import FirstDepositChain, ListingArray
 
 
 class NewListingCheck(Check):
-
     def new_listing_check(self) -> None:
         """
         Checks if the proposal address is a new listing on the blockchain.
@@ -15,9 +14,7 @@ class NewListingCheck(Check):
         """
         functions = self._get_functions_from_source_codes()
         if functions.get("newListings", functions.get("newListingsCustom")):
-            pp.pretty_print(
-                f"New listings detected for {self.proposal_address}", pp.Colors.WARNING
-            )
+            pp.pretty_print(f"New listings detected for {self.proposal_address}", pp.Colors.WARNING)
 
             # Check if Anthropic API key is configured
             if not config.ANTHROPIC_API_KEY:
@@ -29,9 +26,7 @@ class NewListingCheck(Check):
 
             proposal_code = self.source_codes[0].file_content
             proposal_code_str = "\n".join(proposal_code)
-            listings: ListingArray | None = FirstDepositChain().execute(
-                proposal_code_str
-            )
+            listings: ListingArray | None = FirstDepositChain().execute(proposal_code_str)
             if listings is None:
                 pp.pretty_print(
                     f"Failed to retrieve new listings for {self.proposal_address}",
@@ -40,9 +35,7 @@ class NewListingCheck(Check):
                 return
             for listing in listings.listings:
                 if listing.approve_indicator and listing.supply_indicator:
-                    pp.pretty_print(
-                        f"New listing detected for {listing}", pp.Colors.SUCCESS
-                    )
+                    pp.pretty_print(f"New listing detected for {listing}", pp.Colors.SUCCESS)
                 else:
                     pp.pretty_print(
                         f"New listing detected for {listing.asset_symbol} but no approval or supply detected",
@@ -51,9 +44,7 @@ class NewListingCheck(Check):
             self._write_to_file("new_listings.json", listings.model_dump())
 
         else:
-            pp.pretty_print(
-                f"No new listings detected for {self.proposal_address}", pp.Colors.INFO
-            )
+            pp.pretty_print(f"No new listings detected for {self.proposal_address}", pp.Colors.INFO)
 
     def _get_functions_from_source_codes(self) -> dict:
         """

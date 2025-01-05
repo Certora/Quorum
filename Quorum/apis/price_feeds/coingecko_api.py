@@ -1,6 +1,7 @@
 from Quorum.utils.chain_enum import Chain
 from Quorum.utils.singleton import singleton
-from .price_feed_utils import PriceFeedData, PriceFeedProviderBase, PriceFeedProvider
+
+from .price_feed_utils import PriceFeedData, PriceFeedProvider, PriceFeedProviderBase
 
 
 @singleton
@@ -25,9 +26,7 @@ class CoinGeckoAPI(PriceFeedProviderBase):
         Chain.ZK: "zksync",
     }
 
-    COINGECKO_API_URL = (
-        "https://api.coingecko.com/api/v3/coins/{platform}/contract/{address}"
-    )
+    COINGECKO_API_URL = "https://api.coingecko.com/api/v3/coins/{platform}/contract/{address}"
 
     def _get_price_feed_info(self, chain: Chain, address: str) -> PriceFeedData | None:
         """

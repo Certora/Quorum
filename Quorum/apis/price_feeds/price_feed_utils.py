@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
 from enum import StrEnum
-from typing import Optional
-from pydantic import BaseModel, Field
 from pathlib import Path
+from typing import Optional
+
 import json5 as json
 import requests
+from pydantic import BaseModel, Field
 
 from Quorum.utils.chain_enum import Chain
 
@@ -85,9 +86,7 @@ class PriceFeedProviderBase(ABC):
                     return None
                 cache_file.parent.mkdir(parents=True, exist_ok=True)
                 with open(cache_file, "w") as file:
-                    json.dump(
-                        self.memory[address].model_dump(mode="json"), file, indent=4
-                    )
+                    json.dump(self.memory[address].model_dump(mode="json"), file, indent=4)
         return self.memory[address]
 
     @abstractmethod

@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from Quorum.checks.check import Check
-from Quorum.apis.block_explorers.source_code import SourceCode
 import Quorum.utils.pretty_printer as pp
+from Quorum.apis.block_explorers.source_code import SourceCode
+from Quorum.checks.check import Check
 
 
 class GlobalVariableCheck(Check):
@@ -22,14 +22,10 @@ class GlobalVariableCheck(Check):
         source_code_to_violated_variables = {}
         for source_code in self.source_codes:
             violated_variables = self.__check_const(source_code)
-            violated_variables = self.__check_immutable(
-                violated_variables, source_code.file_content
-            )
+            violated_variables = self.__check_immutable(violated_variables, source_code.file_content)
 
             if violated_variables:
-                source_code_to_violated_variables[source_code.file_name] = (
-                    violated_variables
-                )
+                source_code_to_violated_variables[source_code.file_name] = violated_variables
 
         self.__process_results(source_code_to_violated_variables)
 
@@ -48,9 +44,7 @@ class GlobalVariableCheck(Check):
             return [v for v in state_variables.values() if not v.get("constant", False)]
         return []
 
-    def __check_immutable(
-        self, variables: list[dict], source_code: list[str]
-    ) -> list[dict]:
+    def __check_immutable(self, variables: list[dict], source_code: list[str]) -> list[dict]:
         """
         Checks a list of variables to ensure they are declared as immutable in the source code.
 
@@ -65,9 +59,7 @@ class GlobalVariableCheck(Check):
         """
         return [v for v in variables if v.get("mutability") != "immutable"]
 
-    def __process_results(
-        self, source_code_to_violated_variables: dict[str, list[dict]]
-    ):
+    def __process_results(self, source_code_to_violated_variables: dict[str, list[dict]]):
         """
         Processes the results of the global variable checks and prints them to the console.
 
@@ -78,9 +70,7 @@ class GlobalVariableCheck(Check):
                                                                        to lists of violated variables.
         """
         if not source_code_to_violated_variables:
-            pp.pretty_print(
-                "All global variables are constant or immutable.", pp.Colors.SUCCESS
-            )
+            pp.pretty_print("All global variables are constant or immutable.", pp.Colors.SUCCESS)
         else:
             pp.pretty_print("Global variable checks failed:", pp.Colors.FAILURE)
             for (
@@ -91,6 +81,4 @@ class GlobalVariableCheck(Check):
                     f"File {file_name} contains variables that are not constant or immutable",
                     pp.Colors.FAILURE,
                 )
-                self._write_to_file(
-                    Path(file_name).stem.removesuffix(".sol"), violated_variables
-                )
+                self._write_to_file(Path(file_name).stem.removesuffix(".sol"), violated_variables)

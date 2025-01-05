@@ -1,6 +1,7 @@
 from typing import Optional
-from pydantic import BaseModel, Field
+
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from pydantic import BaseModel, Field
 
 from Quorum.llm.chains.cached_llm import CachedLLM
 from Quorum.llm.jinja_utils import render_prompt
@@ -25,15 +26,11 @@ class ListingDetails(BaseModel):
 
     asset_symbol: str = Field(description="The asset symbol to be listed.")
     asset_address: str = Field(description="The asset address to be listed.")
-    supply_seed_amount: Optional[float] = Field(
-        description="The amount of supply seed."
-    )
+    supply_seed_amount: Optional[float] = Field(description="The amount of supply seed.")
     supply_indicator: bool = Field(
         description="The indicator for supply being call for the asset. True if supply is being called. False otherwise."
     )
-    approve_indicator: bool = Field(
-        description="The indicator for approval being call for the asset."
-    )
+    approve_indicator: bool = Field(description="The indicator for approval being call for the asset.")
 
 
 class ListingArray(BaseModel):
@@ -51,13 +48,10 @@ class ListingArray(BaseModel):
             particular asset listing.
     """
 
-    listings: list[ListingDetails] = Field(
-        description="The list of assets to be listed."
-    )
+    listings: list[ListingDetails] = Field(description="The list of assets to be listed.")
 
 
 class FirstDepositChain(CachedLLM):
-
     def __init__(self):
         super().__init__()
         structured_llm = self.llm.with_structured_output(ListingArray)
@@ -73,9 +67,7 @@ class FirstDepositChain(CachedLLM):
 
         self.app = prompt | structured_llm
 
-    def execute(
-        self, source_code: str, prompt_template: str = "first_deposit_prompt.j2"
-    ) -> ListingArray | None:
+    def execute(self, source_code: str, prompt_template: str = "first_deposit_prompt.j2") -> ListingArray | None:
         """
         Executes the first deposit chain workflow by rendering prompts, interacting with the LLM,
         and retrieving the final listing details.

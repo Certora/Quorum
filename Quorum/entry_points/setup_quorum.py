@@ -1,5 +1,5 @@
-import shutil
 import argparse
+import shutil
 from pathlib import Path
 
 import Quorum.utils.pretty_printer as pp
@@ -40,11 +40,7 @@ def setup_quorum(working_dir: Path):
 
     for file_name in template_files:
         src = templates_dir / file_name
-        dest = (
-            target_dir / ".env"
-            if file_name == ".env.example"
-            else target_dir / file_name
-        )
+        dest = target_dir / ".env" if file_name == ".env.example" else target_dir / file_name
 
         if dest.exists():
             pp.pretty_print(f"File exists: {dest}. Skipping.", pp.Colors.WARNING)

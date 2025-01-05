@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from git import Repo
 
 import Quorum.utils.config as config
@@ -32,9 +33,7 @@ class GitManager:
 
         self.repos, self.review_repo = self._load_repos_from_file(gt_config)
 
-    def _load_repos_from_file(
-        self, gt_config: dict[str, any]
-    ) -> tuple[dict[str, str], dict[str, str]]:
+    def _load_repos_from_file(self, gt_config: dict[str, any]) -> tuple[dict[str, str], dict[str, str]]:
         """
         Load repository URLs from the JSON file for the given customer.
 
@@ -48,9 +47,7 @@ class GitManager:
         repos = {Path(r).stem: r for r in gt_config["dev_repos"]}
 
         verify_repo = (
-            {Path(gt_config["review_repo"]).stem: gt_config["review_repo"]}
-            if "review_repo" in gt_config
-            else {}
+            {Path(gt_config["review_repo"]).stem: gt_config["review_repo"]} if "review_repo" in gt_config else {}
         )
         return repos, verify_repo
 
@@ -81,12 +78,8 @@ class GitManager:
         """
 
         for repo_name, repo_url in self.repos.items():
-            GitManager.__clone_or_update_for_repo(
-                repo_name, repo_url, self.modules_path
-            )
+            GitManager.__clone_or_update_for_repo(repo_name, repo_url, self.modules_path)
 
         if self.review_repo:
             repo_name, repo_url = next(iter(self.review_repo.items()))
-            GitManager.__clone_or_update_for_repo(
-                repo_name, repo_url, self.review_module_path
-            )
+            GitManager.__clone_or_update_for_repo(repo_name, repo_url, self.review_module_path)

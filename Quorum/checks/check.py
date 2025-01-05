@@ -1,7 +1,8 @@
 from abc import ABC
 from datetime import datetime
-import json5 as json
 from pathlib import Path
+
+import json5 as json
 
 import Quorum.utils.config as config
 from Quorum.apis.block_explorers.source_code import SourceCode
@@ -46,9 +47,5 @@ class Check(ABC):
             full_file_path.touch()
 
         with open(full_file_path, "a") as f:
-            (
-                json.dump(data, f, indent=4)
-                if isinstance(data, dict) or isinstance(data, list)
-                else f.write(data)
-            )
+            (json.dump(data, f, indent=4) if isinstance(data, dict) or isinstance(data, list) else f.write(data))
             f.write("\n")

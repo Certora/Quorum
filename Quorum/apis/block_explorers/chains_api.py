@@ -1,10 +1,11 @@
 import os
-import requests
 from json.decoder import JSONDecodeError
-import json5 as json
 
-from Quorum.utils.chain_enum import Chain
+import json5 as json
+import requests
+
 from Quorum.apis.block_explorers.source_code import SourceCode
+from Quorum.utils.chain_enum import Chain
 
 
 class ChainAPI:
@@ -49,9 +50,7 @@ class ChainAPI:
             )
         # MET is not supported via ETHScan API
         if chain == Chain.MET:
-            self.base_url = (
-                "https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan/api"
-            )
+            self.base_url = "https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan/api"
         else:
             chain_id = self.CHAIN_ID_MAP[chain]
             api_key = os.getenv("ETHSCAN_API_KEY")
@@ -94,9 +93,7 @@ class ChainAPI:
 
         sources = json_data.get("sources", {proposal_address: {"content": result}})
         source_codes = [
-            SourceCode(
-                file_name=source_name, file_content=source_code["content"].splitlines()
-            )
+            SourceCode(file_name=source_name, file_content=source_code["content"].splitlines())
             for source_name, source_code in sources.items()
         ]
         return source_codes

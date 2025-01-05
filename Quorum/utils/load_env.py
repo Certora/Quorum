@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 import Quorum.utils.pretty_printer as pp
@@ -23,10 +24,6 @@ def load_env_variables():
 
     # Print the user if any environment variables were overridden
     if overridden_vars:
-        pp.pretty_print(
-            "The following environment variables were overridden:", pp.Colors.WARNING
-        )
+        pp.pretty_print("The following environment variables were overridden:", pp.Colors.WARNING)
         for key, values in overridden_vars.items():
-            pp.pretty_print(
-                f"{key}: {values['before']} -> {values['after']}", pp.Colors.WARNING
-            )
+            pp.pretty_print(f"{key}: {values['before']} -> {values['after']}", pp.Colors.WARNING)

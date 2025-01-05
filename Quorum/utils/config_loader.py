@@ -1,8 +1,10 @@
-import json5 as json
 from typing import Dict
+
+import json5 as json
+
+import Quorum.apis.price_feeds as price_feeds
 import Quorum.utils.config as config
 import Quorum.utils.pretty_printer as pp
-import Quorum.apis.price_feeds as price_feeds
 
 SUPPORTED_PROVIDERS = set(price_feeds.PriceFeedProvider.__members__.values())
 
@@ -23,9 +25,7 @@ def load_customer_config(customer: str) -> Dict[str, any]:
     """
     customer_config = config_data.get(customer)
     if not customer_config:
-        pp.pretty_print(
-            f"Customer {customer} not found in ground truth data.", pp.Colors.FAILURE
-        )
+        pp.pretty_print(f"Customer {customer} not found in ground truth data.", pp.Colors.FAILURE)
         raise ValueError(f"Customer {customer} not found in ground truth data.")
     providers = customer_config.get("price_feed_providers", [])
     providers += customer_config.get("token_validation_providers", [])

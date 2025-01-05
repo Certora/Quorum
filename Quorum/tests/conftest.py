@@ -1,12 +1,12 @@
-import pytest
 import shutil
-import json5 as json
 from pathlib import Path
 from typing import Generator
 
-from Quorum.apis.block_explorers.source_code import SourceCode
-import Quorum.utils.config as config
+import json5 as json
+import pytest
 
+import Quorum.utils.config as config
+from Quorum.apis.block_explorers.source_code import SourceCode
 
 RESOURCES_DIR = Path(__file__).parent / "resources"
 EXPECTED_DIR = Path(__file__).parent / "expected"
@@ -18,9 +18,7 @@ def source_codes(request: pytest.FixtureRequest) -> list[SourceCode]:
     sources_dir: Path = SOURCE_CODES_DIR / request.param
     sources = []
     for s in sources_dir.rglob("*.sol"):
-        sources.append(
-            SourceCode(str(s.relative_to(sources_dir)), s.read_text().splitlines())
-        )
+        sources.append(SourceCode(str(s.relative_to(sources_dir)), s.read_text().splitlines()))
     return sources
 
 

@@ -1,6 +1,7 @@
 import pytest
-from Quorum.utils.chain_enum import Chain
+
 from Quorum.apis.block_explorers.chains_api import ChainAPI
+from Quorum.utils.chain_enum import Chain
 
 
 @pytest.mark.parametrize(
@@ -23,6 +24,4 @@ def test_chain_api_integration(chain, contract_address):
 
     # Step 2: Fetch the source code of the contract and verify it doesn't crash
     source_code = api.get_source_code(contract_address)
-    assert (
-        source_code is not None
-    ), f"Source code retrieval failed for contract: {contract_address}"
+    assert source_code is not None, f"Source code retrieval failed for contract: {contract_address}"

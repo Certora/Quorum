@@ -1,10 +1,10 @@
-import solcx
 from dataclasses import dataclass
-from pathlib import Path
 from enum import StrEnum
+from pathlib import Path
+
+import solcx
 
 import Quorum.utils.pretty_printer as pp
-
 
 # Install the latest version of Solidity compiler.
 solc_version = solcx.get_compilable_solc_versions()[0]
@@ -43,9 +43,7 @@ class SourceCode:
             file.write(source_code_str)
 
         try:
-            contract_ast = solcx.compile_files(
-                tmp_path, output_values=["ast"], stop_after="parsing"
-            )
+            contract_ast = solcx.compile_files(tmp_path, output_values=["ast"], stop_after="parsing")
             contract_name = list(contract_ast.keys())[0]
             self._parsed_contract = contract_ast[contract_name]["ast"]
 
@@ -81,9 +79,7 @@ class SourceCode:
         """
         if not self._functions:
             if self._parsed_contract:
-                self._functions = self.__extract_nodes(
-                    self._parsed_contract, ASTOption.FUNCTIONS
-                )
+                self._functions = self.__extract_nodes(self._parsed_contract, ASTOption.FUNCTIONS)
         return self._functions
 
     def get_state_variables(self) -> dict:
@@ -95,7 +91,5 @@ class SourceCode:
         """
         if not self._state_variables:
             if self._parsed_contract:
-                self._state_variables = self.__extract_nodes(
-                    self._parsed_contract, ASTOption.STATE_VARIABLES
-                )
+                self._state_variables = self.__extract_nodes(self._parsed_contract, ASTOption.STATE_VARIABLES)
         return self._state_variables
