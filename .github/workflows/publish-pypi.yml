@@ -1,0 +1,26 @@
+name: publish-pypi
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+      TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Install requirements for publishing
+        run: pip3 install build twine
+      
+      - name: Build distros
+        run: python3 -m build
+      
+      - name: Upload to PyPi
+        run: python3 -m twine upload dist/* --verbose
