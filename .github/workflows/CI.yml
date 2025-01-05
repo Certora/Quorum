@@ -35,7 +35,10 @@ jobs:
 
       - name: Install Dependencies via Poetry
         run: |
+          pwd
+          ls -la
           pip install poetry
+          poetry --version
           poetry install
             
       - name: Run Linter
