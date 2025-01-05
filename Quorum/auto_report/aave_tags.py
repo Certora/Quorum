@@ -1,17 +1,34 @@
 import json5 as json
+from pydantic import BaseModel
 from typing import Any, Dict
 
-# Import the data models and API
-from Quorum.apis.governance.aave_governance import (
-    AaveGovernanceAPI,
-    AAVE_CHAIN_MAPPING,
-    BASE_SEATBELT_REPO,
-    SEATBELT_PAYLOADS_URL,
-    BGDProposalData,
-    IPFSData,
-    ProposalData,
-    EventData,
-)
+from Quorum.apis.governance.aave_governance import AaveGovernanceAPI
+from Quorum.apis.governance.data_models import BGDProposalData, IPFSData, ProposalData, EventData
+
+
+BASE_SEATBELT_REPO = 'https://github.com/bgd-labs/seatbelt-gov-v3/blob/main/reports'
+SEATBELT_PAYLOADS_URL = f'{BASE_SEATBELT_REPO}/payloads'
+
+
+class ChainInfo(BaseModel):
+    name: str
+    block_explorer_link: str
+
+
+AAVE_CHAIN_MAPPING = {
+    '1':     ChainInfo(name='Ethereum',       block_explorer_link='https://etherscan.io/address'),
+    '137':   ChainInfo(name='Polygon',        block_explorer_link='https://polygonscan.com/address'),
+    '43114': ChainInfo(name='Avalanche',      block_explorer_link='https://snowtrace.io/address'),
+    '8453':  ChainInfo(name='Base',           block_explorer_link='https://basescan.org/address'),
+    '42161': ChainInfo(name='Arbitrum One',   block_explorer_link='https://arbiscan.io/address'),
+    '1088':  ChainInfo(name='Metis',          block_explorer_link='https://explorer.metis.io/address'),
+    '10':    ChainInfo(name='OP Mainnet',     block_explorer_link='https://optimistic.etherscan.io/address'),
+    '56':    ChainInfo(name='BNB Smart Chain',block_explorer_link='https://bscscan.com/address'),
+    '100':   ChainInfo(name='Gnosis',         block_explorer_link='https://gnosisscan.io/address'),
+    '534352':ChainInfo(name='Scroll',         block_explorer_link='https://scrollscan.com/address'),
+    '324':   ChainInfo(name='zkSync Era',     block_explorer_link='https://era.zksync.network/address'),
+    '59144': ChainInfo(name='Linea',          block_explorer_link='https://lineascan.build/')
+}
 
 
 def get_aave_tags(proposal_id: int) -> Dict[str, Any]:
