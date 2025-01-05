@@ -1,47 +1,68 @@
-[project]
+[tool.poetry]
 name = "quorum"
 version = "0.1.0"
 description = "Quorum is an open-source Python utility designed to verify the integrity of smart contracts deployed on blockchains."
-authors = [
-    {name = "Niv Vaknin"}
-]
+authors = ["Niv Vaknin <niv@certora.com>"]  # Added email in angle brackets
+license = "MIT"
+readme = "README.md"
 packages = [
     { include = "Quorum" }
 ]
-license = {text = "Quorum is released under the [MIT License](LICENSE)."}
-readme = "README.md"
-requires-python = ">=3.11,<4.0"
-dependencies = [
-    "requests",
-    "GitPython",
-    "py-solc-x",
-    "pydantic",
-    "eth-abi",
-    "eth-utils",
-    "pytest",
-    "eth-hash[pycryptodome]",
-    "langchain",
-    "jinja2",
-    "langchain-anthropic",
-    "langgraph",
-    "langchain_community", 
-    "python-dotenv",
-    "json5"
-]
 
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.poetry.dependencies]
+python = ">=3.11,<4.0"
+requests = "^2.31.0"
+GitPython = "^3.1.31"
+py-solc-x = "^1.1.1"
+pydantic = "^2.0.2"
+eth-abi = "^4.0.0"
+eth-utils = "^2.1.0"
+pytest = "^7.4.0"
+eth-hash = { version = "^0.5.0", extras = ["pycryptodome"] }
+jinja2 = "^3.1.2"
+langchain_community = "^0.3.14"
+python-dotenv = "^1.0.0"
+json5 = "^0.9.11"
+langchain-anthropic = "^0.2.0"
+langgraph = "^0.2.0"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.1.1"
 black = "^24.10.0"
 flake8-black = "^0.3.6"
 pre-commit = "^4.0.1"
-
+isort = "^5.12.0"
 
 [tool.poetry.scripts]
 CheckProposal = "Quorum.entry_points.check_proposal:main"
 IPFSValidator = "Quorum.entry_points.ipfs_validator:main"
 CreateReport = "Quorum.entry_points.create_report:main"
 SetupQuorum = "Quorum.entry_points.setup_quorum:main"
+
+[tool.black]
+line-length = 120
+target-version = ['py311']
+exclude = '''
+/(
+    \.git
+  | __pycache__
+  | venv
+  | .venv
+  | build
+  | dist
+)/
+'''
+include = '''
+Quorum/
+'''
+
+[tool.flake8]
+max-line-length = 120
+ignore = ["E501", "W503"]
+exclude = [".git", "__pycache__", "venv", ".venv", "build", "dist"]
+include = ["Quorum/*"]
+plugins = ["flake8_black"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
