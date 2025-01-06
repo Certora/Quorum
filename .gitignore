@@ -3,6 +3,7 @@
 **/.vscode
 **/local*
 build/
+dist/
 *.egg-info
 CustomerClones/
 **cache**
