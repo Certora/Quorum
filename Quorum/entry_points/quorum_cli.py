@@ -93,7 +93,7 @@ def add_arguments(parser: argparse.ArgumentParser, arguments: list[cli_args.Argu
 def main():
     parser = argparse.ArgumentParser(
         prog="Quorum",
-        description="Main Quorum CLI with multiple subcommands."
+        description="CLI tool for validating and analyzing blockchain governance proposals, including payload verification, IPFS content validation, and report generation."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
