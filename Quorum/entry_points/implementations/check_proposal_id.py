@@ -1,7 +1,12 @@
 import argparse
 
 from Quorum.apis.governance.aave_governance import AaveGovernanceAPI
-from Quorum.checks.proposal_check import run_customer_proposal_validation, ProposalConfig
+from Quorum.checks.proposal_check import (
+    run_customer_proposal_validation,
+    ProposalConfig,
+    CustomerConfig,
+    PayloadAddresses
+)
 
 
 CUSTOMER_TO_API = {
@@ -34,6 +39,6 @@ def run_proposal_id(args: argparse.Namespace) -> None:
 
     api = CUSTOMER_TO_API[customer_key]
     payloads_addresses = api.get_all_payloads_addresses(proposal_id)
-    config = ProposalConfig(customers_config=[{"customer": customer, "payload_addresses": payloads_addresses}])
+    config = ProposalConfig(customers_config=[CustomerConfig(customer=customer, payload_addresses=payloads_addresses)])
 
     run_customer_proposal_validation(config)
