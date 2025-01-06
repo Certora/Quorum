@@ -36,8 +36,8 @@ def setup_quorum(working_dir: Path):
         target_dir.mkdir(parents=True, exist_ok=True)
 
     # Collect all file names to copy from the templates directory
-    template_files = [f.name for f in templates_dir.iterdir() if f.is_file()]
-
+    template_files = ['.env.example', 'execution.json', 'ground_truth.json', 'README.md']
+    
     for file_name in template_files:
         src = templates_dir / file_name
         dest = target_dir / '.env' if file_name == '.env.example' else target_dir / file_name
