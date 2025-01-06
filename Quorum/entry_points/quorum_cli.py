@@ -2,6 +2,7 @@
 
 import argparse
 from pydantic import BaseModel
+from typing import Callable
 
 import Quorum.entry_points.cli_arguments as cli_args
 from Quorum.entry_points.implementations.check_proposal import run_single
@@ -16,10 +17,7 @@ class Command(BaseModel):
     name: str
     help: str
     arguments: list[cli_args.Argument]
-    func: callable
-
-    class Config:
-        arbitrary_types_allowed = True
+    func: Callable[[argparse.Namespace], None]
 
 
 COMMAND_REGISTRY = [
