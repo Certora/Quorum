@@ -284,4 +284,3 @@ Contributions are welcome! Please open an issue or submit a pull request on [Git
 ---
 
 **Happy Auditing!** If you have any questions or run into issues, please don’t hesitate to create a GitHub issue or open a discussion.
-```
