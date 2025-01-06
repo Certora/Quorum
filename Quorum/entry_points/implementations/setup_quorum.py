@@ -4,32 +4,31 @@ from pathlib import Path
 
 import Quorum.utils.pretty_printer as pp
 
-
-def get_working_directory() -> Path:
-    parser = argparse.ArgumentParser(description="Setup Quorum project.")
-    parser.add_argument(
-        '--working_dir',
-        default=Path.cwd() / 'quorum_project',
-        type=Path,
-        help="Directory to set up the Quorum project."
-    )
-    args = parser.parse_args()
-    return args.working_dir
-
-
-def setup_quorum(working_dir: Path):
+def run_setup_quorum(args: argparse.Namespace):
     """
-    Initializes Quorum environment by copying template files to the specified directory.
-
+    Sets up a new Quorum working directory with template files and environment configuration.
+    This function creates a new directory (if it doesn't exist) and populates it with required
+    template files for Quorum operation. It also configures the environment variables.
     Args:
-        working_dir (Path): Target directory for setting up Quorum.
-
+        args (argparse.Namespace): Command line arguments containing:
+            - working_dir: Path object specifying target directory for setup
+    Template files copied:
+        - .env.example -> .env
+        - execution.json
+        - ground_truth.json  
+        - README.md
+    The function will:
+    1. Create target directory if it doesn't exist
+    2. Copy template files, skipping any that already exist
+    3. Add QUORUM_PATH export to .env file
+    Returns:
+        None
     Raises:
-        shutil.Error: If copying files fails.
-        OSError: If directory creation fails.
+        OSError: If there are filesystem permission issues
+        shutil.Error: If file copy operations fail
     """
     templates_dir = Path(__file__).parent.parent / 'templates'
-    target_dir = working_dir.resolve()
+    target_dir = args.working_dir.resolve()
 
     if not target_dir.exists():
         pp.pretty_print(f"Creating directory: {target_dir}", pp.Colors.INFO)
@@ -54,16 +53,3 @@ def setup_quorum(working_dir: Path):
         f.write(f'\nexport QUORUM_PATH="{target_dir}"\n')
     
     pp.pretty_print("Quorum setup completed successfully!", pp.Colors.SUCCESS)
-
-
-def main():
-    working_dir = get_working_directory()
-    try:
-        setup_quorum(working_dir)
-    except Exception as e:
-        pp.pretty_print(f"Setup failed: {e}", pp.Colors.FAILURE)
-        exit(1)
-
-
-if __name__ == "__main__":
-    main()
