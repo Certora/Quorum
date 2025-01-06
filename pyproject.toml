@@ -32,3 +32,6 @@ Quorum = "Quorum.entry_points.quorum_cli:main"
 
 [tool.setuptools]
 include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["Quorum"]
