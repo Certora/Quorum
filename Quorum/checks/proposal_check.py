@@ -10,7 +10,6 @@ from Quorum.apis.git_api.git_manager import GitManager
 import Quorum.utils.config_loader as ConfigLoader
 
 
-
 class CustomerConfig(BaseModel):
     customer: str
     payload_addresses: list[PayloadAddresses]
