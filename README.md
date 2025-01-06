@@ -56,14 +56,14 @@ Quorum offers a convenient setup command to streamline initial configuration by 
 ### 1. Run Setup Command
 
 ```bash
-SetupQuorum [working_directory]
+Quorum setup --working_dir "/home/user/quorum_project"
 ```
 
 - **`working_directory`** *(Optional)*: Path where Quorum’s configuration files will be placed. If omitted, the current directory is used.
 
 **Example**:
 ```bash
-SetupQuorum ./my_quorum_project
+Quorum setup --working_dir ./my_quorum_project
 ```
 
 This action will:
@@ -131,57 +131,57 @@ To fully enable Quorum’s checks, set the following:
 
 ## Usage
 
-Quorum provides multiple entry points to handle different aspects of proposal checks and code validation. Below is an overview of each command, with examples.
+Quorum now provides a **single CLI** with multiple **subcommands** for different tasks. Below is an overview of each subcommand, with examples.
 
-### 1. **CheckProposal**
+### 1. **single-payload**
 
-**Purpose:** Analyzes a single proposal by address for a specific customer on a given chain.
+**Purpose:** Analyzes a single proposal address for a specific customer on a given chain.
 
 ```bash
-CheckProposal --customer "Aave" --chain "Ethereum" --proposal_address "0xAD6..."
+Quorum single-payload --customer "Aave" --chain "Ethereum" --proposal_address "0xAD6..."
 ```
 
-### 2. **CheckProposalConfig**
+### 2. **config**
 
 **Purpose:** Processes multiple proposals in bulk using a JSON config file.
 
 ```bash
-CheckProposalConfig --config "/path/to/config.json"
+Quorum config --config "/path/to/config.json"
 ```
 *(See “**Example Usage with Config File**” for a sample config.)*
 
-### 3. **CheckProposalId**
+### 3. **proposal-id**
 
 **Purpose:** Looks up all payload addresses for a single proposal ID (useful for proposals containing multiple payloads).
 
 ```bash
-CheckProposalId --customer "Aave" --proposal_id 137
+Quorum proposal-id --customer "Aave" --proposal_id 137
 ```
 
-### 4. **IPFSValidator**
+### 4. **ipfs-validate**
 
 **Purpose:** Validates whether the IPFS description content aligns with the actual on-chain payload. Uses LLM-based analysis.
 
 ```bash
-IPFSValidator --proposal_id 132 --chain "Ethereum" --proposal_address "0xAD6..."
+Quorum ipfs-validate --proposal_id 132 --chain "Ethereum" --proposal_address "0xAD6..."
 ```
 
-### 5. **CreateReport**
+### 5. **create-report**
 
 **Purpose:** Generates a human-readable report of the proposal details, leveraging Jinja2 templates.
 
 ```bash
-CreateReport --proposal_id 137 \
-             --template "Quorum/auto_report/AaveReportTemplate.md.j2" \
-             --generate_report_path "reports/v3-137.md"
+Quorum create-report --proposal_id 137 \
+                     --template "Quorum/auto_report/AaveReportTemplate.md.j2" \
+                     --generate_report_path "reports/v3-137.md"
 ```
 
-### 6. **SetupQuorum**
+### 6. **setup**
 
 **Purpose:** Bootstraps your Quorum environment, creating `.env`, `ground_truth.json`, `execution.json`, and an initial `README.md`.
 
 ```bash
-SetupQuorum --working_dir "/home/user/quorum_project"
+Quorum setup --working_dir "/home/user/quorum_project"
 ```
 
 *(Refer to “**Quick Setup**” for details.)*
@@ -205,7 +205,7 @@ For bulk execution, create a config file (e.g., `config.json`) with the followin
 Then run:
 
 ```bash
-CheckProposalConfig --config config.json
+Quorum config --config config.json
 ```
 
 *(Chains without proposals are automatically skipped.)*
@@ -284,3 +284,4 @@ Contributions are welcome! Please open an issue or submit a pull request on [Git
 ---
 
 **Happy Auditing!** If you have any questions or run into issues, please don’t hesitate to create a GitHub issue or open a discussion.
+```
