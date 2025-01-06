@@ -3,9 +3,10 @@ from pydantic import BaseModel, Field
 
 from Quorum.utils.chain_enum import Chain
 
+
 class IPFSData(BaseModel):
-    title: Optional[str] = None
-    discussions: Optional[str] = None
+    title: str = 'N/A'
+    discussions: str = 'N/A'
 
 
 class PayloadData(BaseModel):
@@ -19,18 +20,25 @@ class PayloadData(BaseModel):
 
 class ProposalData(BaseModel):
     payloads: list[PayloadData] = Field(default_factory=list)
-    votingPortal: Optional[str] = None
-    ipfsHash: Optional[str] = None
+    voting_portal: Optional[str] = Field(alias='votingPortal')
+    ipfs_hash: Optional[str] = Field(alias='ipfsHash')
+    access_level: Optional[str | int] = Field(alias='accessLevel')
+
+    class Config:
+        allow_population_by_alias = True
 
 
 class EventArgs(BaseModel):
-    creator: Optional[str] = None
-    accessLevel: Optional[int] = None
-    ipfsHash: Optional[str] = None
+    creator: str = 'N/A'
+    access_level: Optional[str | int] = Field(alias='accessLevel', default='N/A')
+    ipfs_hash: str = Field(alias='ipfsHash', default='N/A')
+
+    class Config:
+        allow_population_by_alias = True
 
 
 class EventData(BaseModel):
-    transactionHash: Optional[str] = None
+    transaction_hash: str = Field(alias='transactionHash')
     args: EventArgs = Field(default_factory=EventArgs)
 
 

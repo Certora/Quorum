@@ -1,8 +1,59 @@
+from pydantic import BaseModel
+
 import Quorum.checks as Checks
 import Quorum.utils.pretty_printer as pp
 from Quorum.utils.chain_enum import Chain
 from Quorum.apis.block_explorers.chains_api import ChainAPI
 from Quorum.apis.price_feeds.price_feed_utils import PriceFeedProviderBase
+from Quorum.apis.governance.data_models import PayloadAddresses
+from Quorum.apis.git_api.git_manager import GitManager
+import Quorum.utils.config_loader as ConfigLoader
+
+
+
+class CustomerConfig(BaseModel):
+    customer: str
+    payload_addresses: list[PayloadAddresses]
+
+
+class ProposalConfig(BaseModel):
+    customers_config: list[CustomerConfig]
+
+
+def run_customer_proposal_validation(prop_config: ProposalConfig) -> None:
+    """
+    Execute proposal checks in batch for multiple customers and their configurations.
+
+    This function processes proposal configurations for multiple customers, clones or updates
+    their repositories, and performs proposal checks for specified addresses on different chains.
+
+    Args:
+        prop_config (ProposalConfig): Configuration object containing customer configs,
+            payload addresses, and chain information for proposal validation.
+
+    Returns:
+        None
+
+    Example:
+        >>> prop_config = ProposalConfig(...)
+        >>> run_batch(prop_config)
+    """
+    for config in prop_config.customers_config:
+        ground_truth_config = ConfigLoader.load_customer_config(config.customer)
+
+        git_manager = GitManager(config.customer, ground_truth_config)
+        git_manager.clone_or_update()
+
+        price_feed_providers = ground_truth_config.get("price_feed_providers", [])
+
+        for pa in config.payload_addresses:
+            proposals_check(
+                customer=config.customer,
+                chain=pa.chain,
+                proposal_addresses=pa.addresses,
+                providers=price_feed_providers
+            )
+
 
 
 def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], providers: list[PriceFeedProviderBase]) -> None:

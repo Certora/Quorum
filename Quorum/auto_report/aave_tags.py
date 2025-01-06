@@ -52,9 +52,9 @@ def get_aave_tags(proposal_id: int) -> Dict[str, Any]:
 
     # Basic info
     tags['proposal_id'] = str(proposal_id)
-    tags['proposal_title'] = ipfs_data.title if ipfs_data.title else 'N/A'
+    tags['proposal_title'] = ipfs_data.title
     tags['voting_link'] = f'https://vote.onaave.com/proposal/?proposalId={proposal_id}'
-    tags['gov_forum_link'] = ipfs_data.discussions if ipfs_data.discussions else 'N/A'
+    tags['gov_forum_link'] = ipfs_data.discussions
 
     # Multi-chain references
     tags['chain'] = []
@@ -87,15 +87,15 @@ def get_aave_tags(proposal_id: int) -> Dict[str, Any]:
             tags['payload_seatbelt_link'].append(seatbelt_link)
 
     # Transaction info
-    transaction_hash = create_event.transactionHash or 'N/A'
+    transaction_hash = create_event.transaction_hash
     tags['transaction_hash'] = transaction_hash
     tags['transaction_link'] = f'https://etherscan.io/tx/{transaction_hash}'
 
     # Creator + event args
     args = create_event.args
-    tags['creator'] = args.creator if args.creator else 'N/A'
-    tags['access_level'] = str(args.accessLevel) if args.accessLevel is not None else 'N/A'
-    tags['ipfs_hash'] = args.ipfsHash if args.ipfsHash else 'N/A'
+    tags['creator'] = args.creator 
+    tags['access_level'] = args.access_level
+    tags['ipfs_hash'] = args.ipfs_hash
 
     tags['createProposal_parameters_data'] = json.dumps(proposal_data.model_dump(), indent=4)
 
