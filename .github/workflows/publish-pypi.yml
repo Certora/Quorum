@@ -10,8 +10,8 @@ jobs:
       id-token: write
       contents: read
     env:
-      TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
-      TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+      TWINE_USERNAME: ${{ secrets.PYPI_USER }}
+      TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
