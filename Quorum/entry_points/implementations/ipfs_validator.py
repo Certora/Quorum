@@ -1,35 +1,16 @@
-from Quorum.utils.chain_enum import Chain
+import argparse
+import requests
+from pathlib import Path
+
 from Quorum.apis.block_explorers.chains_api import ChainAPI
 from Quorum.llm.chains.ipfs_validation_chain import IPFSValidationChain
 import Quorum.utils.config as config
-import Quorum.utils.arg_validations as arg_valid
 import Quorum.utils.pretty_printer as pp
-
-from pathlib import Path
-import argparse
-import requests
 
 
 IPFS_CACHE = Path(__file__).parent / '.ipfs_cache'
 IPFS_CACHE.mkdir(exist_ok=True)
 
-
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description='Compare ipfs with actual payload.')
-    parser.add_argument('--proposal_id', type=int, help='The id of the proposal.')
-    parser.add_argument('--chain', type=str, choices=[chain.value for chain in Chain], help='Blockchain chain.')
-    parser.add_argument('--proposal_address', type=arg_valid.validate_address, help='Ethereum proposal address.')
-    parser.add_argument(
-        '--prompt_templates', 
-        type=str, 
-        nargs="+",
-        default=['ipfs_validation_prompt_part1.j2', "ipfs_validation_prompt_part2.j2"],
-        help='Jinja templates for prompting the LLM.'
-    )
-    
-    args = parser.parse_args()
-
-    return args
 
 def get_raw_ipfs(proposal_id: int) -> str:
     cache = IPFS_CACHE / f'{proposal_id}.txt'
@@ -50,11 +31,31 @@ def get_raw_ipfs(proposal_id: int) -> str:
     return ipfs_content
 
 
-def main():
+def run_ipfs_validator(args: argparse.Namespace):
+    """
+    Validates IPFS content against proposal source code using LLM-based analysis.
+    This function performs validation between IPFS content and smart contract source code
+    by leveraging Language Model analysis through a validation chain.
+    Args:
+        args (argparse.Namespace): Command line arguments containing:
+            - chain: The blockchain network to query
+            - proposal_address: Contract address of the proposal
+            - proposal_id: IPFS identifier for the proposal
+            - prompt_templates: Templates for LLM prompts
+    Raises:
+        ValueError: If ANTHROPIC_API_KEY is not set in environment variables
+        ValueError: If no source code is found for the given proposal address
+    Returns:
+        None. Results are printed to stdout:
+            - Lists incompatibilities if found
+            - Warning message if no incompatibilities detected
+    Example:
+        args = parser.parse_args()
+        run_ipfs_validator(args)
+    """
     # Check if the Anthropic API key is set in environment variables
     if not config.ANTHROPIC_API_KEY:
         raise ValueError("ANTHROPIC_API_KEY environment variable is not set. Please set it to use this functionality.")
-    args = parse_args()
 
     # Initialize Chain API and fetch source codes
     block_explorer = ChainAPI(args.chain)
@@ -80,6 +81,3 @@ def main():
             pp.pretty_print(incompatibility, pp.Colors.FAILURE)
     else:
         pp.pretty_print("LLM found no incompatibilities. Please Check manually.", pp.Colors.WARNING)
-    
-if __name__ == '__main__':
-    main()

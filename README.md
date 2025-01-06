@@ -1,248 +1,246 @@
 # Quorum
 
-Quorum is an open-source Python utility designed to verify the integrity of smart contracts deployed on blockchains. It fetches contract code directly from the blockchain and compares it with the official version provided by developers or customers in their GitHub repositories. This process helps identify discrepancies between the on-chain and official code, ensuring the contract deployed on the blockchain matches the intended version. By automating code comparison and streamlining the review of governance proposals, Quorum enhances the security and trustworthiness of smart contracts, helping users quickly detect unauthorized changes or errors.
+Quorum is an open-source Python utility that ensures the integrity of smart contracts deployed on blockchains. By comparing on-chain code against known official repositories, Quorum helps detect unauthorized changes, bolstering the security and trustworthiness of decentralized systems.
 
-## Features
-- **Fetch Smart Contract Source Codes:** Retrieve source code directly from various blockchains using contract addresses.
-- **Compare Local and Remote Codes:** Generate unified diffs to highlight differences between local and remote source codes.
-- **Verify Code Against Known Reviewed Repositories:** Generate diffs against specifically defined trusted auditor's repositories.
-- **Global Variable Check:** Ensure all global variables in unmatched contracts are either constant or immutable.
-- **Feed Price Check:** Verify the feed price of a contract is mentioned on ChainLink.
-- **New Listing Check:** Check if proposal contains a new Listing.
-- **Automated Repository Management:** Clone or update repositories based on customer configurations.
-- **Quick Setup Command:** Streamline initial configuration with a single setup command that generates necessary files and guides proper setup.
+## Key Features
+1. **Fetch & Compare Smart Contract Source Codes:**  
+   - Retrieves source code directly from various block explorers via contract addresses.  
+   - Generates unified diffs highlighting differences between local and fetched source codes.  
+
+2. **Repository & Code Verification:**  
+   - Compare code against audited or reviewed repositories to confirm authenticity.  
+   - Automates repository management (clone & update) based on your configuration.  
+
+3. **Global Variable Check:**  
+   - Ensures all unmatched contracts’ global variables are constant or immutable.  
+
+4. **Feed Price Check:**  
+   - Validates that the contract feed price is listed on recognized providers like Chainlink or Chronicle.  
+
+5. **New Listing Check:**  
+   - Checks if a given proposal introduces a new asset listing on the protocol.  
+
+6. **Quick Setup Command:**  
+   - Generates essential configuration files (`.env.example`, `ground_truth.json`, `execution.json`, etc.)  
+   - Guides you through environment variable and repository configuration steps.  
+
+---
 
 ## Prerequisites
-- Python 3.11 or higher
+
+- **Python 3.11 or higher**  
+  Quorum requires Python 3.11+, as it utilizes features from the most recent Python release.
+
+---
 
 ## Installation
 
-You can install Quorum directly from GitHub using pip:
+### Via `pip`
 
-```sh
+```bash
 pip install git+ssh://git@github.com/Certora/Quorum.git
 ```
 
-Or clone the repository:
+### Or clone the repository:
 
-```sh
+```bash
 git clone git@github.com:Certora/Quorum.git
 ```
 
+---
+
 ## Quick Setup
 
-To simplify the initial configuration, Quorum provides a setup command that generates essential configuration files and guides you through the setup process.
+Quorum offers a convenient setup command to streamline initial configuration by creating required files and providing guidance.
 
-### Using the Setup Command
+### 1. Run Setup Command
 
-Run the following command in your desired working directory (defaults to the current directory if not specified):
-
-```sh
-SetupQuorum [working_directory]
+```bash
+Quorum setup --working_dir "/home/user/quorum_project"
 ```
 
-- **`working_directory`**: *(Optional)* Path to the desired working directory. Defaults to the current directory if not provided.
+- **`working_directory`** *(Optional)*: Path where Quorum’s configuration files will be placed. If omitted, the current directory is used.
 
-**Example:**
-
-```sh
-SetupQuorum ./my_quorum_project
+**Example**:
+```bash
+Quorum setup --working_dir ./my_quorum_project
 ```
 
-This command will:
-- Copy the following template files to your working directory:
-  - `ground_truth.json`
-  - `execution.json`
-  - `.env.example`
-  - `README.md`
-- Provide guidance through comments within the configuration files, and a detailed README file to help you properly configure Quorum.
+This action will:
+- Create the specified (or default) directory if it doesn’t exist.
+- Copy **four** template files:
+  1. `ground_truth.json`
+  2. `execution.json`
+  3. `.env.example`
+  4. `README.md`
+- Provide inline comments within these files for guidance.
 
-### Post-Setup Configuration
+### 2. Post-Setup Configuration
 
-After running the setup command, perform the following steps:
-
-1. **Configure Environment Variables:** (Optional)
-   This step is optional if you prefer to set environment variables manually as described in the [Environment Variables](#environment-variables) section.
-
-   Edit the `.env` file to include your actual API keys and desired paths:
-
-   ```sh
+1. **Environment Variables**  
+   Edit the `.env` file (or your shell profile) with your actual API keys and custom paths:
+   ```bash
    export ETHSCAN_API_KEY="your_etherscan_api_key"
    export ANTHROPIC_API_KEY="your_anthropic_api_key"
    export QUORUM_PATH="/path/to/your/quorum_directory"
    ```
 
-2. **Fill Out Configuration Files:**
+2. **Configuration Files**  
+   - **`ground_truth.json`**: Define repositories and providers (e.g., price feed providers, token validation).  
+   - **`execution.json`**: Specify proposal addresses to be checked for different chains.  
+   - **`README.md`**: An auto-generated resource explaining your next steps.
 
-   - **`ground_truth.json`**: Define repositories and providers for each protocol.
-   - **`execution.json`**: Specify proposal addresses for each network.
-   - **`README.md`**: Follow the included guide to understand installation, configuration, available flags, and the checks performed by Quorum.
+---
 
 ## Clarifications
 
-As part of the tool's process, Quorum uses `solcx` to parse contract code to AST. The version of `solcx` used is the latest. If the contract code is not compatible with the latest version of `solcx`, the tool will not be able to parse the contract code and will not be able to proceed with the global variable and new listing checks.
+Quorum leverages `solcx` (latest version) to parse contract code into an AST. Contracts incompatible with the latest `solc` version may break checks involving AST parsing (e.g., global variable checks, new listing checks).
+
+---
 
 ## Environment Variables
 
-Quorum requires specific environment variables to function correctly. These variables can be set in your shell or defined in a `.env` file.
+To fully enable Quorum’s checks, set the following:
 
-### Required Environment Variables
+### Required Variables
+- **`ETHSCAN_API_KEY`**: Your Etherscan API key (for block explorer queries).  
+- **`ANTHROPIC_API_KEY`**: Required if you intend to use advanced LLM-based checks (e.g., new listing first deposit checks).  
+- **`QUORUM_PATH`**: Directory path where Quorum stores cloned repos, diffs, logs, etc.
 
-- **ETHSCAN_API_KEY:** API key for Etherscan.
-- **ANTHROPIC_API_KEY:** API key for Anthropic (required for advanced new listing first deposit checks).
-- **QUORUM_PATH:** Path to specify where the repositories and diffs will be saved.
+### Setting Variables
 
-### Setting Environment Variables
+1. **Shell Environment:**
 
-**Using Shell:**
+   ```bash
+   export ETHSCAN_API_KEY="your_etherscan_api_key"
+   export ANTHROPIC_API_KEY="your_anthropic_api_key"
+   export QUORUM_PATH="/path/to/quorum_artifacts"
+   ```
 
-```sh
-export ETHSCAN_API_KEY="your_etherscan_api_key"
-export ANTHROPIC_API_KEY="your_anthropic_api_key"
-export QUORUM_PATH="/path/to/artifacts"
-```
+2. **`.env` File:**
 
-**Using `.env` File:**
+   ```
+   ETHSCAN_API_KEY=your_etherscan_api_key
+   ANTHROPIC_API_KEY=your_anthropic_api_key
+   QUORUM_PATH="/path/to/quorum_artifacts"
+   ```
 
-After running the setup command, a `.env` file will be present. fill in the required values:
+*(This file is automatically created by `Quorum setup` if not already present.)*
 
-Then edit `.env`:
-
-```sh
-ETHSCAN_API_KEY=your_etherscan_api_key
-ANTHROPIC_API_KEY=your_anthropic_api_key
-QUORUM_PATH="/path/to/artifacts"
-```
+---
 
 ## Usage
 
-To run the tool, use the command line:
+Quorum now provides a **single CLI** with multiple **subcommands** for different tasks. Below is an overview of each subcommand, with examples.
 
-```sh
-CheckProposal --customer "CustomerName" --chain "ChainName" --proposal_address "Address"
+### 1. **single-payload**
+
+**Purpose:** Analyzes a single proposal address for a specific customer on a given chain.
+
+```bash
+Quorum single-payload --customer "Aave" --chain "Ethereum" --proposal_address "0xAD6..."
 ```
 
-OR
+### 2. **config**
 
-```sh
-python3 Quorum/check_proposal.py --customer "CustomerName" --chain "ChainName" --proposal_address "Address"
+**Purpose:** Processes multiple proposals in bulk using a JSON config file.
+
+```bash
+Quorum config --config "/path/to/config.json"
+```
+*(See “**Example Usage with Config File**” for a sample config.)*
+
+### 3. **proposal-id**
+
+**Purpose:** Looks up all payload addresses for a single proposal ID (useful for proposals containing multiple payloads).
+
+```bash
+Quorum proposal-id --customer "Aave" --proposal_id 137
 ```
 
-Replace `CustomerName` with the customer identifier, `ChainName` with the blockchain chain, and `Address` with the proposal address.
+### 4. **ipfs-validate**
 
-### Example Usage with Config File
+**Purpose:** Validates whether the IPFS description content aligns with the actual on-chain payload. Uses LLM-based analysis.
 
-You can also execute multiple tasks using a configuration file:
+```bash
+Quorum ipfs-validate --proposal_id 132 --chain "Ethereum" --proposal_address "0xAD6..."
+```
 
-**Example config file `config.json`:**
+### 5. **create-report**
+
+**Purpose:** Generates a human-readable report of the proposal details, leveraging Jinja2 templates.
+
+```bash
+Quorum create-report --proposal_id 137 \
+                     --template "Quorum/auto_report/AaveReportTemplate.md.j2" \
+                     --generate_report_path "reports/v3-137.md"
+```
+
+### 6. **setup**
+
+**Purpose:** Bootstraps your Quorum environment, creating `.env`, `ground_truth.json`, `execution.json`, and an initial `README.md`.
+
+```bash
+Quorum setup --working_dir "/home/user/quorum_project"
+```
+
+*(Refer to “**Quick Setup**” for details.)*
+
+---
+
+## Example Usage with Config File
+
+For bulk execution, create a config file (e.g., `config.json`) with the following format:
 
 ```json
 {
     "Aave": {
-        "Ethereum": {
-            "Proposals": [
-                "0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637"
-            ]
-        },
-        "Arbitrum": {
-            "Proposals": [
-                "0x22ca2Dd3063189F9E7e76fA3078E2d916B3998b7"
-            ]
-        },
-        "Avalanche": {
-            "Proposals": []
-        },
-        "Base": {
-            "Proposals": [
-                "0x6B96B41a531713a141F6EcBbae80715601d0e456"
-            ]
-        },
-        "BNBChain": {
-            "Proposals": [
-                "0xb4F2786984093eaE1D6Be2B4F8c8e3c2cb018b54"
-            ]
-        },
-        "Gnosis": {
-            "Proposals": []
-        },
-        "Metis": {
-            "Proposals": []
-        },
-        "Optimism": {
-            "Proposals": []
-        },
-        "Polygon": {
-            "Proposals": [
-                "0x2dbBe7E30CD959A192FeFCEd9A5ae681d540deB4"
-            ]
-        },
-        "Scroll": {
-            "Proposals": [
-                "0x9d9892256dF8f97d0c15F4494aa5D44D376CC749"
-            ]
-        },
-        "zkSync": {
-            "Proposals": []
-        }
+        "Ethereum": { "Proposals": [ "0xAD6..." ] },
+        "Arbitrum": { "Proposals": [ "0x22ca2..." ] },
+        ...
     }
 }
 ```
 
-**To run using the config file:**
+Then run:
 
-```sh
-python3 Quorum/check_proposal.py --config path/to/config.json
+```bash
+Quorum config --config config.json
 ```
 
-Or if you used the pip installation:
+*(Chains without proposals are automatically skipped.)*
 
-```sh
-CheckProposal --config path/to/config.json
-```
+---
 
-**Note:** If the "Proposals" list for a particular chain is empty, the task for that chain will be skipped. This allows you to include or exclude chains from processing without modifying the code.
+## Configuration Details
 
-## Configuration
+### ground_truth.json
 
-The `ground_truth.json` file defines the repositories for each customer. It should be located under the `QUORUM_PATH`. If not found, a default `ground_truth.json` configuration will be created.
-
-### Template for `ground_truth.json`:
+Defines each protocol’s repositories and providers:
 
 ```json
 {
     "ProtocolName": {
         "dev_repos": [
-            "https://github.com/organization/repository1",
-            "https://github.com/organization/repository2"
+            "https://github.com/org/repo1",
+            "https://github.com/org/repo2"
         ],
-        "review_repo": "https://github.com/organization/review-repository",
+        "review_repo": "https://github.com/org/review",
         "price_feed_providers": ["Chainlink", "Chronicle"],
         "token_validation_providers": ["Coingecko"]
     }
 }
 ```
 
-**Fields explanation:**
-- `ProtocolName`: Your protocol or organization name
-- `dev_repos`: List of GitHub repositories containing your protocol's source code
-- `review_repo`: Repository containing pre-deployment code for review
-- `price_feed_providers`: List of supported price feed providers (Chainlink, Chronicle)
-- `token_validation_providers`: List of supported token validation providers (Coingecko)
+### Currently Supported Providers
+- **Price Feeds**: Chainlink, Chronicle  
+- **Token Validation**: Coingecko  
 
-### Current Supported Providers
-
-**Price Feed Providers:**
-- Chainlink
-- Chronicle
-
-**Token Validation Providers:**
-- Coingecko
+---
 
 ## Artifacts Structure
 
-Quorum generates and organizes artifacts in a structured manner under the `QUORUM_PATH` directory. Here is a general overview of the structure:
-
-### Directory Structure
+All artifacts (cloned repos, diffs, logs) are stored under `QUORUM_PATH`. Below is a typical folder hierarchy:
 
 ```
 QUORUM_PATH/
@@ -251,76 +249,38 @@ QUORUM_PATH/
 │   ├── modules/
 │   │   ├── repository1/
 │   │   ├── repository2/
-│   │   ├── ...
 │   ├── checks/
 │   │   ├── ChainName/
-│   │   │   ├── ProposalAddress1/
-│   │   │   │   ├── DiffCheck_datetime/
-│   │   │   │   │   ├── file1.patch
-│   │   │   │   │   ├── file2.patch
-│   │   │   │   ├── FeedPriceCheck_datetime/
-│   │   │   │   │   ├── file1.json
-│   │   │   │   ├── GlobalVariableCheck_datetime/
-│   │   │   │   │   ├── file1.json
-│   │   │   │   │   ├── ...
-│   │   │   │   ├── NewListingCheck_datetime/
-│   │   │   │   │   ├── file1.json
-│   │   │   │   ├── ...
-│   │   │   ├── ProposalAddress2/
+│   │   │   ├── ProposalAddress/
+│   │   │   │   ├── DiffCheck_<timestamp>/
+│   │   │   │   ├── FeedPriceCheck_<timestamp>/
+│   │   │   │   ├── GlobalVariableCheck_<timestamp>/
+│   │   │   │   ├── NewListingCheck_<timestamp>/
 │   │   │   ├── ...
-│   │   ├── ...
-│   │   ├── ProposalAddressN/
-│   │   │   ├── ...
+│   ├── execution.json
+│   └── ground_truth.json
 ```
 
-### Description
+1. **`CustomerName/`**: Each customer has a dedicated folder.  
+2. **`modules/`**: Contains cloned Git repositories.  
+3. **`checks/`**: Contains patch files (diffs) and JSON logs from the checks performed.  
+4. **`execution.json`**: Tracks the proposals processed in the last run.  
+5. **`ground_truth.json`**: Core configuration defining the official repositories and providers.
 
-- **CustomerName/**: This directory is named after the customer, representing the context or organization for which the analysis is performed. Each customer has its own directory.
-
-  - **checks/**: Contains the diffs and global variable checks generated for each smart contract address analyzed. Each subdirectory is named after the contract's address and contains patch files highlighting differences between local and remote source codes, as well as JSON files documenting any global variables that are not constant or immutable.
-
-  - **modules/**: This directory stores the cloned repositories for the customer. Each subdirectory corresponds to a specific repository associated with the customer, containing the source code and related files.
-
-  - **execution.json**: This file stores the configuration and results of the last execution, including details like which proposals were checked and any findings or issues encountered.
-
-  - **ground_truth.json**: A configuration file specifying the repositories to be managed for the customer. This file can be customized to include the URLs of the repositories related to the customer.
-
-### Example
-
-For instance, the structure under the `QUORUM_PATH/Aave/` directory might look like:
-
-```
-Aave/
-├── checks/
-│   ├── 0x065DF1F9d0aeDEa11E6d059ce29e91d2Abed59fA/
-│   │   ├── diffs_20240801_105150/
-│   │   │   ├── AaveV3Ethereum.patch
-│   │   ├── global_check_20240801_105150/
-│   │   │   ├── AaveV3Ethereum.json
-│   ├── 0x564Dfd09eBB63F7e468401AffE2d8c2cDD08D68D/
-│   │   ├── ...
-│   ├── 0x683FdF51d5898F92317F870B25a6A4dF67dC58Ab/
-│   │   ├── ...
-│   ├── 0xF0221Fc5a2F825bbF6F994f30743aD5AAC66cd4E/
-│   │   ├── ...
-├── modules/
-│   ├── aave-address-book/
-│   ├── aave-helpers/
-│   ├── aave-v3-origin/
-├── execution.json
-├── ground_truth.json
-```
-
-In this example, each proposal address under the `checks/` directory contains diff files that highlight the differences between the local and fetched source codes, as well as global variable check results. The `modules/` directory contains the repositories relevant to the customer "Aave," and the `execution.json` and `ground_truth.json` files hold metadata and configuration details.
+---
 
 ## License
 
-Quorum is released under the [MIT License](LICENSE).
+Quorum is licensed under the [MIT License](LICENSE).
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request on GitHub.
+Contributions are welcome! Please open an issue or submit a pull request on [GitHub](https://github.com/Certora/Quorum).
 
 ## Acknowledgments
 
-- Thanks to all contributors and the open-source community.
+- Special thanks to all contributors and the open-source community for their support.
+
+---
+
+**Happy Auditing!** If you have any questions or run into issues, please don’t hesitate to create a GitHub issue or open a discussion.
