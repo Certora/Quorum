@@ -77,7 +77,9 @@ def add_arguments(parser: argparse.ArgumentParser, arguments: list[cli_args.Argu
         arguments (List[Argument]): A list of Argument instances to add.
     """
     for arg in arguments:
-        parser.add_argument(**arg.model_dump())
+        arg_dict = arg.model_dump()
+        name = arg_dict.pop("name")
+        parser.add_argument(name, **arg_dict)
 
 
 def main():
