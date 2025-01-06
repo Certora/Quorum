@@ -1,7 +1,14 @@
 from enum import StrEnum
+from typing import Optional
 
 
 SEPARATOR_LINE = '\n' + '-' * 110 + '\n'
+
+
+class Heading(StrEnum):
+    HEADING_1 = '='
+    HEADING_2 = '-'
+    HEADING_3 = '.'
 
 
 class Colors(StrEnum):
@@ -12,8 +19,8 @@ class Colors(StrEnum):
     RESET = '\033[0m'
 
 
-def pprint(message: str, status: Colors, is_heading: bool = False):
+def pprint(message: str, status: Colors, heading: Optional[Heading]=None):
     s = status + message + Colors.RESET
-    if is_heading:
-        s += '\n' + '-' * len(message)
+    if heading:
+        s += '\n' + heading * len(message) + '\n'
     print(s)

@@ -129,7 +129,7 @@ class DiffCheck(Check):
         num_identical = num_total_files - num_missing_files - num_diff_files
 
         # Identical files message.
-        pp.pprint(f'Files found identical: {num_identical}/{num_total_files}', pp.Colors.SUCCESS)
+        pp.pprint(f'Files found identical: {num_identical}/{num_total_files}\n', pp.Colors.SUCCESS)
 
         # Diffs files message.
         if num_diff_files > 0:

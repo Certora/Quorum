@@ -64,7 +64,7 @@ def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], 
     api = ChainAPI(chain)
     
     for proposal_address in proposal_addresses:
-        pp.pprint(f'Analyzing payload {proposal_address} on {chain}', pp.Colors.INFO, is_heading=True)
+        pp.pprint(f'Analyzing payload {proposal_address} on {chain}', pp.Colors.INFO, pp.Heading.HEADING_1)
 
         try:
             source_codes = api.get_source_code(proposal_address)
@@ -82,27 +82,29 @@ def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], 
             continue
 
         # Diff check
-        pp.pprint('Check 1 - Comparing payload contract and imports with the source of truth', pp.Colors.INFO)
+        pp.pprint('Check 1 - Comparing payload contract and imports with the source of truth',
+                  pp.Colors.INFO, pp.Heading.HEADING_2)
         missing_files = Checks.DiffCheck(customer, chain, proposal_address, source_codes).find_diffs()
         pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
 
         # Review diff check
-        pp.pprint(f'Check 2 - Verifying missing files against customer review repo', pp.Colors.INFO)
+        pp.pprint(f'Check 2 - Verifying missing files against customer review repo',
+                  pp.Colors.INFO, pp.Heading.HEADING_2)
         Checks.ReviewDiffCheck(customer, chain, proposal_address, missing_files).find_diffs()
         pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
 
         # Global variables check
-        pp.pprint('Check 3 - Global variables', pp.Colors.INFO)
+        pp.pprint('Check 3 - Global variables', pp.Colors.INFO, pp.Heading.HEADING_2)
         Checks.GlobalVariableCheck(customer, chain, proposal_address, missing_files).check_global_variables()
         pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
 
         # Feed price check
-        pp.pprint('Check 4 - Explicit addresses validation', pp.Colors.INFO)
+        pp.pprint('Check 4 - Explicit addresses validation', pp.Colors.INFO, pp.Heading.HEADING_2)
         Checks.PriceFeedCheck(customer, chain, proposal_address, missing_files, providers).verify_price_feed()
         pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
 
         # New listing check
-        pp.pprint('Check 5 - First deposit for new listing', pp.Colors.INFO)
+        pp.pprint('Check 5 - First deposit for new listing', pp.Colors.INFO, pp.Heading.HEADING_2)
         Checks.NewListingCheck(customer, chain, proposal_address, missing_files).new_listing_check()
         pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
 
@@ -110,10 +112,10 @@ def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], 
 def format_metadata(customer: str, chain_info: dict[str, list[str]]) -> str:
     msg = f'Customer: {customer}\nChains and payloads:\n'
     for chain, addresses in chain_info.items():
-        if len(addresses) == 0:
+        if len(addresses['Proposals']) == 0:
             continue
         msg += f'* {chain}:\n'
-        for address in addresses:
+        for address in addresses['Proposals']:
             msg += f'\t- {address}\n'
     return msg
 
@@ -130,13 +132,13 @@ def main() -> None:
     if config_data:
         # Multi-task mode using JSON configuration
         for customer, chain_info in config_data.items():
-            pp.pprint('Run Preparation', pp.Colors.INFO, is_heading=True)
+            pp.pprint('Run Preparation', pp.Colors.INFO, pp.Heading.HEADING_1)
             ground_truth_config = ConfigLoader.load_customer_config(customer)
             GitManager(customer, ground_truth_config).clone_or_update()
             price_feed_providers = ground_truth_config.get('price_feed_providers', [])
             pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
             
-            pp.pprint('Run Metadata', pp.Colors.INFO, is_heading=True)
+            pp.pprint('Run Metadata', pp.Colors.INFO, pp.Heading.HEADING_2)
             pp.pprint(format_metadata(customer, chain_info), pp.Colors.INFO)
             pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
             for chain, proposals in chain_info.items():
@@ -148,12 +150,15 @@ def main() -> None:
         # Single-task mode using command line arguments
         if not (customer and chain and proposal_address):
             raise ValueError("Customer, chain, and proposal_address must be specified if not using a config file.")
-        pp.pprint('Run Preparation', pp.Colors.INFO)
+        pp.pprint('Run Preparation', pp.Colors.INFO, pp.Heading.HEADING_1)
         ground_truth_config = ConfigLoader.load_customer_config(customer)
         GitManager(customer, ground_truth_config).clone_or_update()
         price_feed_providers = ground_truth_config.get("price_feed_providers", [])
-        pp.pprint('Run Metadata', pp.Colors.INFO)
+        pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
+
+        pp.pprint('Run Metadata', pp.Colors.INFO, pp.Heading.HEADING_2)
         pp.pprint(f'Customer: {customer}\nChains and payloads:\n{chain}: {proposal_address}', pp.Colors.INFO)
+        pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
         proposals_check(customer, chain, [proposal_address], price_feed_providers)
 
 

@@ -102,14 +102,14 @@ class PriceFeedCheck(Check):
                 self._write_to_file(verified_sources_path, verified_variables)
         
         num_addresses = len(all_addresses)
-        pp.pprint(f'{num_addresses} addresses identified in the payload.', pp.Colors.INFO)
+        pp.pprint(f'{num_addresses} addresses identified in the payload.\n', pp.Colors.INFO)
 
         coingecko_name = CoinGeckoAPI().get_name()
         token_validation_res = {r for r in overall_verified_vars if r.found_on == coingecko_name}
         price_feed_validation_res = overall_verified_vars - token_validation_res
 
         # Print price feed validation
-        pp.pprint('Price feed validation', pp.Colors.INFO)
+        pp.pprint('Price Feed Validation', pp.Colors.INFO, pp.Heading.HEADING_3)
         msg = (f'{len(price_feed_validation_res)}/{num_addresses} '
                                      'were identified as price feeds of the configured providers:\n')
         for i, var_res in enumerate(price_feed_validation_res, 1):
@@ -119,7 +119,7 @@ class PriceFeedCheck(Check):
         pp.pprint(msg, pp.Colors.SUCCESS)
 
         # Print token validation
-        pp.pprint('Token validation', pp.Colors.INFO)
+        pp.pprint('Token Validation', pp.Colors.INFO, pp.Heading.HEADING_3)
         msg = (f'{len(token_validation_res)}/{num_addresses} '
                                 'were identified as tokens of the configured providers:\n')
         for i, var_res in enumerate(token_validation_res, 1):
