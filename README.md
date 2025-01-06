@@ -125,7 +125,7 @@ To fully enable Quorum’s checks, set the following:
    QUORUM_PATH="/path/to/quorum_artifacts"
    ```
 
-*(This file is automatically created by `SetupQuorum` if not already present.)*
+*(This file is automatically created by `Quorum setup` if not already present.)*
 
 ---
 
