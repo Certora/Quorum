@@ -18,6 +18,9 @@ class Command(BaseModel):
     arguments: list[cli_args.Argument]
     func: callable
 
+    class Config:
+        arbitrary_types_allowed = True
+
 
 COMMAND_REGISTRY = [
     Command(
