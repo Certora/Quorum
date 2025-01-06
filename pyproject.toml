@@ -35,6 +35,3 @@ SetupQuorum = "Quorum.entry_points.setup_quorum:main"
 
 [tool.setuptools]
 include-package-data = true
-
-[tool.setuptools.package-data]
-Quorum = ["ground_truth.json", "*.j2"]
