@@ -3,8 +3,10 @@
 **/.vscode
 **/local*
 build/
+dist/
 *.egg-info
 CustomerClones/
 **cache**
 **.DS_Store
 !**cached_llm.py
+quorum_project/
