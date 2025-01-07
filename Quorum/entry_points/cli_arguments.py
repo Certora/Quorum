@@ -48,7 +48,7 @@ PROPOSAL_ID_ARGUMENT = Argument(
 
 
 CONFIG_ARGUMENT = Argument(
-    name='--config-path',
+    name='--config_path',
     type=arg_valid.load_config,
     required=True,
     help="Path to the Json config file."
