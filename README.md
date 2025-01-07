@@ -37,6 +37,12 @@ Quorum is an open-source Python utility that ensures the integrity of smart cont
 
 ### Via `pip`
 
+#### Using pypi:
+```bash
+pip install certora-quorum
+```
+
+#### Using git+https:
 ```bash
 pip install git+ssh://git@github.com/Certora/Quorum.git
 ```
