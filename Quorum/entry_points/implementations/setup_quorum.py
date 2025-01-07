@@ -27,11 +27,11 @@ def run_setup_quorum(args: argparse.Namespace):
         OSError: If there are filesystem permission issues
         shutil.Error: If file copy operations fail
     """
-    templates_dir = Path(__file__).parent.parent / 'templates'
+    templates_dir = Path(__file__).parent.parent.parent / 'templates'
     target_dir = args.working_dir.resolve()
 
     if not target_dir.exists():
-        pp.pretty_print(f"Creating directory: {target_dir}", pp.Colors.INFO)
+        pp.pprint(f"Creating directory: {target_dir}", pp.Colors.INFO)
         target_dir.mkdir(parents=True, exist_ok=True)
 
     # Collect all file names to copy from the templates directory
@@ -42,14 +42,14 @@ def run_setup_quorum(args: argparse.Namespace):
         dest = target_dir / '.env' if file_name == '.env.example' else target_dir / file_name
 
         if dest.exists():
-            pp.pretty_print(f"File exists: {dest}. Skipping.", pp.Colors.WARNING)
+            pp.pprint(f"File exists: {dest}. Skipping.", pp.Colors.WARNING)
             continue
 
         shutil.copy(src, dest)
-        pp.pretty_print(f"Copied {file_name} to {dest}", pp.Colors.SUCCESS)
+        pp.pprint(f"Copied {file_name} to {dest}", pp.Colors.SUCCESS)
     
     # Add export QUORUM_PATH="path_to_your_quorum_directory" to the new .env file
     with open(target_dir / '.env', 'a') as f:
         f.write(f'\nexport QUORUM_PATH="{target_dir}"\n')
     
-    pp.pretty_print("Quorum setup completed successfully!", pp.Colors.SUCCESS)
+    pp.pprint("Quorum setup completed successfully!", pp.Colors.SUCCESS)

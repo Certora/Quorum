@@ -76,8 +76,8 @@ def run_ipfs_validator(args: argparse.Namespace):
     )
     
     if answer.incompatibilities:
-        pp.pretty_print("Found incompatibilities:", pp.Colors.FAILURE)
+        pp.pprint("Found incompatibilities:", pp.Colors.FAILURE)
         for incompatibility in answer.incompatibilities:
-            pp.pretty_print(incompatibility, pp.Colors.FAILURE)
+            pp.pprint(incompatibility, pp.Colors.FAILURE)
     else:
-        pp.pretty_print("LLM found no incompatibilities. Please Check manually.", pp.Colors.WARNING)
+        pp.pprint("LLM found no incompatibilities. Please Check manually.", pp.Colors.WARNING)

@@ -52,12 +52,12 @@ class GitManager:
     def __clone_or_update_for_repo(repo_name: str, repo_url: str, to_path: Path):
             repo_path = to_path / repo_name
             if repo_path.exists():
-                pp.pretty_print(f"Repository {repo_name} already exists at {repo_path}. Updating repo and submodules.", pp.Colors.INFO)
+                pp.pprint(f"Repository {repo_name} already exists at {repo_path}. Updating repo and submodules.", pp.Colors.INFO)
                 repo = Repo(repo_path)
                 repo.git.pull()
                 repo.git.submodule('update', '--init', '--recursive')
             else:
-                pp.pretty_print(f"Cloning {repo_name} from URL: {repo_url} to {repo_path}...", pp.Colors.INFO)
+                pp.pprint(f'Cloning {repo_name} from URL: {repo_url} to {repo_path}...', pp.Colors.INFO)
                 Repo.clone_from(repo_url, repo_path, multi_options=["--recurse-submodules"])
 
 
@@ -68,7 +68,7 @@ class GitManager:
         If the repository already exists locally, it will update the repository and its submodules.
         Otherwise, it will clone the repository and initialize submodules.
         """
-        
+        pp.pprint('Cloning and updating preliminaries', pp.Colors.INFO, pp.Heading.HEADING_2)
         for repo_name, repo_url in self.repos.items():
            GitManager.__clone_or_update_for_repo(repo_name, repo_url, self.modules_path)
         

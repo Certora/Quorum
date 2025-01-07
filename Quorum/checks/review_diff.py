@@ -10,6 +10,5 @@ class ReviewDiffCheck(DiffCheck):
         self.target_repo = self.customer_folder / "review_module"
     
     def find_diffs(self) -> list[SourceCode]:
-        pp.pretty_print(f'Verifying missing files against {self.customer} review repo '
-                        f'(cloned under {self.target_repo})', pp.Colors.INFO)
+        pp.pprint(f'Review repo cloned under: {self.target_repo}', pp.Colors.INFO)
         return super().find_diffs()

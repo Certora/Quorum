@@ -17,12 +17,9 @@ if not MAIN_PATH.exists():
 
 GROUND_TRUTH_PATH = MAIN_PATH / "ground_truth.json"
 
-if not GROUND_TRUTH_PATH.exists():
-    raise FileNotFoundError(f"Ground truth file not found at {GROUND_TRUTH_PATH}")
-
 ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
 if not ANTHROPIC_API_KEY:
-    pp.pretty_print(
+    pp.pprint(
         "Warning: ANTHROPIC_API_KEY environment variable is not set. All dependent checks will be skipped.",
         pp.Colors.WARNING
     )
