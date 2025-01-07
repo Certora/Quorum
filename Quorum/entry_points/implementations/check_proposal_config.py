@@ -27,7 +27,7 @@ def run_config(args: argparse.Namespace) -> None:
     Raises:
         TypeError: If config_data cannot be unpacked into ProposalConfig
     """
-    config_data: dict[str, Any] = args.config
+    config_data: dict[str, Any] = args.config_path
     customers_config: list[CustomerConfig] = []
 
     for customer_name, chains in config_data.items():

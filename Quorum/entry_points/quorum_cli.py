@@ -27,7 +27,7 @@ COMMAND_REGISTRY = [
         arguments=[
             cli_args.PROPOSAL_ID_ARGUMENT,
             cli_args.TEMPLATE_ARGUMENT,
-            cli_args.GENERATE_REPORT_PATH_ARGUMENT
+            cli_args.OUTPUT_PATH_ARGUMENT
         ],
         func=run_create_report
     ),
@@ -41,23 +41,23 @@ COMMAND_REGISTRY = [
         name="validate-address",
         help="Validate a single on-chain payload by address.",
         arguments=[
-            cli_args.CUSTOMER_ARGUMENT,
+            cli_args.PROTOCOL_NAME_ARGUMENT,
             cli_args.CHAIN_ARGUMENT,
-            cli_args.PROPOSAL_ADDRESS_ARGUMENT
+            cli_args.PAYLOAD_ADDRESS_ARGUMENT
         ],
         func=run_single
     ),
     Command(
         name="validate-batch",
         help="Validate multiple on-chain payloads sequentially using a JSON config file.",
-        arguments=[cli_args.CONFIG_ARGUMENT],
+        arguments=[cli_args.CONFIG_PATH_ARGUMENT],
         func=run_config
     ),
     Command(
         name="validate-by-id",
         help="Validate a single on-chain proposal by passing the protocol name and id.",
         arguments=[
-            cli_args.CUSTOMER_ARGUMENT,
+            cli_args.PROTOCOL_NAME_ARGUMENT,
             cli_args.PROPOSAL_ID_ARGUMENT
         ],
         func=run_proposal_id
@@ -68,7 +68,7 @@ COMMAND_REGISTRY = [
         arguments=[
             cli_args.PROPOSAL_ID_ARGUMENT,
             cli_args.CHAIN_ARGUMENT,
-            cli_args.PROPOSAL_ADDRESS_ARGUMENT,
+            cli_args.PAYLOAD_ADDRESS_ARGUMENT,
             cli_args.PROMPT_TEMPLATES_ARGUMENT
         ],
         func=run_ipfs_validator

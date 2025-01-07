@@ -28,8 +28,8 @@ def run_create_report(args: argparse.Namespace):
     if not args.template.exists():
         raise FileNotFoundError(f'could not find template at {args.template}.')
     
-    if args.generate_report_path is None:
-        args.generate_report_path = Path(f'v3-{args.proposal_id}.md')
+    if args.output_path is None:
+        args.output_path = Path(f'v3-{args.proposal_id}.md')
 
 
     pp.pprint(f'Generating a report using template in {args.template}', pp.Colors.INFO)
@@ -43,7 +43,7 @@ def run_create_report(args: argparse.Namespace):
 
     report = template.render(tags)
 
-    with open(args.generate_report_path, 'w') as f:
+    with open(args.output_path, 'w') as f:
         f.write(report)
 
-    pp.pprint(f'Created report at {args.generate_report_path}.', pp.Colors.SUCCESS)
+    pp.pprint(f'Created report at {args.output_path}.', pp.Colors.SUCCESS)

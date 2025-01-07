@@ -15,8 +15,8 @@ class Argument(BaseModel):
     nargs: str | None = None
 
 
-CUSTOMER_ARGUMENT = Argument(
-    name='--protocol_name',
+PROTOCOL_NAME_ARGUMENT = Argument(
+    name='--protocol-name',
     type=str,
     required=True,
     help="Protocol name or identifier."
@@ -31,8 +31,8 @@ CHAIN_ARGUMENT = Argument(
 )
 
 
-PROPOSAL_ADDRESS_ARGUMENT = Argument(
-    name='--payload_address',
+PAYLOAD_ADDRESS_ARGUMENT = Argument(
+    name='--payload-address',
     type=arg_valid.validate_address,
     required=True,
     help="On-chain payload address."
@@ -40,15 +40,15 @@ PROPOSAL_ADDRESS_ARGUMENT = Argument(
 
 
 PROPOSAL_ID_ARGUMENT = Argument(
-    name='--proposal_id',
+    name='--proposal-id',
     type=int,
     required=True,
     help="Identifier of the proposal."
 )
 
 
-CONFIG_ARGUMENT = Argument(
-    name='--config_path',
+CONFIG_PATH_ARGUMENT = Argument(
+    name='--config-path',
     type=arg_valid.load_config,
     required=True,
     help="Path to the Json config file."
@@ -64,8 +64,8 @@ TEMPLATE_ARGUMENT = Argument(
 )
 
 
-GENERATE_REPORT_PATH_ARGUMENT = Argument(
-    name='--output_path',
+OUTPUT_PATH_ARGUMENT = Argument(
+    name='--output-path',
     type=Path,
     required=False,
     help="The path to which the report is saved."
@@ -73,7 +73,7 @@ GENERATE_REPORT_PATH_ARGUMENT = Argument(
 
 
 PROMPT_TEMPLATES_ARGUMENT = Argument(
-    name='--prompt_templates',
+    name='--prompt-templates',
     type=str,
     required=False,
     help="Jinja templates for prompting the LLM.",
@@ -83,7 +83,7 @@ PROMPT_TEMPLATES_ARGUMENT = Argument(
 
 
 WORKING_DIR_ARGUMENT = Argument(
-    name='--working_dir',
+    name='--working-dir',
     type=Path,
     required=False,
     help="Specifies the path in which the project will be created. \n Note that all validations will have to run from this directory!",

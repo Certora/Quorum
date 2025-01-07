@@ -39,6 +39,6 @@ jobs:
       - name: Execute Regression Tests
         run: |
           pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
-          quorum validate-address --protocol_name Aave --chain Ethereum --payload_address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
-          quorum validate-batch --config_path Quorum/tests/regression.json
-          quorum validate-by-id --proposal_id 137 --protocol_name Aave
+          quorum validate-address --protocol-name Aave --chain Ethereum --payload-address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
+          quorum validate-batch --config-path Quorum/tests/regression.json
+          quorum validate-by-id --proposal-id 137 --protocol-name Aave
