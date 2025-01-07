@@ -11,7 +11,6 @@ class Command(BaseModel):
     name: str
     help: str
     arguments: list[cli_args.Argument]
-    func: Optional[Callable[[argparse.Namespace], None]]
 
 
 COMMAND_REGISTRY = [
@@ -22,14 +21,12 @@ COMMAND_REGISTRY = [
             cli_args.CUSTOMER_ARGUMENT,
             cli_args.CHAIN_ARGUMENT,
             cli_args.PROPOSAL_ADDRESS_ARGUMENT
-        ],
-        func=None
+        ]
     ),
     Command(
         name="validate-batch",
         help="Run a batch check from a JSON config file.",
-        arguments=[cli_args.CONFIG_ARGUMENT],
-        func=None
+        arguments=[cli_args.CONFIG_ARGUMENT]
     ),
     Command(
         name="validate-by-id",
@@ -37,8 +34,7 @@ COMMAND_REGISTRY = [
         arguments=[
             cli_args.CUSTOMER_ARGUMENT,
             cli_args.PROPOSAL_ID_ARGUMENT
-        ],
-        func=None
+        ]
     ),
     Command(
         name="create-report",
@@ -47,8 +43,7 @@ COMMAND_REGISTRY = [
             cli_args.PROPOSAL_ID_ARGUMENT,
             cli_args.TEMPLATE_ARGUMENT,
             cli_args.GENERATE_REPORT_PATH_ARGUMENT
-        ],
-        func=None
+        ]
     ),
     Command(
         name="validate-ipfs",
@@ -58,14 +53,12 @@ COMMAND_REGISTRY = [
             cli_args.CHAIN_ARGUMENT,
             cli_args.PROPOSAL_ADDRESS_ARGUMENT,
             cli_args.PROMPT_TEMPLATES_ARGUMENT
-        ],
-        func=None
+        ]
     ),
     Command(
         name="setup",
         help="Initial Quorum environment setup.",
-        arguments=[cli_args.WORKING_DIR_ARGUMENT],
-        func=None
+        arguments=[cli_args.WORKING_DIR_ARGUMENT]
     )
 ]
 
