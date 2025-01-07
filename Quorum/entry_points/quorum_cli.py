@@ -50,7 +50,7 @@ COMMAND_REGISTRY = [
     Command(
         name="validate-batch",
         help="Validate multiple on-chain payloads sequentially using a JSON config file.",
-        arguments=[cli_args.CONFIG_PATH_ARGUMENT],
+        arguments=[cli_args.CONFIG_ARGUMENT],
         func=run_config
     ),
     Command(
