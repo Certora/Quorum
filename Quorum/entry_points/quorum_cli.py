@@ -22,8 +22,24 @@ class Command(BaseModel):
 
 COMMAND_REGISTRY = [
     Command(
+        name="generate-report",
+        help="Generates a proposal report based on provided JINJA2 template.",
+        arguments=[
+            cli_args.PROPOSAL_ID_ARGUMENT,
+            cli_args.TEMPLATE_ARGUMENT,
+            cli_args.GENERATE_REPORT_PATH_ARGUMENT
+        ],
+        func=run_create_report
+    ),
+    Command(
+        name="setup",
+        help="Sets up Quorum environment for quick start.",
+        arguments=[cli_args.WORKING_DIR_ARGUMENT],
+        func=run_setup_quorum
+    ),
+    Command(
         name="validate-address",
-        help="Run a single payload proposal check.",
+        help="Validate a single on-chain payload by address.",
         arguments=[
             cli_args.CUSTOMER_ARGUMENT,
             cli_args.CHAIN_ARGUMENT,
@@ -33,28 +49,18 @@ COMMAND_REGISTRY = [
     ),
     Command(
         name="validate-batch",
-        help="Run a batch check from a JSON config file.",
+        help="Validate multiple on-chain payloads sequentially using a JSON config file.",
         arguments=[cli_args.CONFIG_ARGUMENT],
         func=run_config
     ),
     Command(
         name="validate-by-id",
-        help="Check proposals by proposal ID.",
+        help="Validate a single on-chain proposal by passing the protocol name and id.",
         arguments=[
             cli_args.CUSTOMER_ARGUMENT,
             cli_args.PROPOSAL_ID_ARGUMENT
         ],
         func=run_proposal_id
-    ),
-    Command(
-        name="create-report",
-        help="Generate a proposal report.",
-        arguments=[
-            cli_args.PROPOSAL_ID_ARGUMENT,
-            cli_args.TEMPLATE_ARGUMENT,
-            cli_args.GENERATE_REPORT_PATH_ARGUMENT
-        ],
-        func=run_create_report
     ),
     Command(
         name="validate-ipfs",
@@ -66,12 +72,6 @@ COMMAND_REGISTRY = [
             cli_args.PROMPT_TEMPLATES_ARGUMENT
         ],
         func=run_ipfs_validator
-    ),
-    Command(
-        name="setup",
-        help="Initial Quorum environment setup.",
-        arguments=[cli_args.WORKING_DIR_ARGUMENT],
-        func=run_setup_quorum
     )
 ]
 
