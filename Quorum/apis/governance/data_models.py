@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 from pydantic import BaseModel, Field
 
 from Quorum.utils.chain_enum import Chain
@@ -49,9 +49,9 @@ class BGDProposalData(BaseModel):
     """
     ipfs: Optional[IPFSData] = None
     proposal: Optional[ProposalData] = None
-    events: List[EventData] = Field(default_factory=list)
+    events: list[EventData] = Field(default_factory=list)
 
 
 class PayloadAddresses(BaseModel):
     chain: Chain
-    addresses: List[str]
+    addresses: list[str]

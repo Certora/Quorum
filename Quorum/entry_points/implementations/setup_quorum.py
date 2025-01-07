@@ -27,7 +27,7 @@ def run_setup_quorum(args: argparse.Namespace):
         OSError: If there are filesystem permission issues
         shutil.Error: If file copy operations fail
     """
-    templates_dir = Path(__file__).parent.parent / 'templates'
+    templates_dir = Path(__file__).parent.parent.parent / 'templates'
     target_dir = args.working_dir.resolve()
 
     if not target_dir.exists():

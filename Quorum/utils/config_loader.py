@@ -4,10 +4,9 @@ import Quorum.utils.config as config
 import Quorum.utils.pretty_printer as pp
 import Quorum.apis.price_feeds as price_feeds
 
+
 SUPPORTED_PROVIDERS = set(price_feeds.PriceFeedProvider.__members__.values())
 
-with open(config.GROUND_TRUTH_PATH) as f:
-    config_data = json.load(f)
 
 def load_customer_config(customer: str) -> Dict[str, any]:
     """
@@ -20,6 +19,12 @@ def load_customer_config(customer: str) -> Dict[str, any]:
     Returns:
         Dict[str, any]: The customer configuration data.
     """
+    if not config.GROUND_TRUTH_PATH.exists():
+        raise FileNotFoundError(f"Ground truth file not found at {config.GROUND_TRUTH_PATH}")
+
+    with open(config.GROUND_TRUTH_PATH) as f:
+        config_data = json.load(f)
+
     customer_config = config_data.get(customer)
     if not customer_config:
         pp.pprint(f"Customer {customer} not found in ground truth data.", pp.Colors.FAILURE)
