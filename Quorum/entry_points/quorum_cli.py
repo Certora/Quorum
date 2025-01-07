@@ -2,22 +2,16 @@
 
 import argparse
 from pydantic import BaseModel
-from typing import Callable
+from typing import Callable, Optional
 
 import Quorum.entry_points.cli_arguments as cli_args
-from Quorum.entry_points.implementations.check_proposal import run_single
-from Quorum.entry_points.implementations.check_proposal_config import run_config
-from Quorum.entry_points.implementations.check_proposal_id import run_proposal_id
-from Quorum.entry_points.implementations.create_report import run_create_report
-from Quorum.entry_points.implementations.ipfs_validator import run_ipfs_validator
-from Quorum.entry_points.implementations.setup_quorum import run_setup_quorum
 
 
 class Command(BaseModel):
     name: str
     help: str
     arguments: list[cli_args.Argument]
-    func: Callable[[argparse.Namespace], None]
+    func: Optional[Callable[[argparse.Namespace], None]]
 
 
 COMMAND_REGISTRY = [
@@ -29,13 +23,13 @@ COMMAND_REGISTRY = [
             cli_args.CHAIN_ARGUMENT,
             cli_args.PROPOSAL_ADDRESS_ARGUMENT
         ],
-        func=run_single
+        func=None
     ),
     Command(
         name="validate-batch",
         help="Run a batch check from a JSON config file.",
         arguments=[cli_args.CONFIG_ARGUMENT],
-        func=run_config
+        func=None
     ),
     Command(
         name="validate-by-id",
@@ -44,7 +38,7 @@ COMMAND_REGISTRY = [
             cli_args.CUSTOMER_ARGUMENT,
             cli_args.PROPOSAL_ID_ARGUMENT
         ],
-        func=run_proposal_id
+        func=None
     ),
     Command(
         name="create-report",
@@ -54,7 +48,7 @@ COMMAND_REGISTRY = [
             cli_args.TEMPLATE_ARGUMENT,
             cli_args.GENERATE_REPORT_PATH_ARGUMENT
         ],
-        func=run_create_report
+        func=None
     ),
     Command(
         name="validate-ipfs",
@@ -65,13 +59,13 @@ COMMAND_REGISTRY = [
             cli_args.PROPOSAL_ADDRESS_ARGUMENT,
             cli_args.PROMPT_TEMPLATES_ARGUMENT
         ],
-        func=run_ipfs_validator
+        func=None
     ),
     Command(
         name="setup",
         help="Initial Quorum environment setup.",
         arguments=[cli_args.WORKING_DIR_ARGUMENT],
-        func=run_setup_quorum
+        func=None
     )
 ]
 
@@ -105,7 +99,37 @@ def main():
             help=subcmd.help
         )
         add_arguments(subparser, subcmd.arguments)
-        subparser.set_defaults(func=subcmd.func)
+
+        if subcmd.name == "validate-address":
+            def run(args):
+                from Quorum.entry_points.implementations.check_proposal import run_single
+                run_single(args)
+            subparser.set_defaults(func=run)
+        elif subcmd.name == "validate-batch":
+            def run(args):
+                from Quorum.entry_points.implementations.check_proposal_config import run_config
+                run_config(args)
+            subparser.set_defaults(func=run)
+        elif subcmd.name == "validate-by-id":
+            def run(args):
+                from Quorum.entry_points.implementations.check_proposal_id import run_proposal_id
+                run_proposal_id(args)
+            subparser.set_defaults(func=run)
+        elif subcmd.name == "create-report":
+            def run(args):
+                from Quorum.entry_points.implementations.create_report import run_create_report
+                run_create_report(args)
+            subparser.set_defaults(func=run)
+        elif subcmd.name == "validate-ipfs":
+            def run(args):
+                from Quorum.entry_points.implementations.ipfs_validator import run_ipfs_validator
+                run_ipfs_validator(args)
+            subparser.set_defaults(func=run)
+        elif subcmd.name == "setup":
+            def run(args):
+                from Quorum.entry_points.implementations.setup_quorum import run_setup_quorum
+                run_setup_quorum(args)
+            subparser.set_defaults(func=run)
 
     args = parser.parse_args()
 
