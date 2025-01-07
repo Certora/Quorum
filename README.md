@@ -133,37 +133,37 @@ To fully enable Quorum’s checks, set the following:
 
 Quorum now provides a **single CLI** with multiple **subcommands** for different tasks. Below is an overview of each subcommand, with examples.
 
-### 1. **single-payload**
+### 1. **validate-address**
 
 **Purpose:** Analyzes a single proposal address for a specific customer on a given chain.
 
 ```bash
-Quorum single-payload --customer "Aave" --chain "Ethereum" --proposal_address "0xAD6..."
+Quorum validate-address --customer "Aave" --chain "Ethereum" --proposal_address "0xAD6..."
 ```
 
-### 2. **config**
+### 2. **validate-batch**
 
 **Purpose:** Processes multiple proposals in bulk using a JSON config file.
 
 ```bash
-Quorum config --config "/path/to/config.json"
+Quorum validate-batch --config "/path/to/config.json"
 ```
 *(See “**Example Usage with Config File**” for a sample config.)*
 
-### 3. **proposal-id**
+### 3. **validate-by-id**
 
 **Purpose:** Looks up all payload addresses for a single proposal ID (useful for proposals containing multiple payloads).
 
 ```bash
-Quorum proposal-id --customer "Aave" --proposal_id 137
+Quorum validate-by-id --customer "Aave" --proposal_id 137
 ```
 
-### 4. **ipfs-validate**
+### 4. **validate-ipfs**
 
 **Purpose:** Validates whether the IPFS description content aligns with the actual on-chain payload. Uses LLM-based analysis.
 
 ```bash
-Quorum ipfs-validate --proposal_id 132 --chain "Ethereum" --proposal_address "0xAD6..."
+Quorum validate-ipfs --proposal_id 132 --chain "Ethereum" --proposal_address "0xAD6..."
 ```
 
 ### 5. **create-report**
