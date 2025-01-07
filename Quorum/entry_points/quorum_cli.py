@@ -2,7 +2,6 @@
 
 import argparse
 from pydantic import BaseModel
-from typing import Callable, Optional
 
 import Quorum.entry_points.cli_arguments as cli_args
 
