@@ -22,7 +22,7 @@ class Command(BaseModel):
 
 COMMAND_REGISTRY = [
     Command(
-        name="single-payload",
+        name="validate-address",
         help="Run a single payload proposal check.",
         arguments=[
             cli_args.CUSTOMER_ARGUMENT,
@@ -32,13 +32,13 @@ COMMAND_REGISTRY = [
         func=run_single
     ),
     Command(
-        name="config",
+        name="validate-batch",
         help="Run a batch check from a JSON config file.",
         arguments=[cli_args.CONFIG_ARGUMENT],
         func=run_config
     ),
     Command(
-        name="proposal-id",
+        name="validate-by-id",
         help="Check proposals by proposal ID.",
         arguments=[
             cli_args.CUSTOMER_ARGUMENT,
@@ -57,7 +57,7 @@ COMMAND_REGISTRY = [
         func=run_create_report
     ),
     Command(
-        name="ipfs-validate",
+        name="validate-ipfs",
         help="Compare IPFS content with a proposal's payload.",
         arguments=[
             cli_args.PROPOSAL_ID_ARGUMENT,

@@ -39,6 +39,6 @@ jobs:
       - name: Execute Regression Tests
         run: |
           pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
-          Quorum single-payload --customer Aave --chain Ethereum --proposal_address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
-          Quorum config --config Quorum/tests/regression.json
-          Quorum proposal-id --proposal_id 137 --customer Aave
+          Quorum validate-address --customer Aave --chain Ethereum --proposal_address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
+          Quorum validate-batch --config Quorum/tests/regression.json
+          Quorum validate-by-id --proposal_id 137 --customer Aave
