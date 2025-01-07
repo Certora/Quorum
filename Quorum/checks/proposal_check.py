@@ -53,6 +53,7 @@ def run_customer_proposal_validation(prop_config: ProposalConfig) -> None:
         git_manager = GitManager(config.customer, ground_truth_config)
         git_manager.clone_or_update()
         price_feed_providers = ground_truth_config.get("price_feed_providers", [])
+        token_providers = ground_truth_config.get("token_validation_providers", [])
         pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
 
         pp.pprint('Run Metadata', pp.Colors.INFO, pp.Heading.HEADING_2)
@@ -64,11 +65,13 @@ def run_customer_proposal_validation(prop_config: ProposalConfig) -> None:
                 customer=config.customer,
                 chain=pa.chain,
                 proposal_addresses=pa.addresses,
-                providers=price_feed_providers
+                price_feed_providers=price_feed_providers,
+                token_providers=token_providers
             )
 
 
-def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], providers: list[PriceFeedProviderBase]) -> None:
+def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str],
+                     price_feed_providers: list[PriceFeedProviderBase], token_providers: list[PriceFeedProviderBase] = None) -> None:
     """
     Check and compare source code files for given proposals.
 
@@ -117,7 +120,7 @@ def proposals_check(customer: str, chain: Chain, proposal_addresses: list[str], 
 
         # Feed price check
         pp.pprint('Check 4 - Explicit addresses validation', pp.Colors.INFO, pp.Heading.HEADING_2)
-        Checks.PriceFeedCheck(customer, chain, proposal_address, missing_files, providers).verify_price_feed()
+        Checks.PriceFeedCheck(customer, chain, proposal_address, missing_files, price_feed_providers, token_providers).verify_price_feed()
         pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
         
         # New listing check

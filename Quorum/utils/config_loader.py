@@ -29,22 +29,25 @@ def load_customer_config(customer: str) -> Dict[str, any]:
     if not customer_config:
         pp.pprint(f"Customer {customer} not found in ground truth data.", pp.Colors.FAILURE)
         raise ValueError(f"Customer {customer} not found in ground truth data.")
-    providers = customer_config.get("price_feed_providers", [])
-    providers += customer_config.get("token_validation_providers", [])
-    unsupported = set(providers) - SUPPORTED_PROVIDERS
+    price_feed_providers = customer_config.get("price_feed_providers", [])
+    token_providers = customer_config.get("token_validation_providers", [])
+    unsupported = set(price_feed_providers).union(token_providers) - SUPPORTED_PROVIDERS
     if unsupported:
         pp.pprint(f"Unsupported providers for {customer}: {', '.join(unsupported)}", pp.Colors.FAILURE)
-        providers = list(set(providers) & SUPPORTED_PROVIDERS)
-        customer_config["price_feed_providers"] = providers
+        price_feed_providers = list(set(price_feed_providers) & SUPPORTED_PROVIDERS)
+        token_providers = list(set(token_providers) & SUPPORTED_PROVIDERS)
     
     # Replace the provider names with the actual API objects
-    for i, provider in enumerate(providers):
+    for i, provider in enumerate(price_feed_providers):
         if provider == price_feeds.PriceFeedProvider.CHAINLINK:
-            providers[i] = price_feeds.ChainLinkAPI()
+            price_feed_providers[i] = price_feeds.ChainLinkAPI()
         elif provider == price_feeds.PriceFeedProvider.CHRONICLE:
-            providers[i] = price_feeds.ChronicleAPI()
-        elif provider == price_feeds.PriceFeedProvider.COINGECKO:
-            providers[i] = price_feeds.CoinGeckoAPI()
+            price_feed_providers[i] = price_feeds.ChronicleAPI()
+
+    for i, provider in enumerate(token_providers):
+        if provider == price_feeds.PriceFeedProvider.COINGECKO:
+            token_providers[i] = price_feeds.CoinGeckoAPI()
             
-    customer_config["price_feed_providers"] = providers
+    customer_config["price_feed_providers"] = price_feed_providers
+    customer_config["token_validation_providers"] = token_providers
     return customer_config

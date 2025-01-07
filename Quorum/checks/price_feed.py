@@ -2,7 +2,7 @@ from pathlib import Path
 import re
 from dataclasses import dataclass
 
-from Quorum.apis.price_feeds import PriceFeedProviderBase, PriceFeedData, CoinGeckoAPI
+from Quorum.apis.price_feeds import PriceFeedProviderBase, PriceFeedData
 from Quorum.utils.chain_enum import Chain
 from Quorum.checks.check import Check
 from Quorum.apis.block_explorers.source_code import SourceCode
@@ -20,7 +20,8 @@ class PriceFeedCheck(Check):
             chain: Chain,
             proposal_address: str,
             source_codes: list[SourceCode],
-            providers: list[PriceFeedProviderBase]
+            price_feed_providers: list[PriceFeedProviderBase],
+            token_providers: list[PriceFeedProviderBase]
     ) -> None:
         """
         Initializes the PriceFeedCheck object with customer information, proposal address, 
@@ -35,7 +36,8 @@ class PriceFeedCheck(Check):
         """
         super().__init__(customer, chain, proposal_address, source_codes)
         self.address_pattern = r'0x[a-fA-F0-9]{40}'
-        self.providers = providers
+        self.price_feed_providers = price_feed_providers
+        self.token_providers = token_providers
 
     @dataclass
     class PriceFeedResult:
@@ -49,17 +51,18 @@ class PriceFeedCheck(Check):
         def __hash__(self):
             return hash(self.address)
 
-    def __check_price_feed_address(self, address: str) -> PriceFeedResult | None:
+    def __check_address(self, address: str, providers: list[PriceFeedProviderBase]) -> PriceFeedResult | None:
         """
         Check if the given address is present in the price feed providers.
 
         Args:
             address (str): The address to be checked.
+            providers (list[PriceFeedProviderBase]): The list of price feed providers to check against.
 
         Returns:
             PriceFeedResult | None: The price feed data if the address is found, otherwise None.
         """
-        for provider in self.providers:
+        for provider in providers:
             if (price_feed := provider.get_price_feed(self.chain, address)):
                 return PriceFeedCheck.PriceFeedResult(address, provider.get_name(), price_feed)
         return None
@@ -72,9 +75,9 @@ class PriceFeedCheck(Check):
         against the official Chainlink and Chronicle price feeds. It categorizes the addresses into
         verified and violated based on whether they are found in the official source.
         """
-        all_addresses = set()
-        overall_verified_vars: set[PriceFeedCheck.PriceFeedResult] = set()
-        overall_unverified_vars: set[str] = set()
+        verified_price_feeds: set[PriceFeedCheck.PriceFeedResult] = set()
+        verified_tokens: set[PriceFeedCheck.PriceFeedResult] = set()
+        unverified_addresses: set[str] = set()
 
         # Iterate through each source code file to find and verify address variables
         for source_code in self.source_codes:
@@ -89,30 +92,28 @@ class PriceFeedCheck(Check):
             
             # Extract unique addresses using regex
             addresses = set(re.findall(self.address_pattern, clean_text))
-            all_addresses.update(addresses)
 
             for address in addresses:
-                if res := self.__check_price_feed_address(address):
+                if res := self.__check_address(address, self.price_feed_providers):
                     verified_variables.append(res.price_feed.model_dump())
-                    overall_verified_vars.add(res)
+                    verified_price_feeds.add(res)
+                elif res := self.__check_address(address, self.token_providers):
+                    verified_variables.append(res.price_feed.model_dump())
+                    verified_tokens.add(res)
                 else:
-                    overall_unverified_vars.add(address)
+                    unverified_addresses.add(address)
 
             if verified_variables:
                 self._write_to_file(verified_sources_path, verified_variables)
         
-        num_addresses = len(all_addresses)
+        num_addresses = len(verified_price_feeds) + len(verified_tokens) + len(unverified_addresses)
         pp.pprint(f'{num_addresses} addresses identified in the payload.\n', pp.Colors.INFO)
-
-        coingecko_name = CoinGeckoAPI().get_name()
-        token_validation_res = {r for r in overall_verified_vars if r.found_on == coingecko_name}
-        price_feed_validation_res = overall_verified_vars - token_validation_res
 
         # Print price feed validation
         pp.pprint('Price Feed Validation', pp.Colors.INFO, pp.Heading.HEADING_3)
-        msg = (f'{len(price_feed_validation_res)}/{num_addresses} '
+        msg = (f'{len(verified_price_feeds)}/{num_addresses} '
                                      'were identified as price feeds of the configured providers:\n')
-        for i, var_res in enumerate(price_feed_validation_res, 1):
+        for i, var_res in enumerate(verified_price_feeds, 1):
             msg += (f'\t{i}. {var_res.address} found on {var_res.found_on}\n'
                     f'\t   Name: {var_res.price_feed.name}\n'
                     f'\t   Decimals: {var_res.price_feed.decimals}\n')
@@ -120,9 +121,9 @@ class PriceFeedCheck(Check):
 
         # Print token validation
         pp.pprint('Token Validation', pp.Colors.INFO, pp.Heading.HEADING_3)
-        msg = (f'{len(token_validation_res)}/{num_addresses} '
+        msg = (f'{len(verified_tokens)}/{num_addresses} '
                                 'were identified as tokens of the configured providers:\n')
-        for i, var_res in enumerate(token_validation_res, 1):
+        for i, var_res in enumerate(verified_tokens, 1):
             msg += (f'\t{i}. {var_res.address} found on {var_res.found_on}\n'
                     f'\t   Name: {var_res.price_feed.name}\n'
                     f'\t   Symbol: {var_res.price_feed.pair}\n'
@@ -130,9 +131,9 @@ class PriceFeedCheck(Check):
         pp.pprint(msg, pp.Colors.SUCCESS)
 
         # Print not found
-        msg = (f'{len(overall_unverified_vars)}/{num_addresses} '
+        msg = (f'{len(unverified_addresses)}/{num_addresses} '
                'explicit addresses were not identified using any provider:\n')
-        for i, address in enumerate(overall_unverified_vars, 1):
+        for i, address in enumerate(unverified_addresses, 1):
             msg += f'\t{i}. {address}\n'
         pp.pprint(msg, pp.Colors.FAILURE)
 
