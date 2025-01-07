@@ -3,7 +3,7 @@ requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "Quorum"
+name = "cerotra-quorum"
 description = "Quorum: A tool for managing proposals and reports"
 authors = [
     {name = "Niv Vaknin", email = "niv@certora.com"},
