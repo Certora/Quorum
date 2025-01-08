@@ -65,6 +65,6 @@ jobs:
         working-directory: workdir
         run: quorum validate-ipfs --proposal-id 20 --chain Scroll --payload-address 0x2B25cb729D90630395Cd3140f3460a73A41Fe5f0
 
-      - name: Create Report
+      - name: Generate Report
         working-directory: workdir
-        run: quorum create-report --proposal_id 137
+        run: quorum generate-report --proposal_id 137
