@@ -36,9 +36,25 @@ jobs:
       - name: Install Quorum Repo
         run: pip3.11 install .
 
+      - name: Run unit tests
+        run: pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
+      
+      - name: Run Quorum setup
+        run: Quorum setup --working_dir workdir
+      
+      - name: Init working directory
+        run: |
+          mv workdir/Quorum/tests/regression.json Quorum/tests/regression.json
+          mv workdir/Quorum/tests/ground_truth.json Quorum/tests/ground_truth.json
+          echo "ETHSCAN_API_KEY=${ETHSCAN_API_KEY}" >> workdir/.env
+          echo "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}" >> workdir/.env
+          cd workdir
+
       - name: Execute Regression Tests
         run: |
-          pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
+          pwd
           Quorum validate-address --customer Aave --chain Ethereum --proposal_address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
           Quorum validate-batch --config Quorum/tests/regression.json
           Quorum validate-by-id --proposal_id 137 --customer Aave
+          quorum validate-ipfs --proposal_id 20 --chain Scroll --proposal_address 0x2B25cb729D90630395Cd3140f3460a73A41Fe5f0 
+          Quorum create-report --proposal_id 137

@@ -1,5 +1,3 @@
-# Quorum/entry_points/quorum_cli.py
-
 import argparse
 from pydantic import BaseModel
 
