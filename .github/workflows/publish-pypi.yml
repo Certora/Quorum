@@ -1,7 +1,9 @@
 name: publish-pypi
 
 on:
-  workflow_dispatch:
+  release:
+    types: [published]
+  # workflow_dispatch:  # We may want to add manual publishing as well.
 
 jobs:
   publish:
