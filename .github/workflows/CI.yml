@@ -33,14 +33,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
+
       - name: Install Quorum Repo
-        run: pip3.11 install .
+        run: poetry install
 
       - name: Run unit tests
-        run: pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
+        run: poetry pytest src/quorum/tests --maxfail=1 --disable-warnings --tb=short
       
       - name: Run Quorum setup
-        run: quorum setup --working-dir workdir
+        run: poetry quorum setup --working-dir workdir
       
       - name: Init working directory
         run: |
@@ -51,20 +56,20 @@ jobs:
           
       - name: Single Address Test
         working-directory: workdir
-        run: quorum validate-address --protocol-name Aave --chain Ethereum --payload-address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
+        run: poetry quorum validate-address --protocol-name Aave --chain Ethereum --payload-address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
 
       - name: Batch Test
         working-directory: workdir
-        run: quorum validate-batch --config regression.json
+        run: poetry quorum validate-batch --config regression.json
 
       - name: Proposal ID Test
         working-directory: workdir
-        run: quorum validate-by-id --proposal-id 137 --protocol-name Aave
+        run: poetry quorum validate-by-id --proposal-id 137 --protocol-name Aave
 
       - name: IPFS Test
         working-directory: workdir
-        run: quorum validate-ipfs --proposal-id 20 --chain Scroll --payload-address 0x2B25cb729D90630395Cd3140f3460a73A41Fe5f0
+        run: poetry quorum validate-ipfs --proposal-id 20 --chain Scroll --payload-address 0x2B25cb729D90630395Cd3140f3460a73A41Fe5f0
 
       - name: Generate Report
         working-directory: workdir
-        run: quorum generate-report --proposal_id 137
+        run: poetry quorum generate-report --proposal_id 137
