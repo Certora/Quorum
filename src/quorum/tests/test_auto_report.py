@@ -17,7 +17,7 @@ def test_auto_report():
 
     args = argparse.Namespace(
         proposal_id=132,
-        template=Path('Quorum') / 'auto_report' / 'AaveReportTemplate.md.j2',
+        template=Path('src/quorum/auto_report/AaveReportTemplate.md.j2'),
         output_path=None
     )
     
