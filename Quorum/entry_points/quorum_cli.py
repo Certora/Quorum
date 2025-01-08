@@ -1,8 +1,9 @@
 # Quorum/entry_points/quorum_cli.py
 
 import argparse
+import argcomplete
 from pydantic import BaseModel
-from typing import Callable
+from typing import Callable, Optional
 
 import Quorum.entry_points.cli_arguments as cli_args
 from Quorum.entry_points.implementations.check_proposal import run_single
@@ -18,60 +19,66 @@ class Command(BaseModel):
     help: str
     arguments: list[cli_args.Argument]
     func: Callable[[argparse.Namespace], None]
+    aliases: Optional[list[str]] = []
 
 
 COMMAND_REGISTRY = [
     Command(
+        name="setup",
+        help="Sets up Quorum environment for quick start.",
+        arguments=[cli_args.WORKING_DIR_ARGUMENT],
+        func=run_setup_quorum
+    ),
+    Command(
         name="validate-address",
-        help="Run a single payload proposal check.",
+        aliases=["validate_address"],
+        help="Validate a single on-chain payload by address.",
         arguments=[
-            cli_args.CUSTOMER_ARGUMENT,
+            cli_args.PROTOCOL_NAME_ARGUMENT,
             cli_args.CHAIN_ARGUMENT,
-            cli_args.PROPOSAL_ADDRESS_ARGUMENT
+            cli_args.PAYLOAD_ADDRESS_ARGUMENT
         ],
         func=run_single
     ),
     Command(
         name="validate-batch",
+        aliases=["validate_batch"],
         help="Run a batch check from a JSON config file.",
         arguments=[cli_args.CONFIG_ARGUMENT],
         func=run_config
     ),
     Command(
         name="validate-by-id",
-        help="Check proposals by proposal ID.",
+        aliases=["validate_by_id"],
+        help="Validate a single on-chain proposal by passing the protocol name and id.",
         arguments=[
-            cli_args.CUSTOMER_ARGUMENT,
+            cli_args.PROTOCOL_NAME_ARGUMENT,
             cli_args.PROPOSAL_ID_ARGUMENT
         ],
         func=run_proposal_id
     ),
     Command(
-        name="create-report",
-        help="Generate a proposal report.",
-        arguments=[
-            cli_args.PROPOSAL_ID_ARGUMENT,
-            cli_args.TEMPLATE_ARGUMENT,
-            cli_args.GENERATE_REPORT_PATH_ARGUMENT
-        ],
-        func=run_create_report
-    ),
-    Command(
         name="validate-ipfs",
+        aliases=["validate_ipfs"],
         help="Compare IPFS content with a proposal's payload.",
         arguments=[
             cli_args.PROPOSAL_ID_ARGUMENT,
             cli_args.CHAIN_ARGUMENT,
-            cli_args.PROPOSAL_ADDRESS_ARGUMENT,
+            cli_args.PAYLOAD_ADDRESS_ARGUMENT,
             cli_args.PROMPT_TEMPLATES_ARGUMENT
         ],
         func=run_ipfs_validator
     ),
     Command(
-        name="setup",
-        help="Initial Quorum environment setup.",
-        arguments=[cli_args.WORKING_DIR_ARGUMENT],
-        func=run_setup_quorum
+        name="generate-report",
+        aliases=["generate_report"],
+        help="Generates a proposal report based on provided JINJA2 template.",
+        arguments=[
+            cli_args.PROPOSAL_ID_ARGUMENT,
+            cli_args.TEMPLATE_ARGUMENT,
+            cli_args.OUTPUT_PATH_ARGUMENT
+        ],
+        func=run_create_report
     )
 ]
 
@@ -87,7 +94,7 @@ def add_arguments(parser: argparse.ArgumentParser, arguments: list[cli_args.Argu
     for arg in arguments:
         arg_dict = arg.model_dump()
         name = arg_dict.pop("name")
-        parser.add_argument(name, **arg_dict)
+        parser.add_argument(*name, **arg_dict)
 
 
 def main():
@@ -102,10 +109,13 @@ def main():
     for subcmd in COMMAND_REGISTRY:
         subparser = subparsers.add_parser(
             subcmd.name,
+            aliases=subcmd.aliases,
             help=subcmd.help
         )
         add_arguments(subparser, subcmd.arguments)
         subparser.set_defaults(func=subcmd.func)
+
+    argcomplete.autocomplete(parser)
 
     args = parser.parse_args()
 

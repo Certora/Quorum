@@ -59,7 +59,7 @@ def run_ipfs_validator(args: argparse.Namespace):
 
     # Initialize Chain API and fetch source codes
     block_explorer = ChainAPI(args.chain)
-    source_codes = block_explorer.get_source_code(args.proposal_address)
+    source_codes = block_explorer.get_source_code(args.payload_address)
     if not source_codes:
         raise ValueError("No source codes found for the given proposal address.")
     payload = '\n'.join(source_codes[0].file_content)

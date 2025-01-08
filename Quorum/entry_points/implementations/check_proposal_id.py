@@ -32,13 +32,13 @@ def run_proposal_id(args: argparse.Namespace) -> None:
     Returns:
         None
     """
-    customer, proposal_id = args.customer, args.proposal_id
-    customer_key = customer.lower()
+    protocol_name, proposal_id = args.protocol_name, args.proposal_id
+    customer_key = protocol_name.lower()
     if customer_key not in CUSTOMER_TO_API:
-        raise ValueError(f"Customer '{customer}' is not supported. Supported customers: {list(CUSTOMER_TO_API.keys())}.")
+        raise ValueError(f"Customer '{protocol_name}' is not supported. Supported customers: {list(CUSTOMER_TO_API.keys())}.")
 
     api = CUSTOMER_TO_API[customer_key]
     payloads_addresses = api.get_all_payloads_addresses(proposal_id)
-    config = ProposalConfig(customers_config=[CustomerConfig(customer=customer, payload_addresses=payloads_addresses)])
+    config = ProposalConfig(customers_config=[CustomerConfig(customer=protocol_name, payload_addresses=payloads_addresses)])
 
     run_customer_proposal_validation(config)

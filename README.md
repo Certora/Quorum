@@ -96,6 +96,11 @@ This action will:
    - **`execution.json`**: Specify proposal addresses to be checked for different chains.  
    - **`README.md`**: An auto-generated resource explaining your next steps.
 
+3. **Optional: Command Autocompletion**
+   Enable Quorum command autocompletion by adding this line to your shell profile (`.bashrc` or `.zshrc`):
+   ```bash
+      eval "$(register-python-argcomplete quorum)"
+   ```
 ---
 
 ## Clarifications

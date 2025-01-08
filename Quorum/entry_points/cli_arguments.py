@@ -7,7 +7,7 @@ import Quorum.utils.arg_validations as arg_valid
 
 
 class Argument(BaseModel):
-    name: str
+    name: list[str]
     type: Any
     required: bool
     help: str
@@ -15,65 +15,65 @@ class Argument(BaseModel):
     nargs: str | None = None
 
 
-CUSTOMER_ARGUMENT = Argument(
-    name='--customer',
+PROTOCOL_NAME_ARGUMENT = Argument(
+    name=['--protocol-name', '--protocol_name'],
     type=str,
     required=True,
-    help="Customer name or identifier."
+    help="Protocol name or identifier."
 )
 
 
 CHAIN_ARGUMENT = Argument(
-    name='--chain',
+    name=['--chain'],
     type=Chain,
     required=True,
-    help="Blockchain chain to target."
+    help="Blockchain to target."
 )
 
 
-PROPOSAL_ADDRESS_ARGUMENT = Argument(
-    name='--proposal_address',
+PAYLOAD_ADDRESS_ARGUMENT = Argument(
+    name=['--payload-address', '--payload_address'],
     type=arg_valid.validate_address,
     required=True,
-    help="Ethereum proposal address."
+    help="On-chain payload address."
 )
 
 
 PROPOSAL_ID_ARGUMENT = Argument(
-    name='--proposal_id',
+    name=['--proposal-id', '--proposal_id'],
     type=int,
     required=True,
-    help="ID of the proposal."
+    help="Identifier of the proposal."
 )
 
 
 CONFIG_ARGUMENT = Argument(
-    name='--config',
+    name=['--config'],
     type=arg_valid.load_config,
     required=True,
-    help="Path to the JSON configuration file."
+    help="Path to the Json config file."
 )
 
 
 TEMPLATE_ARGUMENT = Argument(
-    name='--template',
+    name=['--template'], 
     type=Path,
     required=False,
-    help="Path to the Jinja2 template file.",
+    help="Path to a Jinja2 template file that defines the output report format.",
     default=Path(__file__).parent.parent / 'auto_report/AaveReportTemplate.md.j2'
 )
 
 
-GENERATE_REPORT_PATH_ARGUMENT = Argument(
-    name='--generate_report_path',
+OUTPUT_PATH_ARGUMENT = Argument(
+    name=['--output-path', '--output_path'],
     type=Path,
     required=False,
-    help="Path to save the generated report."
+    help="The path to which the report is saved."
 )
 
 
 PROMPT_TEMPLATES_ARGUMENT = Argument(
-    name='--prompt_templates',
+    name=['--prompt-templates', '--prompt_templates'],
     type=str,
     required=False,
     help="Jinja templates for prompting the LLM.",
@@ -83,9 +83,9 @@ PROMPT_TEMPLATES_ARGUMENT = Argument(
 
 
 WORKING_DIR_ARGUMENT = Argument(
-    name='--working_dir',
+    name=['--working-dir', '--working_dir'],
     type=Path,
     required=False,
-    help="Where to create the Quorum project.",
+    help="Specifies the path in which the project will be created. \n Note that all validations will have to run from this directory!",
     default=Path.cwd() / 'quorum_project'
 )
