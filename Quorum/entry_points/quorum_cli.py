@@ -2,7 +2,7 @@
 
 import argparse
 from pydantic import BaseModel
-from typing import Callable
+from typing import Callable, Optional
 
 import Quorum.entry_points.cli_arguments as cli_args
 from Quorum.entry_points.implementations.check_proposal import run_single
@@ -14,10 +14,11 @@ from Quorum.entry_points.implementations.setup_quorum import run_setup_quorum
 
 
 class Command(BaseModel):
-    name: list[str]
+    name: str
     help: str
     arguments: list[cli_args.Argument]
     func: Callable[[argparse.Namespace], None]
+    aliases: Optional[list[str]] = []
 
 
 COMMAND_REGISTRY = [
@@ -29,6 +30,7 @@ COMMAND_REGISTRY = [
     ),
     Command(
         name="validate-address",
+        aliases=["validate_address"],
         help="Validate a single on-chain payload by address.",
         arguments=[
             cli_args.PROTOCOL_NAME_ARGUMENT,
@@ -39,12 +41,14 @@ COMMAND_REGISTRY = [
     ),
     Command(
         name="validate-batch",
+        aliases=["validate_batch"],
         help="Run a batch check from a JSON config file.",
         arguments=[cli_args.CONFIG_ARGUMENT],
         func=run_config
     ),
     Command(
         name="validate-by-id",
+        aliases=["validate_by_id"],
         help="Validate a single on-chain proposal by passing the protocol name and id.",
         arguments=[
             cli_args.PROTOCOL_NAME_ARGUMENT,
@@ -54,6 +58,7 @@ COMMAND_REGISTRY = [
     ),
     Command(
         name="validate-ipfs",
+        aliases=["validate_ipfs"],
         help="Compare IPFS content with a proposal's payload.",
         arguments=[
             cli_args.PROPOSAL_ID_ARGUMENT,
@@ -65,6 +70,7 @@ COMMAND_REGISTRY = [
     ),
     Command(
         name="generate-report",
+        aliases=["generate_report"],
         help="Generates a proposal report based on provided JINJA2 template.",
         arguments=[
             cli_args.PROPOSAL_ID_ARGUMENT,
@@ -87,7 +93,7 @@ def add_arguments(parser: argparse.ArgumentParser, arguments: list[cli_args.Argu
     for arg in arguments:
         arg_dict = arg.model_dump()
         name = arg_dict.pop("name")
-        parser.add_argument(**name, **arg_dict)
+        parser.add_argument(*name, **arg_dict)
 
 
 def main():
@@ -102,6 +108,7 @@ def main():
     for subcmd in COMMAND_REGISTRY:
         subparser = subparsers.add_parser(
             subcmd.name,
+            aliases=subcmd.aliases,
             help=subcmd.help
         )
         add_arguments(subparser, subcmd.arguments)
