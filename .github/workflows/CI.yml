@@ -42,3 +42,4 @@ jobs:
           quorum validate-address --protocol-name Aave --chain Ethereum --payload-address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
           quorum validate-batch --config Quorum/tests/regression.json
           quorum validate-by-id --proposal-id 137 --protocol-name Aave
+          quorum validate-ipfs --proposal_id 20 --chain Scroll --payload-address 0x2B25cb729D90630395Cd3140f3460a73A41Fe5f0
