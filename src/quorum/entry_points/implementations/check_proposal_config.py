@@ -2,10 +2,10 @@ import argparse
 from typing import Any
 
 from quorum.checks.proposal_check import (
-    run_customer_proposal_validation,
-    ProposalConfig,
     CustomerConfig,
-    PayloadAddresses
+    PayloadAddresses,
+    ProposalConfig,
+    run_customer_proposal_validation,
 )
 
 
@@ -32,22 +32,16 @@ def run_config(args: argparse.Namespace) -> None:
 
     for customer_name, chains in config_data.items():
         payload_addresses: list[PayloadAddresses] = []
-        
+
         for chain_name, proposals in chains.items():
             proposal_addresses = proposals.get("Proposals", [])
             payload_addresses.append(
-                PayloadAddresses(
-                    chain=chain_name,
-                    addresses=proposal_addresses
-                )
+                PayloadAddresses(chain=chain_name, addresses=proposal_addresses)
             )
-        
+
         customers_config.append(
-            CustomerConfig(
-                customer=customer_name,
-                payload_addresses=payload_addresses
-            )
+            CustomerConfig(customer=customer_name, payload_addresses=payload_addresses)
         )
-    
+
     prop_config = ProposalConfig(customers_config=customers_config)
     run_customer_proposal_validation(prop_config)

@@ -63,13 +63,13 @@ select = [
   "C4",    # flake8-comprehensions
   "G",     # flake8-logging-format
   "RUF",   # Ruff-specific rules
-  # "PTH", # flake8-use-pathlib # TODO: Fix Path operations
-  # "PT", # flake8-pytest-style # TODO: Fix PT004
-  # "TCH", # flake8-type-checking # TODO: Fix typing blocks
+  "PT",    # flake8-pytest-style # TODO: Fix PT004
+  "TCH",   # flake8-type-checking # TODO: Fix typing blocks
 ]
 ignore = [
   "E501", # line too long, handled by black
   "B008", # do not perform function calls in argument defaults
+  "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
 ]
 
 

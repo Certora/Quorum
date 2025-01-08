@@ -1,12 +1,13 @@
 import os
 from pathlib import Path
-import json5 as json
-from typing import Dict, Any
+from typing import Any
 
-from quorum.utils.load_env import load_env_variables
-import quorum.utils.pretty_printer as pp
-from quorum.utils.singleton import singleton
+import json5 as json
+
 import quorum.apis.price_feeds as price_feeds
+import quorum.utils.pretty_printer as pp
+from quorum.utils.load_env import load_env_variables
+from quorum.utils.singleton import singleton
 
 
 @singleton
@@ -25,17 +26,19 @@ class QuorumConfiguration:
         self.__anthropic_model: str | None = None
 
         # This dictionary will cache customer configs after loading them from ground_truth.json
-        self.__customer_configs: Dict[str, Any] = {}
+        self.__customer_configs: dict[str, Any] = {}
 
         # Price feed providers must be validated on-the-fly
-        self.__supported_providers = set(price_feeds.PriceFeedProvider.__members__.values())
-        
+        self.__supported_providers = set(
+            price_feeds.PriceFeedProvider.__members__.values()
+        )
+
         # We only load environment variables once
         self.__load_env()
 
     def __load_env(self) -> None:
         """
-        Load environment variables and set up main paths. 
+        Load environment variables and set up main paths.
         This is called once in __init__ to ensure we have a minimal environment loaded.
         """
         if not self.__env_loaded:
@@ -53,16 +56,18 @@ class QuorumConfiguration:
             self.__ground_truth_path = self.__main_path / "ground_truth.json"
 
             # 3. Anthropic Key
-            self.__anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
+            self.__anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
             if not self.__anthropic_api_key:
                 pp.pprint(
                     "Warning: ANTHROPIC_API_KEY environment variable is not set. "
                     "All dependent checks will be skipped.",
-                    pp.Colors.WARNING
+                    pp.Colors.WARNING,
                 )
 
             # 4. Anthropic Model
-            self.__anthropic_model = os.getenv('ANTROPIC_MODEL', 'claude-3-5-sonnet-20241022')
+            self.__anthropic_model = os.getenv(
+                "ANTROPIC_MODEL", "claude-3-5-sonnet-20241022"
+            )
 
             self.__env_loaded = True
 
@@ -98,13 +103,13 @@ class QuorumConfiguration:
         """
         return self.__anthropic_model
 
-    def load_customer_config(self, customer: str) -> Dict[str, Any]:
+    def load_customer_config(self, customer: str) -> dict[str, Any]:
         """
         Load and validate the configuration data for a given customer.
 
-        If the config for this customer has already been loaded, 
+        If the config for this customer has already been loaded,
         return it from the cache (self._customer_configs).
-        Otherwise, read from ground_truth.json, validate the price feed providers, 
+        Otherwise, read from ground_truth.json, validate the price feed providers,
         and store it in the cache.
 
         Args:
@@ -123,27 +128,40 @@ class QuorumConfiguration:
 
         # 2. Check that ground_truth.json exists
         if not self.ground_truth_path.exists():
-            raise FileNotFoundError(f"Ground truth file not found at {self.ground_truth_path}")
+            raise FileNotFoundError(
+                f"Ground truth file not found at {self.ground_truth_path}"
+            )
 
         # 3. Load the entire ground truth
-        with open(self.ground_truth_path, 'r') as f:
+        with open(self.ground_truth_path) as f:
             all_customers_config = json.load(f)
 
         # 4. Retrieve the config for the specific customer
         customer_config = all_customers_config.get(customer)
         if not customer_config:
-            pp.pprint(f"Customer {customer} not found in ground truth data.", pp.Colors.FAILURE)
+            pp.pprint(
+                f"Customer {customer} not found in ground truth data.",
+                pp.Colors.FAILURE,
+            )
             raise ValueError(f"Customer {customer} not found in ground truth data.")
 
         # 5. Validate and transform the providers
         price_feed_providers = customer_config.get("price_feed_providers", [])
         token_providers = customer_config.get("token_validation_providers", [])
 
-        unsupported = set(price_feed_providers).union(token_providers) - self.__supported_providers
+        unsupported = (
+            set(price_feed_providers).union(token_providers)
+            - self.__supported_providers
+        )
         if unsupported:
-            pp.pprint(f"Unsupported providers for {customer}: {', '.join(unsupported)}", pp.Colors.FAILURE)
+            pp.pprint(
+                f"Unsupported providers for {customer}: {', '.join(unsupported)}",
+                pp.Colors.FAILURE,
+            )
             # Filter out unsupported ones
-            price_feed_providers = list(set(price_feed_providers) & self.__supported_providers)
+            price_feed_providers = list(
+                set(price_feed_providers) & self.__supported_providers
+            )
             token_providers = list(set(token_providers) & self.__supported_providers)
 
         # 6. Replace provider strings with actual API objects
@@ -156,7 +174,9 @@ class QuorumConfiguration:
         self.__customer_configs[customer] = customer_config
         return customer_config
 
-    def _replace_providers_with_objects(self, price_feed_providers: list, token_providers: list) -> None:
+    def _replace_providers_with_objects(
+        self, price_feed_providers: list, token_providers: list
+    ) -> None:
         """
         Helper method to replace string provider references with actual API objects.
         """
@@ -169,4 +189,3 @@ class QuorumConfiguration:
         for i, provider in enumerate(token_providers):
             if provider == price_feeds.PriceFeedProvider.COINGECKO:
                 token_providers[i] = price_feeds.CoinGeckoAPI()
-

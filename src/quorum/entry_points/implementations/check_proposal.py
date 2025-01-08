@@ -1,6 +1,11 @@
 import argparse
 
-from quorum.checks.proposal_check import run_customer_proposal_validation, ProposalConfig, CustomerConfig, PayloadAddresses
+from quorum.checks.proposal_check import (
+    CustomerConfig,
+    PayloadAddresses,
+    ProposalConfig,
+    run_customer_proposal_validation,
+)
 
 
 def run_single(args: argparse.Namespace) -> None:
@@ -16,7 +21,14 @@ def run_single(args: argparse.Namespace) -> None:
     The function creates customer and proposal configurations based on the input arguments
     and executes a batch run for the single proposal.
     """
-    protocol_name, chain, payload_address = args.protocol_name, args.chain, args.payload_address
-    customer_config = CustomerConfig(customer=protocol_name, payload_addresses=[PayloadAddresses(chain=chain, addresses=[payload_address])])
+    protocol_name, chain, payload_address = (
+        args.protocol_name,
+        args.chain,
+        args.payload_address,
+    )
+    customer_config = CustomerConfig(
+        customer=protocol_name,
+        payload_addresses=[PayloadAddresses(chain=chain, addresses=[payload_address])],
+    )
     prop_config = ProposalConfig(customers_config=[customer_config])
     run_customer_proposal_validation(prop_config)

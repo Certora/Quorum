@@ -1,24 +1,26 @@
-import pytest
 import shutil
-import json5 as json
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
+
+import json5 as json
+import pytest
 
 from quorum.apis.block_explorers.source_code import SourceCode
 from quorum.utils.quorum_configuration import QuorumConfiguration
 
-
-RESOURCES_DIR = Path(__file__).parent / 'resources'
-EXPECTED_DIR = Path(__file__).parent / 'expected'
-SOURCE_CODES_DIR = RESOURCES_DIR / 'source_codes'
+RESOURCES_DIR = Path(__file__).parent / "resources"
+EXPECTED_DIR = Path(__file__).parent / "expected"
+SOURCE_CODES_DIR = RESOURCES_DIR / "source_codes"
 
 
 @pytest.fixture
 def source_codes(request: pytest.FixtureRequest) -> list[SourceCode]:
     sources_dir: Path = SOURCE_CODES_DIR / request.param
     sources = []
-    for s in sources_dir.rglob('*.sol'):
-        sources.append(SourceCode(str(s.relative_to(sources_dir)), s.read_text().splitlines()))
+    for s in sources_dir.rglob("*.sol"):
+        sources.append(
+            SourceCode(str(s.relative_to(sources_dir)), s.read_text().splitlines())
+        )
     return sources
 
 
@@ -26,7 +28,7 @@ def source_codes(request: pytest.FixtureRequest) -> list[SourceCode]:
 def tmp_output_path() -> Generator[Path, None, None]:
     config = QuorumConfiguration()
     og_path = config.main_path
-    config.main_path = Path(__file__).parent / 'tmp'
+    config.main_path = Path(__file__).parent / "tmp"
     yield config.main_path  # Provide the temporary path to the test
     shutil.rmtree(config.main_path)
     config.main_path = og_path
@@ -34,7 +36,7 @@ def tmp_output_path() -> Generator[Path, None, None]:
 
 @pytest.fixture
 def tmp_cache() -> Generator[Path, None, None]:
-    cache = Path(__file__).parent / 'tmp_cache'
+    cache = Path(__file__).parent / "tmp_cache"
     if cache.exists():
         shutil.rmtree(cache)
     cache.mkdir()
@@ -53,12 +55,14 @@ def load_ipfs_validation_chain_inputs() -> tuple[str, str]:
 
     return ipfs_content, source_code
 
+
 @pytest.fixture
 def expected_first_deposit_results():
-    expected_path = EXPECTED_DIR / 'test_llm' / 'first_deposit_chain.json'
+    expected_path = EXPECTED_DIR / "test_llm" / "first_deposit_chain.json"
     with open(expected_path) as f:
         expected = json.load(f)
     return expected
+
 
 @pytest.fixture
 def first_deposit_chain_input():

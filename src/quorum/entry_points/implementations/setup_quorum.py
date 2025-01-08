@@ -1,8 +1,9 @@
-import shutil
 import argparse
+import shutil
 from pathlib import Path
 
 import quorum.utils.pretty_printer as pp
+
 
 def run_setup_quorum(args: argparse.Namespace):
     """
@@ -15,7 +16,7 @@ def run_setup_quorum(args: argparse.Namespace):
     Template files copied:
         - .env.example -> .env
         - execution.json
-        - ground_truth.json  
+        - ground_truth.json
         - README.md
     The function will:
     1. Create target directory if it doesn't exist
@@ -27,7 +28,7 @@ def run_setup_quorum(args: argparse.Namespace):
         OSError: If there are filesystem permission issues
         shutil.Error: If file copy operations fail
     """
-    templates_dir = Path(__file__).parent.parent.parent / 'templates'
+    templates_dir = Path(__file__).parent.parent.parent / "templates"
     target_dir = args.working_dir.resolve()
 
     if not target_dir.exists():
@@ -35,11 +36,20 @@ def run_setup_quorum(args: argparse.Namespace):
         target_dir.mkdir(parents=True, exist_ok=True)
 
     # Collect all file names to copy from the templates directory
-    template_files = ['.env.example', 'execution.json', 'ground_truth.json', 'README.md']
-    
+    template_files = [
+        ".env.example",
+        "execution.json",
+        "ground_truth.json",
+        "README.md",
+    ]
+
     for file_name in template_files:
         src = templates_dir / file_name
-        dest = target_dir / '.env' if file_name == '.env.example' else target_dir / file_name
+        dest = (
+            target_dir / ".env"
+            if file_name == ".env.example"
+            else target_dir / file_name
+        )
 
         if dest.exists():
             pp.pprint(f"File exists: {dest}. Skipping.", pp.Colors.WARNING)
@@ -47,9 +57,9 @@ def run_setup_quorum(args: argparse.Namespace):
 
         shutil.copy(src, dest)
         pp.pprint(f"Copied {file_name} to {dest}", pp.Colors.SUCCESS)
-    
+
     # Add export QUORUM_PATH="path_to_your_quorum_directory" to the new .env file
-    with open(target_dir / '.env', 'a') as f:
+    with open(target_dir / ".env", "a") as f:
         f.write(f'\nexport QUORUM_PATH="{target_dir}"\n')
-    
+
     pp.pprint("Quorum setup completed successfully!", pp.Colors.SUCCESS)

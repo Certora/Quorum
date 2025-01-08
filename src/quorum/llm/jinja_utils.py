@@ -2,7 +2,6 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-
 TEMPLATE_DIR = Path(__file__).parent / "prompts"
 
 
@@ -19,7 +18,7 @@ def render_prompt(template_name: str, context: dict) -> str:
     """
     env = Environment(
         loader=FileSystemLoader(searchpath=str(TEMPLATE_DIR)),
-        autoescape=select_autoescape(['j2'])
+        autoescape=select_autoescape(["j2"]),
     )
     template = env.get_template(template_name)
     return template.render(context)

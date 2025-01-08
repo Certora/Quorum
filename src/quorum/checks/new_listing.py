@@ -1,5 +1,5 @@
-from quorum.checks.check import Check
 import quorum.utils.pretty_printer as pp
+from quorum.checks.check import Check
 from quorum.llm.chains.first_deposit_chain import FirstDepositChain, ListingArray
 
 
@@ -12,40 +12,57 @@ class NewListingCheck(Check):
         no new listings were found.
         """
         functions = self._get_functions_from_source_codes()
-        if functions.get('newListings', functions.get('newListingsCustom')):
-            pp.pprint(f'New listings detected for payload {self.proposal_address}', pp.Colors.WARNING)
-            
+        if functions.get("newListings", functions.get("newListingsCustom")):
+            pp.pprint(
+                f"New listings detected for payload {self.proposal_address}",
+                pp.Colors.WARNING,
+            )
+
             proposal_code = self.source_codes[0].file_content
-            proposal_code_str = '\n'.join(proposal_code)
+            proposal_code_str = "\n".join(proposal_code)
             try:
-                listings: ListingArray | None = FirstDepositChain().execute(proposal_code_str)
-            except:
+                listings: ListingArray | None = FirstDepositChain().execute(
+                    proposal_code_str
+                )
+            except Exception:
                 pp.pprint(
-                    'New listings were detected in payload but first deposit check is skipped.\n'
-                    'If you have a LLM API key, you can add it to your environment variables to enable this check',
-                    pp.Colors.WARNING
+                    "New listings were detected in payload but first deposit check is skipped.\n"
+                    "If you have a LLM API key, you can add it to your environment variables to enable this check",
+                    pp.Colors.WARNING,
                 )
                 return
-            
+
             if listings is None:
-                pp.pprint('New listings were detected in payload but LLM failed to retrieve them.',
-                                pp.Colors.FAILURE)
+                pp.pprint(
+                    "New listings were detected in payload but LLM failed to retrieve them.",
+                    pp.Colors.FAILURE,
+                )
                 return
-            
-            pp.pprint(f'{len(listings.listings)} new asset listings were detected:', pp.Colors.INFO)
+
+            pp.pprint(
+                f"{len(listings.listings)} new asset listings were detected:",
+                pp.Colors.INFO,
+            )
             for i, listing in enumerate(listings.listings, 1):
-                pp.pprint(f'\t{i}. Variable: {listing.asset_symbol}\n'
-                          f'\t   Asset address: {listing.asset_address}\n'
-                          f'\t   Approve indicator: {listing.approve_indicator}\n'
-                          f'\t   Supply seed amount: {listing.supply_seed_amount}\n'
-                          f'\t   Supply indicator: {listing.supply_indicator}',
-                          (pp.Colors.SUCCESS if listing.approve_indicator and listing.supply_indicator
-                           else pp.Colors.FAILURE))
-                
-            self._write_to_file('new_listings.json', listings.model_dump())
+                pp.pprint(
+                    f"\t{i}. Variable: {listing.asset_symbol}\n"
+                    f"\t   Asset address: {listing.asset_address}\n"
+                    f"\t   Approve indicator: {listing.approve_indicator}\n"
+                    f"\t   Supply seed amount: {listing.supply_seed_amount}\n"
+                    f"\t   Supply indicator: {listing.supply_indicator}",
+                    (
+                        pp.Colors.SUCCESS
+                        if listing.approve_indicator and listing.supply_indicator
+                        else pp.Colors.FAILURE
+                    ),
+                )
+
+            self._write_to_file("new_listings.json", listings.model_dump())
 
         else:
-            pp.pprint(f'No new listings detected for {self.proposal_address}', pp.Colors.INFO)
+            pp.pprint(
+                f"No new listings detected for {self.proposal_address}", pp.Colors.INFO
+            )
 
     def _get_functions_from_source_codes(self) -> dict:
         """

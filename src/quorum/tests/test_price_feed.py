@@ -1,21 +1,25 @@
-import pytest
-
-
-from quorum.apis.block_explorers.source_code import SourceCode
-from quorum.checks.price_feed import PriceFeedCheck
-from quorum.utils.chain_enum import Chain
-from quorum.apis.price_feeds import ChainLinkAPI
-
 from pathlib import Path
 
+import pytest
 
-@pytest.mark.parametrize('source_codes', ['ETH/0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637'], indirect=True)
+from quorum.apis.block_explorers.source_code import SourceCode
+from quorum.apis.price_feeds import ChainLinkAPI
+from quorum.checks.price_feed import PriceFeedCheck
+from quorum.utils.chain_enum import Chain
+
+
+@pytest.mark.parametrize(
+    "source_codes", ["ETH/0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637"], indirect=True
+)
 def test_price_feed(source_codes: list[SourceCode], tmp_output_path: Path):
-    price_feed_check = PriceFeedCheck('Aave', Chain.ETH, '', source_codes, [
-        ChainLinkAPI()], [])
+    price_feed_check = PriceFeedCheck(
+        "Aave", Chain.ETH, "", source_codes, [ChainLinkAPI()], []
+    )
     price_feed_check.verify_price_feed()
 
-    assert sorted([p.name for p in price_feed_check.check_folder.iterdir()]) == ['AaveV2Ethereum']
+    assert sorted([p.name for p in price_feed_check.check_folder.iterdir()]) == [
+        "AaveV2Ethereum"
+    ]
 
 
 def test_source_code_clean():

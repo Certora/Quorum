@@ -1,8 +1,10 @@
 from pathlib import Path
+
 from git import Repo
 
-from quorum.utils.quorum_configuration import QuorumConfiguration
 import quorum.utils.pretty_printer as pp
+from quorum.utils.quorum_configuration import QuorumConfiguration
+
 
 class GitManager:
     """
@@ -23,16 +25,20 @@ class GitManager:
         """
         self.customer = customer
         self.config = QuorumConfiguration()
-        
+
         self.modules_path = self.config.main_path / self.customer / "modules"
         self.modules_path.mkdir(parents=True, exist_ok=True)
-        
-        self.review_module_path = self.config.main_path / self.customer / "review_module"
+
+        self.review_module_path = (
+            self.config.main_path / self.customer / "review_module"
+        )
         self.review_module_path.mkdir(parents=True, exist_ok=True)
 
         self.repos, self.review_repo = self._load_repos_from_file(gt_config)
 
-    def _load_repos_from_file(self, gt_config: dict[str, any]) -> tuple[dict[str, str], dict[str, str]]:
+    def _load_repos_from_file(
+        self, gt_config: dict[str, any]
+    ) -> tuple[dict[str, str], dict[str, str]]:
         """
         Load repository URLs from the JSON file for the given customer.
 
@@ -45,22 +51,30 @@ class GitManager:
         """
         repos = {Path(r).stem: r for r in gt_config["dev_repos"]}
 
-        verify_repo = ({Path(gt_config["review_repo"]).stem: gt_config["review_repo"]}
-                       if "review_repo" in gt_config else {})
+        verify_repo = (
+            {Path(gt_config["review_repo"]).stem: gt_config["review_repo"]}
+            if "review_repo" in gt_config
+            else {}
+        )
         return repos, verify_repo
 
     @staticmethod
     def __clone_or_update_for_repo(repo_name: str, repo_url: str, to_path: Path):
-            repo_path = to_path / repo_name
-            if repo_path.exists():
-                pp.pprint(f"Repository {repo_name} already exists at {repo_path}. Updating repo and submodules.", pp.Colors.INFO)
-                repo = Repo(repo_path)
-                repo.git.pull()
-                repo.git.submodule('update', '--init', '--recursive')
-            else:
-                pp.pprint(f'Cloning {repo_name} from URL: {repo_url} to {repo_path}...', pp.Colors.INFO)
-                Repo.clone_from(repo_url, repo_path, multi_options=["--recurse-submodules"])
-
+        repo_path = to_path / repo_name
+        if repo_path.exists():
+            pp.pprint(
+                f"Repository {repo_name} already exists at {repo_path}. Updating repo and submodules.",
+                pp.Colors.INFO,
+            )
+            repo = Repo(repo_path)
+            repo.git.pull()
+            repo.git.submodule("update", "--init", "--recursive")
+        else:
+            pp.pprint(
+                f"Cloning {repo_name} from URL: {repo_url} to {repo_path}...",
+                pp.Colors.INFO,
+            )
+            Repo.clone_from(repo_url, repo_path, multi_options=["--recurse-submodules"])
 
     def clone_or_update(self) -> None:
         """
@@ -69,10 +83,16 @@ class GitManager:
         If the repository already exists locally, it will update the repository and its submodules.
         Otherwise, it will clone the repository and initialize submodules.
         """
-        pp.pprint('Cloning and updating preliminaries', pp.Colors.INFO, pp.Heading.HEADING_2)
+        pp.pprint(
+            "Cloning and updating preliminaries", pp.Colors.INFO, pp.Heading.HEADING_2
+        )
         for repo_name, repo_url in self.repos.items():
-           GitManager.__clone_or_update_for_repo(repo_name, repo_url, self.modules_path)
-        
+            GitManager.__clone_or_update_for_repo(
+                repo_name, repo_url, self.modules_path
+            )
+
         if self.review_repo:
             repo_name, repo_url = next(iter(self.review_repo.items()))
-            GitManager.__clone_or_update_for_repo(repo_name, repo_url, self.review_module_path)
+            GitManager.__clone_or_update_for_repo(
+                repo_name, repo_url, self.review_module_path
+            )

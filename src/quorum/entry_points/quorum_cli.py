@@ -1,9 +1,10 @@
 # Quorum/entry_points/quorum_cli.py
 
 import argparse
+from collections.abc import Callable
+
 import argcomplete
 from pydantic import BaseModel
-from typing import Callable, Optional
 
 import quorum.entry_points.cli_arguments as cli_args
 from quorum.entry_points.implementations.check_proposal import run_single
@@ -19,7 +20,7 @@ class Command(BaseModel):
     help: str
     arguments: list[cli_args.Argument]
     func: Callable[[argparse.Namespace], None]
-    aliases: Optional[list[str]] = []
+    aliases: list[str] | None = []
 
 
 COMMAND_REGISTRY = [
@@ -27,7 +28,7 @@ COMMAND_REGISTRY = [
         name="setup",
         help="Sets up Quorum environment for quick start.",
         arguments=[cli_args.WORKING_DIR_ARGUMENT],
-        func=run_setup_quorum
+        func=run_setup_quorum,
     ),
     Command(
         name="validate-address",
@@ -36,26 +37,23 @@ COMMAND_REGISTRY = [
         arguments=[
             cli_args.PROTOCOL_NAME_ARGUMENT,
             cli_args.CHAIN_ARGUMENT,
-            cli_args.PAYLOAD_ADDRESS_ARGUMENT
+            cli_args.PAYLOAD_ADDRESS_ARGUMENT,
         ],
-        func=run_single
+        func=run_single,
     ),
     Command(
         name="validate-batch",
         aliases=["validate_batch"],
         help="Run a batch check from a JSON config file.",
         arguments=[cli_args.CONFIG_ARGUMENT],
-        func=run_config
+        func=run_config,
     ),
     Command(
         name="validate-by-id",
         aliases=["validate_by_id"],
         help="Validate a single on-chain proposal by passing the protocol name and id.",
-        arguments=[
-            cli_args.PROTOCOL_NAME_ARGUMENT,
-            cli_args.PROPOSAL_ID_ARGUMENT
-        ],
-        func=run_proposal_id
+        arguments=[cli_args.PROTOCOL_NAME_ARGUMENT, cli_args.PROPOSAL_ID_ARGUMENT],
+        func=run_proposal_id,
     ),
     Command(
         name="validate-ipfs",
@@ -65,9 +63,9 @@ COMMAND_REGISTRY = [
             cli_args.PROPOSAL_ID_ARGUMENT,
             cli_args.CHAIN_ARGUMENT,
             cli_args.PAYLOAD_ADDRESS_ARGUMENT,
-            cli_args.PROMPT_TEMPLATES_ARGUMENT
+            cli_args.PROMPT_TEMPLATES_ARGUMENT,
         ],
-        func=run_ipfs_validator
+        func=run_ipfs_validator,
     ),
     Command(
         name="generate-report",
@@ -76,14 +74,16 @@ COMMAND_REGISTRY = [
         arguments=[
             cli_args.PROPOSAL_ID_ARGUMENT,
             cli_args.TEMPLATE_ARGUMENT,
-            cli_args.OUTPUT_PATH_ARGUMENT
+            cli_args.OUTPUT_PATH_ARGUMENT,
         ],
-        func=run_create_report
-    )
+        func=run_create_report,
+    ),
 ]
 
 
-def add_arguments(parser: argparse.ArgumentParser, arguments: list[cli_args.Argument]) -> None:
+def add_arguments(
+    parser: argparse.ArgumentParser, arguments: list[cli_args.Argument]
+) -> None:
     """
     Helper function to add arguments to a parser.
 
@@ -100,17 +100,14 @@ def add_arguments(parser: argparse.ArgumentParser, arguments: list[cli_args.Argu
 def main():
     parser = argparse.ArgumentParser(
         prog="Quorum",
-        description="CLI tool for validating and analyzing blockchain governance proposals, including payload verification, IPFS content validation, and report generation."
+        description="CLI tool for validating and analyzing blockchain governance proposals, including payload verification, IPFS content validation, and report generation.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
-
 
     # Iterate over the registry to add subcommands
     for subcmd in COMMAND_REGISTRY:
         subparser = subparsers.add_parser(
-            subcmd.name,
-            aliases=subcmd.aliases,
-            help=subcmd.help
+            subcmd.name, aliases=subcmd.aliases, help=subcmd.help
         )
         add_arguments(subparser, subcmd.arguments)
         subparser.set_defaults(func=subcmd.func)

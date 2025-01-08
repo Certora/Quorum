@@ -2,16 +2,12 @@ import argparse
 
 from quorum.apis.governance.aave_governance import AaveGovernanceAPI
 from quorum.checks.proposal_check import (
-    run_customer_proposal_validation,
-    ProposalConfig,
     CustomerConfig,
-    PayloadAddresses
+    ProposalConfig,
+    run_customer_proposal_validation,
 )
 
-
-CUSTOMER_TO_API = {
-    "aave": AaveGovernanceAPI()
-}
+CUSTOMER_TO_API = {"aave": AaveGovernanceAPI()}
 
 
 def run_proposal_id(args: argparse.Namespace) -> None:
@@ -35,10 +31,16 @@ def run_proposal_id(args: argparse.Namespace) -> None:
     protocol_name, proposal_id = args.protocol_name, args.proposal_id
     customer_key = protocol_name.lower()
     if customer_key not in CUSTOMER_TO_API:
-        raise ValueError(f"Customer '{protocol_name}' is not supported. Supported customers: {list(CUSTOMER_TO_API.keys())}.")
+        raise ValueError(
+            f"Customer '{protocol_name}' is not supported. Supported customers: {list(CUSTOMER_TO_API.keys())}."
+        )
 
     api = CUSTOMER_TO_API[customer_key]
     payloads_addresses = api.get_all_payloads_addresses(proposal_id)
-    config = ProposalConfig(customers_config=[CustomerConfig(customer=protocol_name, payload_addresses=payloads_addresses)])
+    config = ProposalConfig(
+        customers_config=[
+            CustomerConfig(customer=protocol_name, payload_addresses=payloads_addresses)
+        ]
+    )
 
     run_customer_proposal_validation(config)

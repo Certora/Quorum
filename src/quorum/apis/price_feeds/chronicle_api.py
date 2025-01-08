@@ -1,9 +1,11 @@
-import requests
 from collections import defaultdict
+
+import requests
 
 from quorum.utils.chain_enum import Chain
 from quorum.utils.singleton import singleton
-from .price_feed_utils import PriceFeedData, PriceFeedProviderBase, PriceFeedProvider
+
+from .price_feed_utils import PriceFeedData, PriceFeedProvider, PriceFeedProviderBase
 
 
 @singleton
@@ -12,20 +14,16 @@ class ChronicleAPI(PriceFeedProviderBase):
     ChronicleAPI is a class designed to interact with the Chronicle data feed API.
     It fetches and stores price feed data for various blockchain networks supported by Chronicle.
     """
-    
+
     def __init__(self):
         super().__init__()
         self.__pairs = self.__process_pairs()
 
     def __process_pairs(self) -> dict[str, list[str]]:
-        response = requests.get(
-            "https://chroniclelabs.org/api/pairs?testnet=false"
-        )
+        response = requests.get("https://chroniclelabs.org/api/pairs?testnet=false")
         response.raise_for_status()
         pairs = response.json()
-        pairs = [
-            p for p in pairs if p["blockchain"] in Chain.__members__.values()
-        ]
+        pairs = [p for p in pairs if p["blockchain"] in Chain.__members__.values()]
         result = defaultdict(list)
         for p in pairs:
             result[p["blockchain"]].append(p["pair"])
@@ -46,7 +44,7 @@ class ChronicleAPI(PriceFeedProviderBase):
         pairs = self.__pairs.get(chain)
         if not pairs:
             return {}
-        
+
         chronicle_price_feeds: list[PriceFeedData] = []
         for pair in pairs:
             response = self.session.get(
@@ -54,12 +52,13 @@ class ChronicleAPI(PriceFeedProviderBase):
             )
             response.raise_for_status()
             data = response.json()
-            
+
             for pair_info in data:
                 chronicle_price_feeds.append(PriceFeedData(**pair_info))
-                
-        return next((feed for feed in chronicle_price_feeds if address == feed.address), None)
 
-        
+        return next(
+            (feed for feed in chronicle_price_feeds if address == feed.address), None
+        )
+
     def get_name(self) -> PriceFeedProvider:
         return PriceFeedProvider.CHRONICLE
