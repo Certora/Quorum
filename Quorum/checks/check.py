@@ -3,7 +3,7 @@ from datetime import datetime
 import json5 as json
 from pathlib import Path
 
-import Quorum.utils.config as config
+from Quorum.utils.quorum_configuration import QuorumConfiguration
 from Quorum.apis.block_explorers.source_code import SourceCode
 from Quorum.utils.chain_enum import Chain
 
@@ -14,7 +14,7 @@ class Check(ABC):
         self.chain = chain
         self.proposal_address = proposal_address
         self.source_codes = source_codes
-        self.customer_folder = config.MAIN_PATH / customer
+        self.customer_folder = QuorumConfiguration().main_path / customer
         self.check_folder = self.customer_folder / "checks" / chain / proposal_address / f"{self.__class__.__name__}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         self.check_folder.mkdir(parents=True, exist_ok=True)
 

@@ -7,7 +7,7 @@ from Quorum.apis.block_explorers.chains_api import ChainAPI
 from Quorum.apis.price_feeds.price_feed_utils import PriceFeedProviderBase
 from Quorum.apis.governance.data_models import PayloadAddresses
 from Quorum.apis.git_api.git_manager import GitManager
-import Quorum.utils.config_loader as ConfigLoader
+from Quorum.utils.quorum_configuration import QuorumConfiguration
 
 
 class CustomerConfig(BaseModel):
@@ -49,7 +49,7 @@ def run_customer_proposal_validation(prop_config: ProposalConfig) -> None:
     """
     for config in prop_config.customers_config:
         pp.pprint('Run Preparation', pp.Colors.INFO, pp.Heading.HEADING_1)
-        ground_truth_config = ConfigLoader.load_customer_config(config.customer)
+        ground_truth_config = QuorumConfiguration().load_customer_config(config.customer)
         git_manager = GitManager(config.customer, ground_truth_config)
         git_manager.clone_or_update()
         price_feed_providers = ground_truth_config.get("price_feed_providers", [])
