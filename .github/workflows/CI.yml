@@ -42,3 +42,4 @@ jobs:
           Quorum validate-address --customer Aave --chain Ethereum --proposal_address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
           Quorum validate-batch --config Quorum/tests/regression.json
           Quorum validate-by-id --proposal_id 137 --customer Aave
+          Quorum validate-ipfs --proposal_id 20 --chain Scroll --proposal_address 0x2B25cb729D90630395Cd3140f3460a73A41Fe5f0
