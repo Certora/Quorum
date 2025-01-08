@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from Quorum.utils.config import ANTHROPIC_MODEL, ANTHROPIC_API_KEY
+from Quorum.utils.quorum_configuration import QuorumConfiguration
 
 from langchain_anthropic import ChatAnthropic
 from langchain_community.cache import SQLiteCache
@@ -26,9 +26,9 @@ class CachedLLM():
 
         #Initialize the Anthropic LLM with the specified model and configurations
         self.llm = ChatAnthropic(
-            model=ANTHROPIC_MODEL,
+            model=QuorumConfiguration().anthropic_model,
             cache=True,
             max_retries=3,
             temperature=0.0,
-            api_key=ANTHROPIC_API_KEY
+            api_key=QuorumConfiguration().anthropic_api_key
         )
