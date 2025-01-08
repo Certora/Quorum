@@ -56,7 +56,7 @@ jobs:
           mv src/quorum/tests/ground_truth.json workdir/ground_truth.json
           echo "ETHSCAN_API_KEY=${ETHSCAN_API_KEY}" >> workdir/.env
           echo "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}" >> workdir/.env
-          
+
       - name: Single Address Test
         working-directory: workdir
         run: poetry run quorum validate-address --protocol-name Aave --chain Ethereum --payload-address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
