@@ -18,27 +18,27 @@ class QuorumConfiguration:
          - Environment variables are loaded immediately
          - Other data (like ground truth configs) is loaded only on demand
         """
-        self._env_loaded = False
-        self._main_path: Path | None = None
-        self._ground_truth_path: Path | None = None
-        self._anthropic_api_key: str | None = None
-        self._anthropic_model: str | None = None
+        self.__env_loaded = False
+        self.__main_path: Path | None = None
+        self.__ground_truth_path: Path | None = None
+        self.__anthropic_api_key: str | None = None
+        self.__anthropic_model: str | None = None
 
         # This dictionary will cache customer configs after loading them from ground_truth.json
-        self._customer_configs: Dict[str, Any] = {}
+        self.__customer_configs: Dict[str, Any] = {}
 
         # Price feed providers must be validated on-the-fly
-        self._supported_providers = set(price_feeds.PriceFeedProvider.__members__.values())
+        self.__supported_providers = set(price_feeds.PriceFeedProvider.__members__.values())
         
         # We only load environment variables once
-        self._load_env()
+        self.__load_env()
 
-    def _load_env(self) -> None:
+    def __load_env(self) -> None:
         """
         Load environment variables and set up main paths. 
         This is called once in __init__ to ensure we have a minimal environment loaded.
         """
-        if not self._env_loaded:
+        if not self.__env_loaded:
             # 1. Load .env variables
             load_env_variables()
 
@@ -47,14 +47,14 @@ class QuorumConfiguration:
             if not main_path:
                 raise ValueError("QUORUM_PATH environment variable not set")
 
-            self._main_path = Path(main_path).absolute()
-            if not self._main_path.exists():
-                self._main_path.mkdir(parents=True)
-            self._ground_truth_path = self._main_path / "ground_truth.json"
+            self.__main_path = Path(main_path).absolute()
+            if not self.__main_path.exists():
+                self.__main_path.mkdir(parents=True)
+            self.__ground_truth_path = self.__main_path / "ground_truth.json"
 
             # 3. Anthropic Key
-            self._anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
-            if not self._anthropic_api_key:
+            self.__anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
+            if not self.__anthropic_api_key:
                 pp.pprint(
                     "Warning: ANTHROPIC_API_KEY environment variable is not set. "
                     "All dependent checks will be skipped.",
@@ -62,37 +62,41 @@ class QuorumConfiguration:
                 )
 
             # 4. Anthropic Model
-            self._anthropic_model = os.getenv('ANTROPIC_MODEL', 'claude-3-5-sonnet-20241022')
+            self.__anthropic_model = os.getenv('ANTROPIC_MODEL', 'claude-3-5-sonnet-20241022')
 
-            self._env_loaded = True
+            self.__env_loaded = True
 
     @property
     def main_path(self) -> Path:
         """
         Returns the main path for Quorum, as determined by QUORUM_PATH.
         """
-        return self._main_path
+        return self.__main_path
+
+    @main_path.setter
+    def main_path(self, value: Path) -> None:
+        self.__main_path = value
 
     @property
     def ground_truth_path(self) -> Path:
         """
         Returns the ground truth JSON path.
         """
-        return self._ground_truth_path
+        return self.__ground_truth_path
 
     @property
     def anthropic_api_key(self) -> str | None:
         """
         Returns the Anthropic API key, or None if not set.
         """
-        return self._anthropic_api_key
+        return self.__anthropic_api_key
 
     @property
     def anthropic_model(self) -> str:
         """
         Returns the Anthropic Model or the default one if not set.
         """
-        return self._anthropic_model
+        return self.__anthropic_model
 
     def load_customer_config(self, customer: str) -> Dict[str, Any]:
         """
@@ -114,8 +118,8 @@ class QuorumConfiguration:
             ValueError: If the requested customer is not found or invalid.
         """
         # 1. Check if we already loaded this config
-        if customer in self._customer_configs:
-            return self._customer_configs[customer]
+        if customer in self.__customer_configs:
+            return self.__customer_configs[customer]
 
         # 2. Check that ground_truth.json exists
         if not self.ground_truth_path.exists():
@@ -135,12 +139,12 @@ class QuorumConfiguration:
         price_feed_providers = customer_config.get("price_feed_providers", [])
         token_providers = customer_config.get("token_validation_providers", [])
 
-        unsupported = set(price_feed_providers).union(token_providers) - self._supported_providers
+        unsupported = set(price_feed_providers).union(token_providers) - self.__supported_providers
         if unsupported:
             pp.pprint(f"Unsupported providers for {customer}: {', '.join(unsupported)}", pp.Colors.FAILURE)
             # Filter out unsupported ones
-            price_feed_providers = list(set(price_feed_providers) & self._supported_providers)
-            token_providers = list(set(token_providers) & self._supported_providers)
+            price_feed_providers = list(set(price_feed_providers) & self.__supported_providers)
+            token_providers = list(set(token_providers) & self.__supported_providers)
 
         # 6. Replace provider strings with actual API objects
         self._replace_providers_with_objects(price_feed_providers, token_providers)
@@ -149,7 +153,7 @@ class QuorumConfiguration:
         customer_config["token_validation_providers"] = token_providers
 
         # 7. Cache it
-        self._customer_configs[customer] = customer_config
+        self.__customer_configs[customer] = customer_config
         return customer_config
 
     def _replace_providers_with_objects(self, price_feed_providers: list, token_providers: list) -> None:
