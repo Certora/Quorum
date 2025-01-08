@@ -1,34 +1,101 @@
-[build-system]
-requires = ["setuptools>=42", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "certora-quorum"
-description = "Quorum: A tool for managing proposals and reports"
-authors = [
-    {name = "Niv Vaknin", email = "niv@certora.com"},
-    {name = "Liav Katry", email = "liav@certora.com"}
-]
+
+[tool.poetry]
+name = "certora-quorum"
+version = "0.0.0"
+description = "Quorum: Open-Source Governance Security Tool for Web3 Protocols"
+authors = ["Niv Vaknin <niv@certora.com>", "Liav Katry <liav@certora.com>"]
+license = "MIT"
 readme = "README.md"
-license = {file = "LICENSE"}
 keywords = ["Quorum", "Proposals", "Reports"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dynamic = ["version", "dependencies"]
+packages = [
+  { include = "quorum", from = "src" }
+]
 
-[tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
-version = {file = ["version"]}
+[tool.poetry.scripts]
+quorum = "quorum.entry_points.quorum_cli:main"
 
-[project.urls]
-Homepage = "https://github.com/Certora/Quorum"
-Source = "https://github.com/Certora/Quorum"
+[tool.poetry.dependencies]
+python = ">=3.11, <4.0"
+ruff = { version = "^0.6.0", optional = true }
+requests = "^2.32.3"
+gitpython = "^3.1.44"
+py-solc-x = "^2.0.3"
+pydantic = "^2.10.4"
+eth-abi = "^5.1.0"
+eth-utils = "^5.1.0"
+pytest = "^8.3.4"
+eth-hash = {extras = ["pycryptodome"], version = "^0.7.0"}
+langchain = "^0.3.14"
+jinja2 = "^3.1.5"
+langchain-anthropic = "^0.3.1"
+langchain-community = "^0.3.14"
+python-dotenv = "^1.0.1"
+json5 = "^0.10.0"
+argcomplete = "^3.5.3"
+charset-normalizer = "^3.4.1"
+poetry-dynamic-versioning = {extras = ["plugin"], version = "^1.5.0"}
+langgraph = "^0.2.61"
+langgraph-checkpoint = "^2.0.9"
 
-[project.scripts]
-quorum = "Quorum.entry_points.quorum_cli:main"
 
-[tool.setuptools]
-include-package-data = true
+[tool.ruff]
+target-version = "py311"
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+  "E",     # pycodestyle errors
+  "W",     # pycodestyle warnings
+  "F",     # pyflakes
+  "I",     # isort
+  "C",     # flake8-comprehensions
+  "B",     # flake8-bugbear
+  "UP",    # pyupgrade
+  "YTT",   # flake8-2020
+  "ASYNC", # flake8-async
+  "C4",    # flake8-comprehensions
+  "G",     # flake8-logging-format
+  "RUF",   # Ruff-specific rules
+  # "PTH", # flake8-use-pathlib # TODO: Fix Path operations
+  # "PT", # flake8-pytest-style # TODO: Fix PT004
+  # "TCH", # flake8-type-checking # TODO: Fix typing blocks
+]
+ignore = [
+  "E501", # line too long, handled by black
+  "B008", # do not perform function calls in argument defaults
+]
+
+
+[tool.ruff.lint.pyupgrade]
+# Preserve types, even if a file imports `from __future__ import annotations`.
+keep-runtime-typing = true
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-first-party = ["cert_log", "cert_fast_layer", "cert_data_test"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 20
+
+[tool.ruff.format]
+# Use `\n` line endings for all files
+line-ending = "lf"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+style = "pep440"
+
+[tool.poetry-dynamic-versioning.substitution]
+folders = [{ path = "src" }]
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
