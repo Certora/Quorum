@@ -43,7 +43,7 @@ jobs:
         run: poetry run pytest src/quorum/tests --maxfail=1 --disable-warnings --tb=short
       
       - name: Run Quorum setup
-        run: poetry quorum setup --working-dir workdir
+        run: poetry run quorum setup --working-dir workdir
       
       - name: Init working directory
         run: |
