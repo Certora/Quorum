@@ -1,6 +1,7 @@
 # Quorum/entry_points/quorum_cli.py
 
 import argparse
+import argcomplete
 from pydantic import BaseModel
 from typing import Callable, Optional
 
@@ -113,6 +114,8 @@ def main():
         )
         add_arguments(subparser, subcmd.arguments)
         subparser.set_defaults(func=subcmd.func)
+
+    argcomplete.autocomplete(parser)
 
     args = parser.parse_args()
 
