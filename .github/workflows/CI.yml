@@ -40,7 +40,7 @@ jobs:
         run: pytest Quorum/tests --maxfail=1 --disable-warnings --tb=short
       
       - name: Run Quorum setup
-        run: Quorum setup --working_dir workdir
+        run: quorum setup --working-dir workdir
       
       - name: Init working directory
         run: |
