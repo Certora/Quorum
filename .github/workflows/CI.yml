@@ -48,13 +48,23 @@ jobs:
           mv Quorum/tests/ground_truth.json workdir/ground_truth.json
           echo "ETHSCAN_API_KEY=${ETHSCAN_API_KEY}" >> workdir/.env
           echo "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}" >> workdir/.env
-          cd workdir
+          
+      - name: Single Address Test
+        working-directory: workdir
+        run: Quorum validate-address --customer Aave --chain Ethereum --proposal_address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
 
-      - name: Execute Regression Tests
-        run: |
-          pwd
-          Quorum validate-address --customer Aave --chain Ethereum --proposal_address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
-          Quorum validate-batch --config Quorum/tests/regression.json
-          Quorum validate-by-id --proposal_id 137 --customer Aave
-          quorum validate-ipfs --proposal_id 20 --chain Scroll --proposal_address 0x2B25cb729D90630395Cd3140f3460a73A41Fe5f0 
-          Quorum create-report --proposal_id 137
+      - name: Batch Test
+        working-directory: workdir
+        run: Quorum validate-batch --config Quorum/tests/regression.json
+
+      - name: Proposal ID Test
+        working-directory: workdir
+        run: Quorum validate-by-id --proposal_id 137 --customer Aave
+
+      - name: IPFS Test
+        working-directory: workdir
+        run: Quorum validate-ipfs --proposal_id 20 --chain Scroll --proposal_address 0x2B25cb729D90630395Cd3140f3460a73A41Fe5f0
+
+      - name: Create Report
+        working-directory: workdir
+        run: Quorum create-report --proposal_id 137
