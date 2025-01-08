@@ -14,7 +14,7 @@ from Quorum.entry_points.implementations.setup_quorum import run_setup_quorum
 
 
 class Command(BaseModel):
-    name: str
+    name: list[str]
     help: str
     arguments: list[cli_args.Argument]
     func: Callable[[argparse.Namespace], None]
@@ -87,7 +87,7 @@ def add_arguments(parser: argparse.ArgumentParser, arguments: list[cli_args.Argu
     for arg in arguments:
         arg_dict = arg.model_dump()
         name = arg_dict.pop("name")
-        parser.add_argument(name, **arg_dict)
+        parser.add_argument(**name, **arg_dict)
 
 
 def main():

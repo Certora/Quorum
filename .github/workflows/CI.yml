@@ -51,15 +51,15 @@ jobs:
           
       - name: Single Address Test
         working-directory: workdir
-        run: Quorum validate-address --customer Aave --chain Ethereum --proposal_address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
+        run: quorum validate-address --protocol-name Aave --chain Ethereum --payload-address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
 
       - name: Batch Test
         working-directory: workdir
-        run: Quorum validate-batch --config regression.json
+        run: quorum validate-batch --config regression.json
 
       - name: Proposal ID Test
         working-directory: workdir
-        run: Quorum validate-by-id --proposal_id 137 --customer Aave
+        run: quorum validate-by-id --proposal-id 137 --protocol-name Aave
 
       - name: IPFS Test
         working-directory: workdir
