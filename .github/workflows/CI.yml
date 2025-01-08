@@ -55,7 +55,7 @@ jobs:
 
       - name: Batch Test
         working-directory: workdir
-        run: Quorum validate-batch --config Quorum/tests/regression.json
+        run: Quorum validate-batch --config regression.json
 
       - name: Proposal ID Test
         working-directory: workdir
