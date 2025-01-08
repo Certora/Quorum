@@ -12,13 +12,17 @@ jobs:
     env:
       TWINE_USERNAME: ${{ secrets.PYPI_USER }}
       TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      TAG: ${{ github.ref_name }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       
+      - name: Update Quorum version
+        run: echo "QUORUM_VERSION = '$TAG'" > Quorum/__version__.py
+
       - name: Install requirements for publishing
         run: pip3 install build twine
-      
+
       - name: Build distros
         run: python3 -m build
       
