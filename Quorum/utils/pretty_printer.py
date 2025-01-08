@@ -19,8 +19,8 @@ class Colors(StrEnum):
     RESET = '\033[0m'
 
 
-def pprint(message: str, status: Colors, heading: Optional[Heading]=None):
-    s = status + message + Colors.RESET
+def pprint(message: object, status: Colors, heading: Optional[Heading]=None):
+    s = status + str(message) + Colors.RESET
     if heading:
         s += '\n' + heading * len(message) + '\n'
     print(s)
