@@ -47,8 +47,8 @@ jobs:
       
       - name: Init working directory
         run: |
-          mv Quorum/tests/regression.json workdir/regression.json
-          mv Quorum/tests/ground_truth.json workdir/ground_truth.json
+          mv src/quorum/tests/regression.json workdir/regression.json
+          mv src/quorum/tests/ground_truth.json workdir/ground_truth.json
           echo "ETHSCAN_API_KEY=${ETHSCAN_API_KEY}" >> workdir/.env
           echo "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}" >> workdir/.env
           
