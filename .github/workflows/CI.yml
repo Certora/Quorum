@@ -42,7 +42,7 @@ jobs:
       - name: Lint with Ruff
         run: |
           poetry run ruff check src
-          poetry run ruff-format check src
+          poetry run ruff format --check src
 
       - name: Run unit tests
         run: poetry run pytest src/quorum/tests --maxfail=1 --disable-warnings --tb=short
