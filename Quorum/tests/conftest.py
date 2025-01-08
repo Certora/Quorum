@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Generator
 
 from Quorum.apis.block_explorers.source_code import SourceCode
-import Quorum.utils.config as config
+from Quorum.utils.quorum_configuration import QuorumConfiguration
 
 
 RESOURCES_DIR = Path(__file__).parent / 'resources'
@@ -24,11 +24,12 @@ def source_codes(request: pytest.FixtureRequest) -> list[SourceCode]:
 
 @pytest.fixture
 def tmp_output_path() -> Generator[Path, None, None]:
-    og_path = config.MAIN_PATH
-    config.MAIN_PATH = Path(__file__).parent / 'tmp'
-    yield config.MAIN_PATH  # Provide the temporary path to the test
-    shutil.rmtree(config.MAIN_PATH)
-    config.MAIN_PATH = og_path
+    config = QuorumConfiguration()
+    og_path = config.main_path
+    config.main_path = Path(__file__).parent / 'tmp'
+    yield config.main_path  # Provide the temporary path to the test
+    shutil.rmtree(config.main_path)
+    config.main_path = og_path
 
 
 @pytest.fixture

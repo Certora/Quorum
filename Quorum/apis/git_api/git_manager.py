@@ -1,7 +1,7 @@
 from pathlib import Path
 from git import Repo
 
-import Quorum.utils.config as config
+from Quorum.utils.quorum_configuration import QuorumConfiguration
 import Quorum.utils.pretty_printer as pp
 
 class GitManager:
@@ -22,11 +22,12 @@ class GitManager:
             gt_config (dict[str, any]): The ground truth configuration data.
         """
         self.customer = customer
+        self.config = QuorumConfiguration()
         
-        self.modules_path = config.MAIN_PATH / self.customer / "modules"
+        self.modules_path = self.config.main_path / self.customer / "modules"
         self.modules_path.mkdir(parents=True, exist_ok=True)
         
-        self.review_module_path = config.MAIN_PATH / self.customer / "review_module"
+        self.review_module_path = self.config.main_path / self.customer / "review_module"
         self.review_module_path.mkdir(parents=True, exist_ok=True)
 
         self.repos, self.review_repo = self._load_repos_from_file(gt_config)
