@@ -1,6 +1,5 @@
 from Quorum.checks.check import Check
 import Quorum.utils.pretty_printer as pp
-import Quorum.utils.config as config
 from Quorum.llm.chains.first_deposit_chain import FirstDepositChain, ListingArray
 
 
