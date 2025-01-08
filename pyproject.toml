@@ -22,7 +22,7 @@ dynamic = ["version", "dependencies"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
-version = {attr = "Quorum.__version__.QUORUM_VERSION"}
+version = {attr = "Quorum.__version__"}
 
 [project.urls]
 Homepage = "https://github.com/Certora/Quorum"
