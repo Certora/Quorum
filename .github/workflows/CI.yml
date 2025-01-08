@@ -40,7 +40,7 @@ jobs:
         run: poetry install
 
       - name: Run unit tests
-        run: poetry pytest src/quorum/tests --maxfail=1 --disable-warnings --tb=short
+        run: poetry run pytest src/quorum/tests --maxfail=1 --disable-warnings --tb=short
       
       - name: Run Quorum setup
         run: poetry quorum setup --working-dir workdir
