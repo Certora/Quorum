@@ -63,8 +63,8 @@ jobs:
 
       - name: IPFS Test
         working-directory: workdir
-        run: Quorum validate-ipfs --proposal_id 20 --chain Scroll --proposal_address 0x2B25cb729D90630395Cd3140f3460a73A41Fe5f0
+        run: quorum validate-ipfs --proposal-id 20 --chain Scroll --payload-address 0x2B25cb729D90630395Cd3140f3460a73A41Fe5f0
 
       - name: Create Report
         working-directory: workdir
-        run: Quorum create-report --proposal_id 137
+        run: quorum create-report --proposal_id 137
