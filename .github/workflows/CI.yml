@@ -30,4 +30,4 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: ./.github/actions/test_steps.yml
+      - uses: ./.github/actions/test_steps/action.yml
