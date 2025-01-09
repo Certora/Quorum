@@ -20,6 +20,10 @@ jobs:
       - name: Install Poetry
         run: pip3 install poetry==1.8.5
 
+      - name: Install Automatic Versioning
+        run: |
+          poetry self add "poetry-dynamic-versioning[plugin]"
+
       - name: Configure TestPyPI Repository
         run: |
           poetry config repositories.testpypi https://test.pypi.org/legacy/
