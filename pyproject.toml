@@ -4,8 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "certora-quorum"
-description = "Quorum: A tool for managing proposals and reports"
+description = "Quorum: Open-Source Governance Security Tool for Web3 Protocols"
 authors = [
+    {name = "Certora", email = "support@certora.com"},
     {name = "Niv Vaknin", email = "niv@certora.com"},
     {name = "Liav Katry", email = "liav@certora.com"}
 ]
@@ -21,7 +22,7 @@ dynamic = ["version", "dependencies"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
-version = {file = ["version"]}
+version = {attr = "Quorum.__version__"}
 
 [project.urls]
 Homepage = "https://github.com/Certora/Quorum"

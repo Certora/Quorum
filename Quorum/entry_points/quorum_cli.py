@@ -5,6 +5,7 @@ import argcomplete
 from pydantic import BaseModel
 from typing import Callable, Optional
 
+import Quorum
 import Quorum.entry_points.cli_arguments as cli_args
 from Quorum.entry_points.implementations.check_proposal import run_single
 from Quorum.entry_points.implementations.check_proposal_config import run_config
@@ -102,8 +103,12 @@ def main():
         prog="Quorum",
         description="CLI tool for validating and analyzing blockchain governance proposals, including payload verification, IPFS content validation, and report generation."
     )
+    parser.add_argument(
+        '-v', '--version', 
+        action='version',
+        version=f'%(prog)s {Quorum.__version__}'
+    )
     subparsers = parser.add_subparsers(dest="command", required=True)
-
 
     # Iterate over the registry to add subcommands
     for subcmd in COMMAND_REGISTRY:
