@@ -45,6 +45,9 @@ langgraph = "^0.2.61"
 langgraph-checkpoint = "^2.0.9"
 
 
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+
 [tool.ruff]
 target-version = "py311"
 src = ["src"]
@@ -87,6 +90,9 @@ max-complexity = 20
 [tool.ruff.format]
 # Use `\n` line endings for all files
 line-ending = "lf"
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 120
 
 [tool.poetry-dynamic-versioning]
 enable = true
