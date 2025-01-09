@@ -41,13 +41,12 @@ python-dotenv = "^1.0.1"
 json5 = "^0.10.0"
 argcomplete = "^3.5.3"
 charset-normalizer = "^3.4.1"
-poetry-dynamic-versioning = {extras = ["plugin"], version = "^1.5.0"}
 langgraph = "^0.2.61"
 langgraph-checkpoint = "^2.0.9"
 
-
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.5"
+poetry-dynamic-versioning = {extras = ["plugin"], version = "^1.5.0"}
 
 [tool.ruff]
 target-version = "py311"
