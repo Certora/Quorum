@@ -1,5 +1,6 @@
 [project]
 name = "certora-quorum"
+dynamic = ["version"]
 
 [tool.poetry]
 name = "certora-quorum"
