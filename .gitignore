@@ -12,3 +12,4 @@ CustomerClones/
 quorum_project/
 dist/
 .direnv/
+.env
