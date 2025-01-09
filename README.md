@@ -216,7 +216,7 @@ For bulk execution, create a config file (e.g., `config.json`) with the followin
 Then run:
 
 ```bash
-Quorum config --config config.json
+quorum validate-batch --config "/path/to/config.json"
 ```
 
 *(Chains without proposals are automatically skipped.)*
