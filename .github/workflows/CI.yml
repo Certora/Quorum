@@ -23,6 +23,7 @@ jobs:
       ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
       QUORUM_PATH: "Quorum/tests"
       ANTHROPIC_API_KEY: ${{ github.event.review.state == 'approved' && secrets.ANTHROPIC_API_KEY || 'SKIP_TEST_KEY' }}
+      ANTROPIC_MODEL: ${{ secrets.ANTROPIC_MODEL }}
     runs-on: ubuntu-latest
     container:
       image: public.ecr.aws/certora/cvt-image:2024.10.23-4499-c4f8ad4
@@ -56,6 +57,7 @@ jobs:
           mv src/quorum/tests/ground_truth.json workdir/ground_truth.json
           echo "ETHSCAN_API_KEY=${ETHSCAN_API_KEY}" >> workdir/.env
           echo "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}" >> workdir/.env
+          echo "ANTROPIC_MODEL=${ANTROPIC_MODEL}" >> workdir/.env
 
       - name: Single Address Test
         working-directory: workdir

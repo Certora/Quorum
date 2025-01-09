@@ -69,6 +69,8 @@ class QuorumConfiguration:
                 "ANTROPIC_MODEL", "claude-3-5-sonnet-20241022"
             )
 
+            pp.pprint(f"Load model: {self.__anthropic_model}", pp.Colors.INFO)
+
             self.__env_loaded = True
 
     @property
