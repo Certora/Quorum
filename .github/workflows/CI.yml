@@ -45,7 +45,9 @@ jobs:
           poetry run ruff format --check src
 
       - name: Run unit tests
-        run: poetry run pytest src/quorum/tests --maxfail=1 --disable-warnings --tb=short
+        run: |
+          echo $ANTHROPIC_API_KEY
+          poetry run pytest src/quorum/tests --maxfail=1 --disable-warnings --tb=short
       
       - name: Run Quorum setup
         run: poetry run quorum setup --working-dir workdir
