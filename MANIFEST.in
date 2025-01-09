@@ -1,5 +1,4 @@
 include LICENSE
 include version
-include requirements.txt
-include Quorum/templates/*
-recursive-include Quorum *.j2
+include src/quorum/templates/*
+recursive-include src/quorum *.j2

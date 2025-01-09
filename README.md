@@ -216,7 +216,7 @@ For bulk execution, create a config file (e.g., `config.json`) with the followin
 Then run:
 
 ```bash
-Quorum config --config config.json
+quorum validate-batch --config "/path/to/config.json"
 ```
 
 *(Chains without proposals are automatically skipped.)*
@@ -279,6 +279,10 @@ QUORUM_PATH/
 5. **`ground_truth.json`**: Core configuration defining the official repositories and providers.
 
 ---
+
+## Development
+
+For dev guide please refer to [DEVREADME.md](DEVREADME.md)
 
 ## License
 

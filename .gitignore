@@ -11,3 +11,5 @@ CustomerClones/
 !**cached_llm.py
 quorum_project/
 dist/
+.direnv/
+.env

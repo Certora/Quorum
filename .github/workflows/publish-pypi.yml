@@ -3,30 +3,35 @@ name: publish-pypi
 on:
   release:
     types: [published]
-  # workflow_dispatch:  # We may want to add manual publishing as well.
+  # Uncomment the following line to enable manual publishing
+  # workflow_dispatch:
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
-      contents: read
+      contents: write
     env:
-      TWINE_USERNAME: ${{ secrets.PYPI_USER }}
-      TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      TAG: ${{ github.ref_name }}
+      POETRY_DYNAMIC_VERSIONING_BYPASS: ${{ github.ref_name }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
-      - name: Update Quorum version
-        run: echo "__version__ = '$TAG'" > Quorum/__init__.py
 
-      - name: Install requirements for publishing
-        run: pip3 install build twine
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'  # Specify the Python version compatible with your project
 
-      - name: Build distros
-        run: python3 -m build
-      
-      - name: Upload to PyPi
-        run: python3 -m twine upload dist/* --verbose
+      - name: Install Poetry Locally
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "${HOME}/.local/bin" >> $GITHUB_PATH
+
+      - name: Install Automatic Versioning Plugin
+        run: poetry self add "poetry-dynamic-versioning[plugin]"
+
+      - name: Configure PyPI Repository
+        run: poetry config pypi-token.pypi ${{ secrets.PYPI_PASSWORD }}
+
+      - name: "Publish to PyPI with version: ${{ env.POETRY_DYNAMIC_VERSIONING_BYPASS }}"
+        run: poetry publish --build
