@@ -18,9 +18,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
-      - name: Update Quorum version
-        run: echo "__version__ = '$TAG'" > src/quorum/__init__.py
 
       - name: Install requirements for publishing
         run: pip3 install build twine
