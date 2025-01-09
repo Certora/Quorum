@@ -28,15 +28,10 @@ jobs:
           echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
       - name: Install Automatic Versioning Plugin
-        run: |
-          poetry self add "poetry-dynamic-versioning[plugin]"
+        run: poetry self add "poetry-dynamic-versioning[plugin]"
 
       - name: Configure PyPI Repository
-        run: |
-          poetry config pypi-token.pypi ${{ secrets.PYPI_PASSWORD }}
+        run: poetry config pypi-token.pypi ${{ secrets.PYPI_PASSWORD }}
 
-      - name: Publish to PyPI
-        run: |
-          echo "Publishing to PyPI with version: ${{ env.POETRY_DYNAMIC_VERSIONING_BYPASS }}"
-          poetry build
-          poetry publish
+      - name: "Publish to PyPI with version: ${{ env.POETRY_DYNAMIC_VERSIONING_BYPASS }}"
+        run: poetry publish --build
