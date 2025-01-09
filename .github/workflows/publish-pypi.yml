@@ -19,7 +19,7 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: ./.github/actions/test_steps/action.yml
+      - uses: ./.github/actions/test_steps
 
   publish:
     needs: Regression
