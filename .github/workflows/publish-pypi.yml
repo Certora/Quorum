@@ -7,7 +7,7 @@ on:
   # workflow_dispatch:
 
 jobs:
- Regression:
+  Regression:
     env:
       ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
       QUORUM_PATH: "Quorum/tests"
