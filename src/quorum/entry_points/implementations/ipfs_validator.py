@@ -74,10 +74,15 @@ def run_ipfs_validator(args: argparse.Namespace):
     # Initialize the IPFS Validation Chain
     ipfs_validation_chain = IPFSValidationChain()
 
-    # Execute the Chain
-    answer = ipfs_validation_chain.execute(
-        prompt_templates=args.prompt_templates, ipfs=ipfs, payload=payload
-    )
+    try:
+        # Execute the Chain
+        answer = ipfs_validation_chain.execute(
+            prompt_templates=args.prompt_templates, ipfs=ipfs, payload=payload
+        )
+    except Exception as e:
+        pp.pprint(f"Got and error while running LLM: {e}", pp.Colors.FAILURE)
+        pp.pprint("Verify your API key and try again.", pp.Colors.FAILURE)
+        return
 
     if answer.incompatibilities:
         pp.pprint("Found incompatibilities:", pp.Colors.FAILURE)
