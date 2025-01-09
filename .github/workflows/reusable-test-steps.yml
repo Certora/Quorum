@@ -1,14 +1,7 @@
 name: Reusable Test Steps
 
 on:
-  workflow_call:
-    inputs:
-      ETHSCAN_API_KEY:
-        required: true
-        type: string
-      ANTHROPIC_API_KEY:
-        required: true
-        type: string
+  workflow_call:  # Removed inputs block
 
 jobs:
   test:
@@ -19,9 +12,9 @@ jobs:
       id-token: write
       contents: read
     env:
-      ETHSCAN_API_KEY: ${{ inputs.ETHSCAN_API_KEY }}
+      ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
       QUORUM_PATH: "Quorum/tests"
-      ANTHROPIC_API_KEY: ${{ inputs.ANTHROPIC_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

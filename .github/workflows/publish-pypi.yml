@@ -18,9 +18,9 @@ jobs:
       ) &&
       github.event.pull_request.base.ref == 'main'
     uses: ./.github/workflows/reusable-test-steps.yml
-    with:
+    secrets:
       ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      ANTHROPIC_API_KEY: SKIP_TEST_KEY
 
   publish:
     needs: Regression
