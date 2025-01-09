@@ -6,6 +6,7 @@ from collections.abc import Callable
 import argcomplete
 from pydantic import BaseModel
 
+import quorum
 import quorum.entry_points.cli_arguments as cli_args
 from quorum.entry_points.implementations.check_proposal import run_single
 from quorum.entry_points.implementations.check_proposal_config import run_config
@@ -101,6 +102,9 @@ def main():
     parser = argparse.ArgumentParser(
         prog="Quorum",
         description="CLI tool for validating and analyzing blockchain governance proposals, including payload verification, IPFS content validation, and report generation.",
+    )
+    parser.add_argument(
+        "-v", "--version", action="version", version=f"%(prog)s {quorum.__version__}"
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
