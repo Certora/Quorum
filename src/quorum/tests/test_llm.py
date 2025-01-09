@@ -8,6 +8,7 @@ SKIP = QuorumConfiguration().anthropic_api_key == "SKIP_TEST_KEY"
 def test_ipfs_validation_chain(load_ipfs_validation_chain_inputs):
     if SKIP:
         assert True
+        return None
 
     ipfs_content, source_code = load_ipfs_validation_chain_inputs
     chain = IPFSValidationChain()
@@ -31,6 +32,7 @@ def test_ipfs_validation_chain(load_ipfs_validation_chain_inputs):
 def test_first_deposit_chain(first_deposit_chain_input, expected_first_deposit_results):
     if SKIP:
         assert True
+        return None
 
     source_code = first_deposit_chain_input
 
