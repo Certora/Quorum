@@ -280,6 +280,10 @@ QUORUM_PATH/
 
 ---
 
+## Development
+
+For dev guide please refer to [DEVREADME.md](DEVREADME.md)
+
 ## License
 
 Quorum is licensed under the [MIT License](LICENSE).
