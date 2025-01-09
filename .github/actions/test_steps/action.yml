@@ -3,10 +3,6 @@ description: "All the steps required for testing the Quorum repository"
 
 runs:
   using: "composite"
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
     - name: Install Poetry
       run: pip3 install poetry==1.8.5
 

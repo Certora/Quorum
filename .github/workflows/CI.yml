@@ -30,4 +30,7 @@ jobs:
       id-token: write
       contents: read
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - uses: ./.github/actions/test_steps
