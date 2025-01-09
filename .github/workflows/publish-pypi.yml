@@ -27,4 +27,6 @@ jobs:
         run: poetry version ${{ github.ref_name }}
 
       - name: Publish to TestPyPI
+        env:
+            POETRY_DYNAMIC_VERSIONING_BYPASS: ${{ github.ref_name }}
         run: poetry publish --build --repository testpypi
