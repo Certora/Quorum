@@ -177,12 +177,12 @@ quorum validate-by-id --customer "Aave" --proposal_id 137
 quorum validate-ipfs --proposal_id 132 --chain "Ethereum" --proposal_address "0xAD6..."
 ```
 
-### 5. **create-report**
+### 5. **generate-report**
 
 **Purpose:** Generates a human-readable report of the proposal details, leveraging Jinja2 templates.
 
 ```bash
-quorum create-report --proposal_id 137 \
+quorum generate-report --proposal_id 137 \
                      --template "src/quorum/auto_report/AaveReportTemplate.md.j2" \
                      --generate_report_path "reports/v3-137.md"
 ```
