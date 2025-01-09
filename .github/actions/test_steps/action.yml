@@ -3,6 +3,7 @@ description: "All the steps required for testing the Quorum repository"
 
 runs:
   using: "composite"
+  steps:
     - name: Install Poetry
       run: pip3 install poetry==1.8.5
 
@@ -29,7 +30,10 @@ runs:
 
     - name: Single Address Test
       working-directory: workdir
-      run: poetry run quorum validate-address --protocol-name Aave --chain Ethereum --payload-address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
+      run: poetry run quorum validate-address \
+        --protocol-name Aave \
+        --chain Ethereum \
+        --payload-address 0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637
 
     - name: Batch Test
       working-directory: workdir
@@ -37,11 +41,16 @@ runs:
 
     - name: Proposal ID Test
       working-directory: workdir
-      run: poetry run quorum validate-by-id --proposal-id 137 --protocol-name Aave
+      run: poetry run quorum validate-by-id \
+        --proposal-id 137 \
+        --protocol-name Aave
 
     - name: IPFS Test
       working-directory: workdir
-      run: poetry run quorum validate-ipfs --proposal-id 20 --chain Scroll --payload-address 0x2B25cb729D90630395Cd3140f3460a73A41Fe5f0
+      run: poetry run quorum validate-ipfs \
+        --proposal-id 20 \
+        --chain Scroll \
+        --payload-address 0x2B25cb729D90630395Cd3140f3460a73A41Fe5f0
 
     - name: Generate Report
       working-directory: workdir
