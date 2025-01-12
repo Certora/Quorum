@@ -149,7 +149,7 @@ Quorum now provides a **single CLI** with multiple **subcommands** for different
 **Purpose:** Analyzes a single proposal address for a specific customer on a given chain.
 
 ```bash
-quorum validate-address --customer "Aave" --chain "Ethereum" --proposal_address "0xAD6..."
+quorum validate-address --customer "Aave" --chain "Ethereum" --payload_address "0xAD6..."
 ```
 
 ### 2. **validate-batch**
@@ -174,7 +174,7 @@ quorum validate-by-id --customer "Aave" --proposal_id 137
 **Purpose:** Validates whether the IPFS description content aligns with the actual on-chain payload. Uses LLM-based analysis.
 
 ```bash
-quorum validate-ipfs --proposal_id 132 --chain "Ethereum" --proposal_address "0xAD6..."
+quorum validate-ipfs --proposal_id 132 --chain "Ethereum" --payload_address "0xAD6..."
 ```
 
 ### 5. **generate-report**
