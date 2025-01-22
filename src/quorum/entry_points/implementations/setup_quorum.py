@@ -29,11 +29,18 @@ def run_setup_quorum(args: argparse.Namespace):
         shutil.Error: If file copy operations fail
     """
     templates_dir = Path(__file__).parent.parent.parent / "templates"
-    target_dir = args.working_dir.resolve()
+    target_dir: Path = args.working_dir.resolve()
 
     if not target_dir.exists():
         pp.pprint(f"Creating directory: {target_dir}", pp.Colors.INFO)
         target_dir.mkdir(parents=True, exist_ok=True)
+    else:
+        if (target_dir / ".env").exists():
+            pp.pprint(
+                f"Quorum setup .env file already exists in {target_dir}. Skipping setup.",
+                pp.Colors.WARNING,
+            )
+            return
 
     # Collect all file names to copy from the templates directory
     template_files = [
