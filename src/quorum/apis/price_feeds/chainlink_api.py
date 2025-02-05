@@ -23,6 +23,8 @@ class ChainLinkAPI(PriceFeedProviderBase):
         Chain.POLY: "https://reference-data-directory.vercel.app/feeds-matic-mainnet.json",
         Chain.SCROLL: "https://reference-data-directory.vercel.app/feeds-ethereum-mainnet-scroll-1.json",
         Chain.ZK: "https://reference-data-directory.vercel.app/feeds-ethereum-mainnet-zksync-1.json",
+        Chain.LINEA: "https://reference-data-directory.vercel.app/feeds-ethereum-mainnet-linea-1.json",
+        Chain.CELO: "https://reference-data-directory.vercel.app/feeds-celo-mainnet.json",
     }
 
     def _get_price_feed_info(self, chain: Chain, address: str) -> PriceFeedData | None:
