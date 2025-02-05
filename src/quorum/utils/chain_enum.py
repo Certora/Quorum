@@ -18,3 +18,4 @@ class Chain(StrEnum):
     SCROLL = "Scroll"
     ZK = "zkSync"
     LINEA = "Linea"
+    CELO = "Celo"

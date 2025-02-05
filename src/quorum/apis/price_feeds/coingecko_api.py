@@ -24,6 +24,8 @@ class CoinGeckoAPI(PriceFeedProviderBase):
         Chain.POLY: "polygon-pos",
         Chain.SCROLL: "scroll",
         Chain.ZK: "zksync",
+        Chain.LINEA: "linea",
+        Chain.CELO: "celo",
     }
 
     COINGECKO_API_URL = (

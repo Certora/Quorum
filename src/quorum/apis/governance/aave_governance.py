@@ -20,6 +20,7 @@ CHAIN_ID_TO_CHAIN = {
     "534352": Chain.SCROLL,
     "324": Chain.ZK,
     "59144": Chain.LINEA,
+    "42220": Chain.CELO,
 }
 
 
