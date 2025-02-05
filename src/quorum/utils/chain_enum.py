@@ -17,4 +17,4 @@ class Chain(StrEnum):
     POLY = "Polygon"
     SCROLL = "Scroll"
     ZK = "zkSync"
-    LINEA = "LINEA"
+    LINEA = "Linea"
