@@ -9,9 +9,15 @@ class MultisigData(BaseModel):
     MultisigData is a Pydantic model for Safe Multisig data.
     """
 
+    class Config:
+        frozen = True
+
     address: str
     owners: list[str]
     threshold: int
+
+    def __hash__(self) -> int:
+        return hash((self.address, tuple(self.owners), self.threshold))
 
 
 @singleton
