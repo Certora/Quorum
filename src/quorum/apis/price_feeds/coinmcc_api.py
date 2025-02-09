@@ -56,6 +56,7 @@ class CoinMarketCapAPI(PriceFeedProviderBase):
 
         # Update the data with the token address from the platform info
         token_address = price_data["platform"]["token_address"]
+        # Add the proxy address to the price feed data if available
         if token_address:
             price_data.update({"proxy_address": token_address})
         price_data.update({"address": address})
