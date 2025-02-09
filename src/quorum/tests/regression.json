@@ -2,7 +2,8 @@
     "Aave": {
         "Ethereum": {
             "Proposals": [
-                "0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637"
+                "0xAD6c03BF78A3Ee799b86De5aCE32Bb116eD24637",
+                "0xec89aED62B364816e965D27f658163B8877d7D34" // For testing mutlisig address 
             ]
         },
         "Arbitrum": {
