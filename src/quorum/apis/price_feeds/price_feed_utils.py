@@ -17,6 +17,7 @@ class PriceFeedProvider(StrEnum):
     CHAINLINK = "Chainlink"
     CHRONICLE = "Chronicle"
     COINGECKO = "Coingecko"
+    COINMARKETCAP = "CoinMarketCap"
 
 
 class PriceFeedData(BaseModel):

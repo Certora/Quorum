@@ -9,6 +9,6 @@
         ],
         "review_repo": "https://github.com/bgd-labs/aave-proposals-v3",
         "price_feed_providers": ["Chainlink"],
-        "token_validation_providers": ["Coingecko"]
+        "token_validation_providers": ["Coingecko", "CoinMarketCap"]
     }
 }
