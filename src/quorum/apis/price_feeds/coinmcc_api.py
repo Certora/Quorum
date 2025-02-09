@@ -50,8 +50,12 @@ class CoinMarketCapAPI(PriceFeedProviderBase):
         if not price_data:
             return None
 
-        # Check if the platform name matches the provided chain (case-insensitive)
-        if price_data["platform"]["name"].lower() != chain.value.lower():
+        # Check if platform data exists and the platform name matches the provided chain (case-insensitive)
+        if (
+            not price_data.get("platform")
+            or not price_data["platform"].get("name")
+            or price_data["platform"]["name"].lower() != chain.value.lower()
+        ):
             return None
 
         # Update the data with the token address from the platform info
