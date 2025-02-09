@@ -89,6 +89,8 @@ This action will:
    export ETHSCAN_API_KEY="your_etherscan_api_key"
    export ANTHROPIC_API_KEY="your_anthropic_api_key"
    export QUORUM_PATH="/path/to/your/quorum_directory"
+
+   export COINMARKETCAP_API_KEY="your_coinmarketcap_api_key" (Optional only if you want to use CoinMarketCap as a price feed provider)
    ```
 
 2. **Configuration Files**  
@@ -117,6 +119,7 @@ To fully enable Quorum’s checks, set the following:
 - **`ETHSCAN_API_KEY`**: Your Etherscan API key (for block explorer queries).  
 - **`ANTHROPIC_API_KEY`**: Required if you intend to use advanced LLM-based checks (e.g., new listing first deposit checks).  
 - **`QUORUM_PATH`**: Directory path where Quorum stores cloned repos, diffs, logs, etc.
+- **`COINMARKETCAP_API_KEY`**: Optional if you want to use CoinMarketCap as a price feed provider.
 
 ### Setting Variables
 
@@ -126,6 +129,7 @@ To fully enable Quorum’s checks, set the following:
    export ETHSCAN_API_KEY="your_etherscan_api_key"
    export ANTHROPIC_API_KEY="your_anthropic_api_key"
    export QUORUM_PATH="/path/to/quorum_artifacts"
+   export COINMARKETCAP_API_KEY="your_coinmarketcap_api_key"
    ```
 
 2. **`.env` File:**
@@ -134,6 +138,7 @@ To fully enable Quorum’s checks, set the following:
    ETHSCAN_API_KEY=your_etherscan_api_key
    ANTHROPIC_API_KEY=your_anthropic_api_key
    QUORUM_PATH="/path/to/quorum_artifacts"
+   COINMARKETCAP_API_KEY="your_coinmarketcap_api_key"
    ```
 
 *(This file is automatically created by `Quorum setup` if not already present.)*
@@ -238,14 +243,14 @@ Defines each protocol’s repositories and providers:
         ],
         "review_repo": "https://github.com/org/review",
         "price_feed_providers": ["Chainlink", "Chronicle"],
-        "token_validation_providers": ["Coingecko"]
+        "token_validation_providers": ["Coingecko", "CoinMarketCap"]
     }
 }
 ```
 
 ### Currently Supported Providers
 - **Price Feeds**: Chainlink, Chronicle  
-- **Token Validation**: Coingecko  
+- **Token Validation**: Coingecko, CoinMarketCap
 
 ---
 
