@@ -4,6 +4,7 @@ from pathlib import Path
 
 import quorum.utils.pretty_printer as pp
 from quorum.apis.block_explorers.source_code import SourceCode
+from quorum.apis.multisig.safe_api import MultisigData, SafeAPI
 from quorum.apis.price_feeds import PriceFeedData, PriceFeedProviderBase
 from quorum.checks.check import Check
 from quorum.utils.chain_enum import Chain
@@ -36,6 +37,7 @@ class PriceFeedCheck(Check):
             providers (list[PriceFeedProviderInterface]): A list of price feed providers to be used for verification.
         """
         super().__init__(customer, chain, proposal_address, source_codes)
+        self.multisig_api = SafeAPI()
         self.address_pattern = r"0x[a-fA-F0-9]{40}"
         self.price_feed_providers = price_feed_providers
         self.token_providers = token_providers
@@ -83,6 +85,7 @@ class PriceFeedCheck(Check):
         """
         verified_price_feeds: set[PriceFeedCheck.PriceFeedResult] = set()
         verified_tokens: set[PriceFeedCheck.PriceFeedResult] = set()
+        verified_multisigs: set[MultisigData] = set()
         unverified_addresses: set[str] = set()
 
         # Iterate through each source code file to find and verify address variables
@@ -106,6 +109,9 @@ class PriceFeedCheck(Check):
                 elif res := self.__check_address(address, self.token_providers):
                     verified_variables.append(res.price_feed.model_dump())
                     verified_tokens.add(res)
+                elif res := self.multisig_api.get_multisig_info(address):
+                    verified_variables.append(res.model_dump())
+                    verified_multisigs.add(res)
                 else:
                     unverified_addresses.add(address)
 
@@ -113,7 +119,10 @@ class PriceFeedCheck(Check):
                 self._write_to_file(verified_sources_path, verified_variables)
 
         num_addresses = (
-            len(verified_price_feeds) + len(verified_tokens) + len(unverified_addresses)
+            len(verified_price_feeds)
+            + len(verified_tokens)
+            + len(verified_multisigs)
+            + len(unverified_addresses)
         )
         pp.pprint(
             f"{num_addresses} addresses identified in the payload.\n", pp.Colors.INFO
@@ -145,6 +154,20 @@ class PriceFeedCheck(Check):
                 f"\t   Name: {var_res.price_feed.name}\n"
                 f"\t   Symbol: {var_res.price_feed.pair}\n"
                 f"\t   Decimals: {var_res.price_feed.decimals}\n"
+            )
+        pp.pprint(msg, pp.Colors.SUCCESS)
+
+        # Print multisig validation
+        pp.pprint("Multisig Validation", pp.Colors.INFO, pp.Heading.HEADING_3)
+        msg = (
+            f"{len(verified_multisigs)}/{num_addresses} "
+            "were identified as multisig wallets:\n"
+        )
+        for i, var_res in enumerate(verified_multisigs, 1):
+            msg += (
+                f"\t{i}. {var_res.address}\n"
+                f"\t   Owners: {', '.join(var_res.owners)}\n"
+                f"\t   Threshold: {var_res.threshold} / {len(var_res.owners)}\n"
             )
         pp.pprint(msg, pp.Colors.SUCCESS)
 
