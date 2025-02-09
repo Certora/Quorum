@@ -8,6 +8,11 @@ from .price_feed_utils import PriceFeedData, PriceFeedProvider, PriceFeedProvide
 
 @singleton
 class CoinMarketCapAPI(PriceFeedProviderBase):
+    """
+    CoinMarketCapAPI is a class designed to interact with the CoinMarketCap API.
+    It fetches and stores price feed data for various blockchain networks supported by CoinMarketCap.
+    """
+
     COINMARKETCAP_API_URL = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/info"
 
     def __init__(self):
