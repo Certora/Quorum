@@ -20,8 +20,8 @@ class CoinMarketCapAPI(PriceFeedProviderBase):
         self.api_key = os.getenv("COINMARKETCAP_API_KEY")
         if not self.api_key:
             raise ValueError(
-                "CoinMarketCap API key not found in environment variables. "
-                "Please set COINMARKETCAP_API_KEY if you want to use CoinMarketCap API as a price feed provider, "
+                "CoinMarketCap API key not found in environment variables.\n"
+                "Please set COINMARKETCAP_API_KEY if you want to use CoinMarketCap API as a price feed provider,\n"
                 "or remove CoinMarketCapAPI from the list of price feed providers."
             )
 
