@@ -47,6 +47,22 @@ pip install certora-quorum
 pip install git+ssh://git@github.com/Certora/Quorum.git
 ```
 
+### Via `uv`
+
+#### Isolated Installation
+
+*This will install certora-quorum into an isolated virtual environment. This is the preferred method to install pythonic command line tools.*
+
+```bash
+uv tool install certora-quorum
+```
+
+#### Project Installation
+
+```
+uv add certora-quorum
+```
+
 ### Or clone the repository:
 
 ```bash
