@@ -189,3 +189,5 @@ class QuorumConfiguration:
         for i, provider in enumerate(token_providers):
             if provider == price_feeds.PriceFeedProvider.COINGECKO:
                 token_providers[i] = price_feeds.CoinGeckoAPI()
+            if provider == price_feeds.PriceFeedProvider.COINMARKETCAP:
+                token_providers[i] = price_feeds.CoinMarketCapAPI()

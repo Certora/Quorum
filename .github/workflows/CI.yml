@@ -21,6 +21,7 @@ jobs:
       github.event.pull_request.base.ref == 'main'
     env:
       ETHSCAN_API_KEY: ${{ secrets.ETHSCAN_API_KEY }}
+      COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
       QUORUM_PATH: "Quorum/tests"
       ANTHROPIC_API_KEY: SKIP_TEST_KEY
 
@@ -57,6 +58,7 @@ jobs:
           mv src/quorum/tests/ground_truth.json workdir/ground_truth.json
           echo "ETHSCAN_API_KEY=${ETHSCAN_API_KEY}" >> workdir/.env
           echo "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}" >> workdir/.env
+          echo "COINMARKETCAP_API_KEY=${COINMARKETCAP_API_KEY}" >> workdir/.env
 
       - name: Single Address Test
         working-directory: workdir
