@@ -13,3 +13,9 @@ def test_safe_api():
     ]
     assert multisig.threshold == 3
     assert multisig.address == "0xA1c93D2687f7014Aaf588c764E3Ce80aF016229b"
+
+
+def test_non_multisig():
+    api = SafeAPI()
+    non_multisig = api.get_multisig_info("0x0000000000000000000000000000000000000000")
+    assert non_multisig is None
