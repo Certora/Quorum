@@ -29,11 +29,6 @@ class QuorumConfiguration:
         # This dictionary will cache customer configs after loading them from ground_truth.json
         self.__customer_configs: dict[str, Any] = {}
 
-        # Price feed providers must be validated on-the-fly
-        self.__supported_providers = set(
-            price_feeds.PriceFeedProvider.__members__.values()
-        )
-
         # We only load environment variables once
         self.__load_env()
 
@@ -150,23 +145,6 @@ class QuorumConfiguration:
         # 5. Validate and transform the providers
         price_feed_providers = customer_config.get("price_feed_providers", [])
         token_providers = customer_config.get("token_validation_providers", [])
-
-        unsupported = (
-            set(price_feed_providers).union(token_providers)
-            - self.__supported_providers
-        )
-        if unsupported:
-            pp.pprint(
-                f"Unsupported providers for {customer}: {', '.join(unsupported)}",
-                pp.Colors.FAILURE,
-            )
-            # Filter out unsupported ones
-            price_feed_providers = list(
-                set(price_feed_providers) & self.__supported_providers
-            )
-            token_providers = list(set(token_providers) & self.__supported_providers)
-
-        # 6. Replace provider strings with actual API objects
         self._replace_providers_with_objects(price_feed_providers, token_providers)
 
         customer_config["price_feed_providers"] = price_feed_providers
@@ -183,13 +161,23 @@ class QuorumConfiguration:
         Helper method to replace string provider references with actual API objects.
         """
         for i, provider in enumerate(price_feed_providers):
-            if provider == price_feeds.PriceFeedProvider.CHAINLINK:
+            if provider == price_feeds.PriceFeedProvider.CHAINLINK.lower():
                 price_feed_providers[i] = price_feeds.ChainLinkAPI()
-            elif provider == price_feeds.PriceFeedProvider.CHRONICLE:
+            elif provider == price_feeds.PriceFeedProvider.CHRONICLE.lower():
                 price_feed_providers[i] = price_feeds.ChronicleAPI()
+            else:
+                pp.pprint(
+                    f"Unknown price feed provider: {provider}. Skipping...",
+                    pp.Colors.FAILURE,
+                )
 
         for i, provider in enumerate(token_providers):
-            if provider == price_feeds.PriceFeedProvider.COINGECKO:
+            if provider == price_feeds.PriceFeedProvider.COINGECKO.lower():
                 token_providers[i] = price_feeds.CoinGeckoAPI()
-            if provider == price_feeds.PriceFeedProvider.COINMARKETCAP:
+            elif provider == price_feeds.PriceFeedProvider.COINMARKETCAP.lower():
                 token_providers[i] = price_feeds.CoinMarketCapAPI()
+            else:
+                pp.pprint(
+                    f"Unknown token validation provider: {provider}. Skipping...",
+                    pp.Colors.FAILURE,
+                )
