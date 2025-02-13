@@ -6,6 +6,7 @@ import json5 as json
 
 import quorum.apis.price_feeds as price_feeds
 import quorum.utils.pretty_printer as pp
+from quorum.utils.arg_validations import make_dict_lowercase
 from quorum.utils.load_env import load_env_variables
 from quorum.utils.singleton import singleton
 
@@ -135,6 +136,7 @@ class QuorumConfiguration:
         # 3. Load the entire ground truth
         with open(self.ground_truth_path) as f:
             all_customers_config = json.load(f)
+            all_customers_config = make_dict_lowercase(all_customers_config)
 
         # 4. Retrieve the config for the specific customer
         customer_config = all_customers_config.get(customer)

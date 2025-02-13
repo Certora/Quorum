@@ -7,6 +7,22 @@ import quorum.utils.arg_validations as arg_valid
 from quorum.utils.chain_enum import Chain
 
 
+def to_lower_str(value: str) -> str:
+    """Convert the input string to lower case."""
+    return value.lower()
+
+
+def parse_chain_case_insensitive(value: str) -> Chain:
+    """
+    Parse a blockchain chain input in a case-insensitive manner.
+    Returns the Chain enum member matching the input, regardless of case.
+    """
+    for chain in Chain:
+        if chain.value.lower() == value.lower():
+            return chain
+    raise ValueError(f"Invalid chain: {value}")
+
+
 class Argument(BaseModel):
     name: list[str]
     type: Any
@@ -18,24 +34,26 @@ class Argument(BaseModel):
 
 PROTOCOL_NAME_ARGUMENT = Argument(
     name=["--protocol-name", "--protocol_name"],
-    type=str,
+    type=to_lower_str,  # Normalize protocol name to lower case
     required=True,
     help="Protocol name or identifier.",
 )
 
-
 CHAIN_ARGUMENT = Argument(
-    name=["--chain"], type=Chain, required=True, help="Blockchain to target."
+    name=["--chain"],
+    type=parse_chain_case_insensitive,  # Case-insensitive chain parsing
+    required=True,
+    help="Blockchain to target.",
 )
-
 
 PAYLOAD_ADDRESS_ARGUMENT = Argument(
     name=["--payload-address", "--payload_address"],
-    type=arg_valid.validate_address,
+    type=lambda s: arg_valid.validate_address(
+        s
+    ).lower(),  # Normalize address to lower-case
     required=True,
     help="On-chain payload address.",
 )
-
 
 PROPOSAL_ID_ARGUMENT = Argument(
     name=["--proposal-id", "--proposal_id"],
@@ -44,14 +62,12 @@ PROPOSAL_ID_ARGUMENT = Argument(
     help="Identifier of the proposal.",
 )
 
-
 CONFIG_ARGUMENT = Argument(
     name=["--config"],
     type=arg_valid.load_config,
     required=True,
     help="Path to the Json config file.",
 )
-
 
 TEMPLATE_ARGUMENT = Argument(
     name=["--template"],
@@ -61,14 +77,12 @@ TEMPLATE_ARGUMENT = Argument(
     default=Path(__file__).parent.parent / "auto_report/AaveReportTemplate.md.j2",
 )
 
-
 OUTPUT_PATH_ARGUMENT = Argument(
     name=["--output-path", "--output_path"],
     type=Path,
     required=False,
     help="The path to which the report is saved.",
 )
-
 
 PROMPT_TEMPLATES_ARGUMENT = Argument(
     name=["--prompt-templates", "--prompt_templates"],
@@ -78,7 +92,6 @@ PROMPT_TEMPLATES_ARGUMENT = Argument(
     default=["ipfs_validation_prompt_part1.j2", "ipfs_validation_prompt_part2.j2"],
     nargs="+",
 )
-
 
 WORKING_DIR_ARGUMENT = Argument(
     name=["--working-dir", "--working_dir"],
