@@ -19,3 +19,9 @@ class Chain(StrEnum):
     ZK = "zkSync"
     LINEA = "Linea"
     CELO = "Celo"
+
+    @classmethod
+    def _missing_(cls, value):
+        for member in cls:
+            if member.value.lower() == value.lower():
+                return member
