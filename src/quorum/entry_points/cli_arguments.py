@@ -12,17 +12,6 @@ def to_lower_str(value: str) -> str:
     return value.lower()
 
 
-def parse_chain_case_insensitive(value: str) -> Chain:
-    """
-    Parse a blockchain chain input in a case-insensitive manner.
-    Returns the Chain enum member matching the input, regardless of case.
-    """
-    for chain in Chain:
-        if chain.value.lower() == value.lower():
-            return chain
-    raise ValueError(f"Invalid chain: {value}")
-
-
 class Argument(BaseModel):
     name: list[str]
     type: Any
@@ -41,7 +30,7 @@ PROTOCOL_NAME_ARGUMENT = Argument(
 
 CHAIN_ARGUMENT = Argument(
     name=["--chain"],
-    type=parse_chain_case_insensitive,  # Case-insensitive chain parsing
+    type=Chain,  # Case-insensitive chain parsing
     required=True,
     help="Blockchain to target.",
 )
