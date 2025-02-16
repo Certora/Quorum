@@ -9,6 +9,8 @@ from quorum.utils.chain_enum import Chain
 
 def to_lower_str(value: str) -> str:
     """Convert the input string to lower case."""
+    if not isinstance(value, str):
+        raise ValueError(f"Expected a string, but got {value} of type {type(value)}")
     return value.lower()
 
 
