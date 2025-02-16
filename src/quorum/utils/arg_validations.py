@@ -9,6 +9,21 @@ import json5 as json
 import quorum.utils.pretty_printer as pp
 
 
+def make_dict_lowercase(obj: Any) -> Any:
+    """Convert all string elements to lowercase recursively in any nested structure."""
+    if isinstance(obj, dict):
+        return {
+            k.lower() if isinstance(k, str) else k: make_dict_lowercase(v)
+            for k, v in obj.items()
+        }
+    elif isinstance(obj, list):
+        return [make_dict_lowercase(item) for item in obj]
+    elif isinstance(obj, str):
+        return obj.lower()
+    else:
+        return obj
+
+
 def validate_address(address: str) -> str:
     pattern = re.compile(r"^0x[a-fA-F0-9]{40}$")
     if not bool(pattern.match(address)):
@@ -35,8 +50,10 @@ def load_config(config_path: str) -> dict[str, Any] | None:
     try:
         with open(config_path) as file:
             config_data = json.load(file)
+            config_data = make_dict_lowercase(config_data)
         return config_data
     except (FileNotFoundError, JSONDecodeError) as e:
         pp.pprint(
             f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE
         )
+        return None

@@ -34,7 +34,7 @@ def run_config(args: argparse.Namespace) -> None:
         payload_addresses: list[PayloadAddresses] = []
 
         for chain_name, proposals in chains.items():
-            proposal_addresses = proposals.get("Proposals", [])
+            proposal_addresses = proposals.get("proposals", [])
             payload_addresses.append(
                 PayloadAddresses(chain=chain_name, addresses=proposal_addresses)
             )
