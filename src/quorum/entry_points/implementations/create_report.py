@@ -5,6 +5,7 @@ from jinja2 import Environment, FileSystemLoader
 
 import quorum.auto_report.aave_tags as aave_tags
 import quorum.utils.pretty_printer as pp
+from quorum.utils.exceptions import ProposalNotFoundException
 
 
 def run_create_report(args: argparse.Namespace):
@@ -40,7 +41,11 @@ def run_create_report(args: argparse.Namespace):
     pp.pprint(
         f"Retrieving tag information for proposal {args.proposal_id}", pp.Colors.INFO
     )
-    tags = aave_tags.get_aave_tags(args.proposal_id)
+    try:
+        tags = aave_tags.get_aave_tags(args.proposal_id)
+    except ProposalNotFoundException as e:
+        pp.pprint(e, pp.Colors.FAILURE)
+        return
     pp.pprint("Tag information retrieved", pp.Colors.INFO)
 
     report = template.render(tags)

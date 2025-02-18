@@ -2,6 +2,7 @@ import requests
 
 from quorum.apis.governance.data_models import BGDProposalData, PayloadAddresses
 from quorum.utils.chain_enum import Chain
+from quorum.utils.exceptions import ProposalNotFoundException
 
 BASE_BGD_CACHE_REPO = "https://raw.githubusercontent.com/bgd-labs/v3-governance-cache/refs/heads/main/cache"
 PROPOSALS_URL = (
@@ -45,7 +46,10 @@ class AaveGovernanceAPI:
         """
         proposal_data_link = f"{PROPOSALS_URL}/{proposal_id}.json"
         resp = self.session.get(proposal_data_link)
-        resp.raise_for_status()
+        try:
+            resp.raise_for_status()
+        except requests.HTTPError as e:
+            raise ProposalNotFoundException(proposal_id, "Aave", e.response) from e
 
         raw_json = resp.json()
         # Parse into our data model

@@ -15,6 +15,9 @@ BASE_SEATBELT_REPO = "https://github.com/bgd-labs/seatbelt-gov-v3/blob/main/repo
 SEATBELT_PAYLOADS_URL = f"{BASE_SEATBELT_REPO}/payloads"
 
 
+class ProposalInfoNotFoundException(Exception): ...
+
+
 class ChainInfo(BaseModel):
     name: str
     block_explorer_link: str
@@ -65,7 +68,6 @@ def get_aave_tags(proposal_id: int) -> dict[str, Any]:
     """
     api = AaveGovernanceAPI()
     bgd_data: BGDProposalData = api.get_proposal_data(proposal_id)
-
     # Safely unwrap fields (some might be None).
     ipfs_data: IPFSData = bgd_data.ipfs or IPFSData()
     proposal_data: ProposalData = bgd_data.proposal or ProposalData()
