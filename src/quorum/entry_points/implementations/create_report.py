@@ -5,7 +5,7 @@ from jinja2 import Environment, FileSystemLoader
 
 import quorum.auto_report.aave_tags as aave_tags
 import quorum.utils.pretty_printer as pp
-from quorum.utils.exceptions import ProposalNotFoundException
+from quorum.apis.governance.aave_governance import ProposalNotFoundException
 
 
 def run_create_report(args: argparse.Namespace):
