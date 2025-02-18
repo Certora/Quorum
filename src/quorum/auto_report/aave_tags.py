@@ -15,9 +15,6 @@ BASE_SEATBELT_REPO = "https://github.com/bgd-labs/seatbelt-gov-v3/blob/main/repo
 SEATBELT_PAYLOADS_URL = f"{BASE_SEATBELT_REPO}/payloads"
 
 
-class ProposalInfoNotFoundException(Exception): ...
-
-
 class ChainInfo(BaseModel):
     name: str
     block_explorer_link: str
