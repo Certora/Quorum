@@ -65,7 +65,6 @@ def get_aave_tags(proposal_id: int) -> dict[str, Any]:
     """
     api = AaveGovernanceAPI()
     bgd_data: BGDProposalData = api.get_proposal_data(proposal_id)
-
     # Safely unwrap fields (some might be None).
     ipfs_data: IPFSData = bgd_data.ipfs or IPFSData()
     proposal_data: ProposalData = bgd_data.proposal or ProposalData()

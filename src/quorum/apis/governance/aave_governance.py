@@ -24,6 +24,22 @@ CHAIN_ID_TO_CHAIN = {
 }
 
 
+class ProposalNotFoundException(Exception):
+    def __init__(
+        self, proposal_id: int, project_name: str, response: requests.Response
+    ):
+        super().__init__()
+        self.proposal_id = proposal_id
+        self.project_name = project_name
+        self.response = response
+
+    def __str__(self):
+        return (
+            f"Proposal id {self.proposal_id} for {self.project_name} could not be found "
+            f"at url {self.response.url} (error code {self.response.status_code})"
+        )
+
+
 class AaveGovernanceAPI:
     """
     A utility class to interact with the BGD governance cache and retrieve
@@ -45,7 +61,10 @@ class AaveGovernanceAPI:
         """
         proposal_data_link = f"{PROPOSALS_URL}/{proposal_id}.json"
         resp = self.session.get(proposal_data_link)
-        resp.raise_for_status()
+        try:
+            resp.raise_for_status()
+        except requests.HTTPError as e:
+            raise ProposalNotFoundException(proposal_id, "Aave", e.response) from e
 
         raw_json = resp.json()
         # Parse into our data model
