@@ -61,20 +61,27 @@ class GitManager:
     @staticmethod
     def __clone_or_update_for_repo(repo_name: str, repo_url: str, to_path: Path):
         repo_path = to_path / repo_name
+        branch = None
+        if "#" in repo_url:
+            repo_url, branch = repo_url.split("#")
         if repo_path.exists():
             pp.pprint(
-                f"Repository {repo_name} already exists at {repo_path}. Updating repo and submodules.",
+                f"Repository {repo_name} already exists at {repo_path}. Updating repo.",
                 pp.Colors.INFO,
             )
             repo = Repo(repo_path)
+            if branch:
+                repo.git.checkout(branch)
             repo.git.pull()
-            repo.git.submodule("update", "--init", "--recursive")
         else:
             pp.pprint(
                 f"Cloning {repo_name} from URL: {repo_url} to {repo_path}...",
                 pp.Colors.INFO,
             )
-            Repo.clone_from(repo_url, repo_path, multi_options=["--recurse-submodules"])
+            if branch:
+                Repo.clone_from(repo_url, repo_path, branch=branch)
+            else:
+                Repo.clone_from(repo_url, repo_path)
 
     def clone_or_update(self) -> None:
         """
