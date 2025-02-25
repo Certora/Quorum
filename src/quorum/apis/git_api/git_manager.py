@@ -62,8 +62,8 @@ class GitManager:
     def __clone_or_update_for_repo(repo_name: str, repo_url: str, to_path: Path):
         repo_path = to_path / repo_name
         branch = None
-        if "@" in repo_url:
-            repo_url, branch = repo_url.split("@")
+        if "#" in repo_url:
+            repo_url, branch = repo_url.split("#")
         if repo_path.exists():
             pp.pprint(
                 f"Repository {repo_name} already exists at {repo_path}. Updating repo.",

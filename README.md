@@ -251,14 +251,14 @@ quorum validate-batch --config "/path/to/config.json"
 Defines each protocol’s repositories and providers:
 
 Each Repo is cloned and updated automatically (without its submodules).
-To clone a specific branch, append `@branch_name` to the repo URL.
+To clone a specific branch, append `#branch_name` to the repo URL.
 
 ```json
 {
     "ProtocolName": {
         "dev_repos": [
             "https://github.com/org/repo1",
-            "https://github.com/org/repo2@branch_name"
+            "https://github.com/org/repo2#branch_name"
         ],
         "review_repo": "https://github.com/org/review",
         "price_feed_providers": ["Chainlink", "Chronicle"],
