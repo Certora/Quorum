@@ -18,7 +18,7 @@ class CoinMarketCapAPI(PriceFeedProviderBase):
     def __init__(self):
         super().__init__()
         self.api_key = os.getenv("COINMARKETCAP_API_KEY")
-        if not self.api_key or self.api_key == "your_coinmarketcap_api_key":
+        if not self.api_key:
             raise ValueError(
                 "CoinMarketCap API key not found in environment variables.\n"
                 "Please set COINMARKETCAP_API_KEY if you want to use CoinMarketCap API as a price feed provider,\n"
@@ -41,6 +41,8 @@ class CoinMarketCapAPI(PriceFeedProviderBase):
             "address": address,
         }
         response = self.session.get(self.COINMARKETCAP_API_URL, params=parameters)
+        if response.status_code in (401, 403):
+            raise ValueError("Invalid or expired CoinMarketCap API key")
         if not response.ok:
             return None
 
