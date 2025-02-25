@@ -2,7 +2,7 @@
     // Protocol or organization with the same name to be specified in the execution json
     "<protocol_name>":
     {
-        // Main list of repositories for import diff checks
+        // Main list of repositories for import diff checks, to use specific branch use: <repo_url>#<branch_name>
         "dev_repos": [
             "<https://github.com/org/repo1>",
             "<https://github.com/org/repo2>"

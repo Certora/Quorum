@@ -41,6 +41,8 @@ class CoinMarketCapAPI(PriceFeedProviderBase):
             "address": address,
         }
         response = self.session.get(self.COINMARKETCAP_API_URL, params=parameters)
+        if response.status_code in (401, 403):
+            raise ValueError("Invalid or expired CoinMarketCap API key")
         if not response.ok:
             return None
 

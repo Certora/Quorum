@@ -32,6 +32,12 @@
         },
         "zkSync": {
             "Proposals": [] // Insert zkSync proposals address here
+        },
+        "Linea": {
+            "Proposals": [] // Insert Linea proposals address here
+        },
+        "Celo": {
+            "Proposals": [] // Insert Celo proposals address here
         }
     }
 }
