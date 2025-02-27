@@ -44,7 +44,7 @@ class SourceCode:
 
         try:
             contract_ast = solcx.compile_files(
-                tmp_path, output_values=["ast"], stop_after="parsing"
+                tmp_path, output_values=["ast"], stop_after="parsing", allow_empty=True
             )
             contract_name = next(iter(contract_ast.keys()))
             self._parsed_contract = contract_ast[contract_name]["ast"]

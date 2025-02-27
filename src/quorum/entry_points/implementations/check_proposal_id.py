@@ -1,6 +1,11 @@
 import argparse
 
-from quorum.apis.governance.aave_governance import AaveGovernanceAPI
+import quorum.utils.pretty_printer as pp
+from quorum.apis.governance.aave_governance import (
+    AaveGovernanceAPI,
+    ChainNotFoundException,
+    ProposalNotFoundException,
+)
 from quorum.checks.proposal_check import (
     CustomerConfig,
     ProposalConfig,
@@ -36,7 +41,11 @@ def run_proposal_id(args: argparse.Namespace) -> None:
         )
 
     api = CUSTOMER_TO_API[customer_key]
-    payloads_addresses = api.get_all_payloads_addresses(proposal_id)
+    try:
+        payloads_addresses = api.get_all_payloads_addresses(proposal_id)
+    except (ProposalNotFoundException, ChainNotFoundException) as e:
+        pp.pprint(e, pp.Colors.FAILURE)
+        return
     config = ProposalConfig(
         customers_config=[
             CustomerConfig(customer=protocol_name, payload_addresses=payloads_addresses)
