@@ -8,6 +8,8 @@ PROPOSALS_URL = (
     f"{BASE_BGD_CACHE_REPO}/1/0x9AEE0B04504CeF83A65AC3f0e838D0593BCb2BC7/proposals"
 )
 
+NOT_FOUND_STATUS_CODE = 404
+
 CHAIN_ID_TO_CHAIN = {
     "1": Chain.ETH,
     "42161": Chain.ARB,
@@ -37,7 +39,23 @@ class ProposalNotFoundException(Exception):
     def __str__(self):
         return (
             f"Proposal id {self.proposal_id} for {self.project_name} could not be found "
-            f"at url {self.response.url} (error code {self.response.status_code})"
+            f"at url {self.response.url} (error code {self.response.status_code}). "
+            "Most likely Aave's cache repo is not updated."
+        )
+
+
+class ChainNotFoundException(Exception):
+    def __init__(self, chain_id: int, project_name: str, response: requests.Response):
+        super().__init__()
+        self.chain_id = chain_id
+        self.project_name = project_name
+        self.response = response
+
+    def __str__(self):
+        return (
+            f"Chain {CHAIN_ID_TO_CHAIN[str(self.chain_id)]} (id {self.chain_id}) info for {self.project_name} could not be found "
+            f"at url {self.response.url} (error code {self.response.status_code}) "
+            "Most likely Aave's cache repo is not updated."
         )
 
 
@@ -65,7 +83,9 @@ class AaveGovernanceAPI:
         try:
             resp.raise_for_status()
         except requests.HTTPError as e:
-            raise ProposalNotFoundException(proposal_id, "Aave", e.response) from e
+            if resp.status_code == NOT_FOUND_STATUS_CODE:
+                raise ProposalNotFoundException(proposal_id, "Aave", e.response) from e
+            raise
 
         raw_json = resp.json()
         # Parse into our data model
@@ -89,7 +109,12 @@ class AaveGovernanceAPI:
             f"{BASE_BGD_CACHE_REPO}/{chain_id}/{controller}/payloads/{payload_id}.json"
         )
         resp = self.session.get(url)
-        resp.raise_for_status()
+        try:
+            resp.raise_for_status()
+        except requests.HTTPError as e:
+            if resp.status_code == NOT_FOUND_STATUS_CODE:
+                raise ChainNotFoundException(chain_id, "Aave", e.response) from e
+            raise
 
         payload_data = resp.json()
         # We only need the 'target' field from each action
