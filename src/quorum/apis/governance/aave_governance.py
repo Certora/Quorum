@@ -21,6 +21,7 @@ CHAIN_ID_TO_CHAIN = {
     "324": Chain.ZK,
     "59144": Chain.LINEA,
     "42220": Chain.CELO,
+    "146": Chain.SONIC,
 }
 
 

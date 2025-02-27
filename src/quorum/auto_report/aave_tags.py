@@ -50,8 +50,13 @@ AAVE_CHAIN_MAPPING = {
     "324": ChainInfo(
         name="zkSync Era", block_explorer_link="https://era.zksync.network/address"
     ),
-    "59144": ChainInfo(name="Linea", block_explorer_link="https://lineascan.build/"),
-    "42220": ChainInfo(name="Celo", block_explorer_link="https://celo.blockscout.com/"),
+    "59144": ChainInfo(
+        name="Linea", block_explorer_link="https://lineascan.build/address"
+    ),
+    "42220": ChainInfo(
+        name="Celo", block_explorer_link="https://celo.blockscout.com/address"
+    ),
+    "146": ChainInfo(name="Sonic", block_explorer_link="https://sonicscan.org/address"),
 }
 
 

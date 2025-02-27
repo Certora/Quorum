@@ -19,6 +19,7 @@ class Chain(StrEnum):
     ZK = "zkSync"
     LINEA = "Linea"
     CELO = "Celo"
+    SONIC = "Sonic"
 
     @classmethod
     def _missing_(cls, value):

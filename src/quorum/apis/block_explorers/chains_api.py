@@ -31,6 +31,7 @@ class ChainAPI:
         Chain.ZK: 324,
         Chain.LINEA: 59144,
         Chain.CELO: 42220,
+        Chain.SONIC: 146,
     }
 
     BASE_URL = "https://api.etherscan.io/v2/api?chainid={chain_id}&apikey={api_key}"
