@@ -38,6 +38,9 @@
         },
         "Celo": {
             "Proposals": [] // Insert Celo proposals address here
+        },
+        "Sonic": {
+            "Proposals": [] // Insert Sonic proposals address here
         }
     }
 }

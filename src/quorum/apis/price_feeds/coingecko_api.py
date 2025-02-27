@@ -26,6 +26,7 @@ class CoinGeckoAPI(PriceFeedProviderBase):
         Chain.ZK: "zksync",
         Chain.LINEA: "linea",
         Chain.CELO: "celo",
+        Chain.SONIC: "sonic-3",
     }
 
     COINGECKO_API_URL = (
