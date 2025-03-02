@@ -58,7 +58,10 @@ class CoinGeckoAPI(PriceFeedProviderBase):
         network_platform_info: dict = data.get("detail_platforms")
         if not network_platform_info:
             return None
-        details = network_platform_info.get(platform)
+        asset_platform_id = data.get("asset_platform_id")
+        if not asset_platform_id:
+            return None
+        details = network_platform_info.get(asset_platform_id)
         if not details:
             return None
         return PriceFeedData(
