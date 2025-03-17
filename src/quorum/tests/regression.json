@@ -21,7 +21,7 @@
                 "0x6B96B41a531713a141F6EcBbae80715601d0e456"
             ]
         },
-        "BNBChain": {
+        "BNB": {
             "Proposals": [
                 "0xb4F2786984093eaE1D6Be2B4F8c8e3c2cb018b54"
             ]
@@ -51,7 +51,7 @@
                 "0x9d9892256dF8f97d0c15F4494aa5D44D376CC749"
             ]
         },
-        "zkSync": {
+        "ZKsync": {
             "Proposals": [
                 "0xBF9Cb1382b612Eb89F77dc7f97472c16D6e33147"
             ]

@@ -12,11 +12,17 @@
         "Base": {
             "Proposals": [] // Insert Base proposals address here
         },
-        "BNBChain": {
-            "Proposals": [] // Insert BNBChain proposals address here
+        "BNB": {
+            "Proposals": [] // Insert BNB proposals address here
+        },
+        "Celo": {
+            "Proposals": [] // Insert Celo proposals address here
         },
         "Gnosis": {
             "Proposals": [] // Insert Gnosis proposals address here
+        },
+        "Linea": {
+            "Proposals": [] // Insert Linea proposals address here
         },
         "Metis": {
             "Proposals": [] // Insert Metis proposals address here
@@ -30,17 +36,11 @@
         "Scroll": {
             "Proposals": [] // Insert Scroll proposals address here
         },
-        "zkSync": {
-            "Proposals": [] // Insert zkSync proposals address here
-        },
-        "Linea": {
-            "Proposals": [] // Insert Linea proposals address here
-        },
-        "Celo": {
-            "Proposals": [] // Insert Celo proposals address here
-        },
         "Sonic": {
             "Proposals": [] // Insert Sonic proposals address here
+        },
+        "ZKsync": {
+            "Proposals": [] // Insert ZKsync proposals address here
         }
     }
 }
