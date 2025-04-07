@@ -80,7 +80,7 @@ PROMPT_TEMPLATES_ARGUMENT = Argument(
     type=str,
     required=False,
     help="Jinja templates for prompting the LLM.",
-    default=["ipfs_validation_prompt_part1.j2", "ipfs_validation_prompt_part2.j2"],
+    default=["ipfs_validation_prompt.j2"],
     nargs="+",
 )
 
