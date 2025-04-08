@@ -39,7 +39,7 @@ def compile_source_code(
             )
             raise
 
-        # locate the json file in out/build-info
+        # locate the json file in out/build-info (Only one file is expected)
         json_file_path = next(Path("out/build-info").glob("*.json"), None)
         if json_file_path is None:
             pp.pprint(
@@ -77,9 +77,7 @@ def get_source_codes(
                     SourceCode(file_name=source_file_path, file_content=content)
                 )
 
-    return source_codes[
-        ::-1
-    ]  # Reverse the order of source codes (now the first one is the proposal)
+    return source_codes
 
 
 def run_local_proposal(args: argparse.Namespace) -> None:
@@ -102,5 +100,8 @@ def run_local_proposal(args: argparse.Namespace) -> None:
     source_file_paths = compile_source_code(forge_root_path, contract_proposal_path)
     source_codes = get_source_codes(source_file_paths, forge_root_path)
     run_customer_local_validation(
-        customer=protocol_name, chain=chain, source_codes=source_codes
+        customer=protocol_name,
+        chain=chain,
+        source_codes=source_codes,
+        payload_contract=str(contract_proposal_path),
     )

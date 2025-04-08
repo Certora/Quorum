@@ -53,9 +53,7 @@ def load_customer_config(
 
 
 def run_customer_local_validation(
-    customer: str,
-    chain: Chain,
-    source_codes: list[SourceCode],
+    customer: str, chain: Chain, source_codes: list[SourceCode], payload_contract: str
 ) -> None:
     """
     Run local proposal validation for a specific customer and chain.
@@ -84,7 +82,7 @@ def run_customer_local_validation(
     perform_checks(
         customer=customer,
         chain=chain,
-        proposal_address=source_codes[0].file_name,
+        proposal_id=payload_contract,
         source_codes=source_codes,
         price_feed_providers=price_feed_providers,
         token_providers=token_providers,
@@ -173,7 +171,7 @@ def proposals_check(
         perform_checks(
             customer=customer,
             chain=chain,
-            proposal_address=proposal_address,
+            proposal_id=proposal_address,
             source_codes=source_codes,
             price_feed_providers=price_feed_providers,
             token_providers=token_providers,
@@ -183,7 +181,7 @@ def proposals_check(
 def perform_checks(
     customer: str,
     chain: Chain,
-    proposal_address: str,
+    proposal_id: str,
     source_codes: list[SourceCode],
     price_feed_providers: list[PriceFeedProviderBase],
     token_providers: list[PriceFeedProviderBase] | None = None,
@@ -197,8 +195,8 @@ def perform_checks(
     Args:
         customer (str): The customer name or identifier.
         chain (Chain): The blockchain chain name.
-        proposal_address (str): The address of the proposal to check.
-        source_codes (list[str]): List of source code files.
+        proposal_id (str): The proposal address or local path to the proposal.
+        source_codes (list[SourceCode]): List of source code files.
         price_feed_providers (list[PriceFeedProviderBase]): List of price feed providers.
         token_providers (list[PriceFeedProviderBase] | None): List of token validation providers.
     """
@@ -210,7 +208,7 @@ def perform_checks(
         pp.Heading.HEADING_2,
     )
     missing_files = Checks.DiffCheck(
-        customer, chain, proposal_address, source_codes
+        customer, chain, proposal_id, source_codes
     ).find_diffs()
     pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
 
@@ -220,15 +218,13 @@ def perform_checks(
         pp.Colors.INFO,
         pp.Heading.HEADING_2,
     )
-    Checks.ReviewDiffCheck(
-        customer, chain, proposal_address, missing_files
-    ).find_diffs()
+    Checks.ReviewDiffCheck(customer, chain, proposal_id, missing_files).find_diffs()
     pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
 
     # Global variables check
     pp.pprint("Check 3 - Global variables", pp.Colors.INFO, pp.Heading.HEADING_2)
     Checks.GlobalVariableCheck(
-        customer, chain, proposal_address, missing_files
+        customer, chain, proposal_id, missing_files
     ).check_global_variables()
     pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
 
@@ -241,7 +237,7 @@ def perform_checks(
     Checks.PriceFeedCheck(
         customer,
         chain,
-        proposal_address,
+        proposal_id,
         missing_files,
         price_feed_providers,
         token_providers,
@@ -255,6 +251,6 @@ def perform_checks(
         pp.Heading.HEADING_2,
     )
     Checks.NewListingCheck(
-        customer, chain, proposal_address, missing_files
+        customer, chain, proposal_id, missing_files
     ).new_listing_check()
     pp.pprint(pp.SEPARATOR_LINE, pp.Colors.INFO)
