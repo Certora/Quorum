@@ -170,7 +170,7 @@ Quorum now provides a **single CLI** with multiple **subcommands** for different
 **Purpose:** Analyzes a single proposal address for a specific customer on a given chain.
 
 ```bash
-quorum validate-address --customer "Aave" --chain "Ethereum" --payload_address "0xAD6..."
+quorum validate-address --protocol-name "Aave" --chain "Ethereum" --payload_address "0xAD6..."
 ```
 
 ### 2. **validate-batch**
@@ -187,7 +187,7 @@ quorum validate-batch --config "/path/to/config.json"
 **Purpose:** Looks up all payload addresses for a single proposal ID (useful for proposals containing multiple payloads).
 
 ```bash
-quorum validate-by-id --customer "Aave" --proposal_id 137
+quorum validate-by-id --protocol-name "Aave" --proposal_id 137
 ```
 
 ### 4. **validate-ipfs**
@@ -218,6 +218,19 @@ quorum setup --working_dir "/home/user/quorum_project"
 
 *(Refer to “**Quick Setup**” for details.)*
 
+### 7. **validate-local-payload**
+
+**Purpose:** Checks a local payload contract. This is useful for validating contracts that are not yet deployed on-chain.
+
+```bash
+quorum validate-local-payload --protocol-name Aave --chain Ethereum --forge-root-path /Users/your_username/your_forge_root_path --contract-proposal-path src/../your_contract_path_here
+```
+
+**Note:** This command only works with forge installed in your system and the command:
+```bash
+forge build --contracts <path_to_your_contracts> 
+```
+is working in the path <forge-root-path> independently of the Quorum tool.
 ---
 
 ## Example Usage with Config File
