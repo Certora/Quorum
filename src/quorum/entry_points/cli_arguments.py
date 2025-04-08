@@ -30,12 +30,14 @@ PROTOCOL_NAME_ARGUMENT = Argument(
     help="Protocol name or identifier.",
 )
 
+
 CHAIN_ARGUMENT = Argument(
     name=["--chain"],
     type=Chain,  # Case-insensitive chain parsing
     required=True,
     help="Blockchain to target.",
 )
+
 
 PAYLOAD_ADDRESS_ARGUMENT = Argument(
     name=["--payload-address", "--payload_address"],
@@ -46,6 +48,7 @@ PAYLOAD_ADDRESS_ARGUMENT = Argument(
     help="On-chain payload address.",
 )
 
+
 PROPOSAL_ID_ARGUMENT = Argument(
     name=["--proposal-id", "--proposal_id"],
     type=int,
@@ -53,12 +56,14 @@ PROPOSAL_ID_ARGUMENT = Argument(
     help="Identifier of the proposal.",
 )
 
+
 CONFIG_ARGUMENT = Argument(
     name=["--config"],
     type=arg_valid.load_config,
     required=True,
     help="Path to the Json config file.",
 )
+
 
 TEMPLATE_ARGUMENT = Argument(
     name=["--template"],
@@ -68,12 +73,14 @@ TEMPLATE_ARGUMENT = Argument(
     default=Path(__file__).parent.parent / "auto_report/AaveReportTemplate.md.j2",
 )
 
+
 OUTPUT_PATH_ARGUMENT = Argument(
     name=["--output-path", "--output_path"],
     type=Path,
     required=False,
     help="The path to which the report is saved.",
 )
+
 
 PROMPT_TEMPLATES_ARGUMENT = Argument(
     name=["--prompt-templates", "--prompt_templates"],
@@ -90,4 +97,20 @@ WORKING_DIR_ARGUMENT = Argument(
     required=False,
     help="Specifies the path in which the project will be created. \n Note that all validations will have to run from this directory!",
     default=Path.cwd() / "quorum_project",
+)
+
+
+FORGE_ROOT_PATH_ARGUMENT = Argument(
+    name=["--forge-root-path", "--forge_root_path"],
+    type=Path,
+    required=True,
+    help="The path to the forge root directory.",
+)
+
+
+CONTRACT_PROPOSAL_PATH_ARGUMENT = Argument(
+    name=["--contract-proposal-path", "--contract_proposal_path"],
+    type=Path,
+    required=True,
+    help="The path to the contract proposal file.",
 )

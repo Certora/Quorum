@@ -8,6 +8,7 @@ from pydantic import BaseModel
 
 import quorum
 import quorum.entry_points.cli_arguments as cli_args
+from quorum.entry_points.implementations.check_local_proposal import run_local_proposal
 from quorum.entry_points.implementations.check_proposal import run_single
 from quorum.entry_points.implementations.check_proposal_config import run_config
 from quorum.entry_points.implementations.check_proposal_id import run_proposal_id
@@ -78,6 +79,18 @@ COMMAND_REGISTRY = [
             cli_args.OUTPUT_PATH_ARGUMENT,
         ],
         func=run_create_report,
+    ),
+    Command(
+        name="validate-local-payload",
+        aliases=["validate_local_payload"],
+        help="Check a local proposal against a Quorum configuration.",
+        arguments=[
+            cli_args.PROTOCOL_NAME_ARGUMENT,
+            cli_args.CHAIN_ARGUMENT,
+            cli_args.FORGE_ROOT_PATH_ARGUMENT,
+            cli_args.CONTRACT_PROPOSAL_PATH_ARGUMENT,
+        ],
+        func=run_local_proposal,
     ),
 ]
 
