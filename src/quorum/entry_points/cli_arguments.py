@@ -104,7 +104,7 @@ FORGE_ROOT_PATH_ARGUMENT = Argument(
     name=["--forge-root-path", "--forge_root_path"],
     type=Path,
     required=True,
-    help="The path to the forge root directory.",
+    help="The path to where the command forge build --contracts <contract_proposal_path> is working.",
 )
 
 
