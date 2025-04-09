@@ -93,7 +93,7 @@ def get_source_codes(
                     )
             except Exception as e:
                 pp.pprint(
-                    f"Error reading source file {source_file_path} the file wont be checked!!: {e!s}",
+                    f"Error reading source file {source_file_path} the file wont be checked!!: {e}",
                     status=pp.Colors.FAILURE,
                     heading="File Read Error",
                 )
