@@ -47,7 +47,7 @@ def compile_source_code(
             raise
         except OSError as e:
             pp.pprint(
-                f"System error while executing forge: {e!s}",
+                f"System error while executing forge: {e}",
                 status=pp.Colors.FAILURE,
                 heading="System Error",
             )
