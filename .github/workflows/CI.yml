@@ -91,5 +91,5 @@ jobs:
       - name: Test Pre-Deployment Mode
         working-directory: workdir
         run: |
-          git clone --recursive git@github.com:bgd-labs/aave-proposals-v3.git
+          git clone --recursive https://github.com/bgd-labs/aave-proposals-v3.git
           poetry run quorum validate-local-payload --protocol-name Aave --chain Ethereum --forge-root-path aave-proposals-v3 --contract-proposal-path src/20250404_AaveV3Ethereum_RequestForBountyPayoutMarch2025/AaveV3Ethereum_RequestForBountyPayoutMarch2025_20250404.sol
