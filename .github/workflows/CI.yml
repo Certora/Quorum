@@ -35,6 +35,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Forge
+        shell: bash
+        run: |
+          curl -L https://foundry.paradigm.xyz | bash
+          . $HOME/.bashrc
+          foundryup
+          forge --version
+          echo "$HOME/.foundry/bin" >> $GITHUB_PATH
+
       - name: Install Poetry
         run: pip3 install poetry==1.8.5
 
@@ -79,3 +88,9 @@ jobs:
       - name: Generate Report
         working-directory: workdir
         run: poetry run quorum generate-report --proposal_id 137
+      
+      - name: Test Pre-Deployment Mode
+        working-directory: workdir
+        run: |
+          git clone --recursive https://github.com/bgd-labs/aave-proposals-v3.git
+          poetry run quorum validate-local-payload --protocol-name Aave --chain Ethereum --forge-root-path aave-proposals-v3 --contract-proposal-path src/20250404_AaveV3Ethereum_RequestForBountyPayoutMarch2025/AaveV3Ethereum_RequestForBountyPayoutMarch2025_20250404.sol
