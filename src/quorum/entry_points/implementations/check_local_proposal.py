@@ -1,6 +1,7 @@
 import argparse
 import json
 import subprocess
+import tempfile
 from pathlib import Path
 
 import quorum.utils.pretty_printer as pp
@@ -10,7 +11,7 @@ from quorum.utils.change_directory import change_directory
 
 
 def compile_source_code(
-    forge_root_path: Path, contract_proposal_path: Path
+    forge_root_path: Path, contract_proposal_path: Path, target_dir: str
 ) -> list[str]:
     """
     Compile the Solidity source code using Forge.
@@ -18,15 +19,24 @@ def compile_source_code(
     Args:
         forge_root_path (Path): Path to the forge root directory.
         contract_proposal_path (Path): Path to the contract proposal file.
+        target_dir (str): Target directory for the compiled output.
 
     Returns:
         list[str]: A list of source file paths.
 
     """
+    out_dir = Path(target_dir) / "out"
     with change_directory(forge_root_path):
         try:
             subprocess.run(
-                ["forge", "build", "--contracts", str(contract_proposal_path)],
+                [
+                    "forge",
+                    "build",
+                    "--contracts",
+                    str(contract_proposal_path),
+                    "--out",
+                    str(out_dir),
+                ],
                 check=True,
                 capture_output=True,
                 text=True,
@@ -54,7 +64,8 @@ def compile_source_code(
             raise
 
         # locate the json file in out/build-info (Only one file is expected)
-        json_file_path = next(Path("out/build-info").glob("*.json"), None)
+        build_info_dir = out_dir / "build-info"
+        json_file_path = next(build_info_dir.glob("*.json"), None)
         if json_file_path is None:
             pp.pprint(
                 "No JSON file found in out/build-info.",
@@ -119,8 +130,13 @@ def run_local_proposal(args: argparse.Namespace) -> None:
         args.forge_root_path,
         args.contract_proposal_path,
     )
-    source_file_paths = compile_source_code(forge_root_path, contract_proposal_path)
-    source_codes = get_source_codes(forge_root_path, source_file_paths)
+
+    with tempfile.TemporaryDirectory(prefix="quorum-forge-") as tmp:
+        source_file_paths = compile_source_code(
+            forge_root_path, contract_proposal_path, tmp
+        )
+        source_codes = get_source_codes(forge_root_path, source_file_paths)
+
     run_customer_local_validation(
         customer=protocol_name,
         chain=chain,
