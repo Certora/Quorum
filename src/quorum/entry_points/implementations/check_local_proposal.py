@@ -87,7 +87,7 @@ def get_source_codes(
         for source_file_path in source_file_paths:
             try:
                 with open(source_file_path) as file:
-                    content = file.readlines()
+                    content = file.read().splitlines()
                     source_codes.append(
                         SourceCode(file_name=source_file_path, file_content=content)
                     )
