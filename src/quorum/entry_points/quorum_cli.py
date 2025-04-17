@@ -22,7 +22,6 @@ class Command(BaseModel):
     help: str
     arguments: list[cli_args.Argument]
     func: Callable[[argparse.Namespace], None]
-    aliases: list[str] | None = []
 
 
 COMMAND_REGISTRY = [
@@ -34,7 +33,6 @@ COMMAND_REGISTRY = [
     ),
     Command(
         name="validate-address",
-        aliases=["validate_address"],
         help="Validate a single on-chain payload by address.",
         arguments=[
             cli_args.PROTOCOL_NAME_ARGUMENT,
@@ -45,21 +43,18 @@ COMMAND_REGISTRY = [
     ),
     Command(
         name="validate-batch",
-        aliases=["validate_batch"],
         help="Run a batch check from a JSON config file.",
         arguments=[cli_args.CONFIG_ARGUMENT],
         func=run_config,
     ),
     Command(
         name="validate-by-id",
-        aliases=["validate_by_id"],
         help="Validate a single on-chain proposal by passing the protocol name and id.",
         arguments=[cli_args.PROTOCOL_NAME_ARGUMENT, cli_args.PROPOSAL_ID_ARGUMENT],
         func=run_proposal_id,
     ),
     Command(
         name="validate-ipfs",
-        aliases=["validate_ipfs"],
         help="Compare IPFS content with a proposal's payload.",
         arguments=[
             cli_args.PROPOSAL_ID_ARGUMENT,
@@ -71,7 +66,6 @@ COMMAND_REGISTRY = [
     ),
     Command(
         name="generate-report",
-        aliases=["generate_report"],
         help="Generates a proposal report based on provided JINJA2 template.",
         arguments=[
             cli_args.PROPOSAL_ID_ARGUMENT,
@@ -82,8 +76,7 @@ COMMAND_REGISTRY = [
     ),
     Command(
         name="validate-local-payload",
-        aliases=["validate_local_payload"],
-        help="Check a local proposal against a Quorum configuration.",
+        help="validate a single local payload",
         arguments=[
             cli_args.PROTOCOL_NAME_ARGUMENT,
             cli_args.CHAIN_ARGUMENT,
@@ -108,7 +101,7 @@ def add_arguments(
     for arg in arguments:
         arg_dict = arg.model_dump()
         name = arg_dict.pop("name")
-        parser.add_argument(*name, **arg_dict)
+        parser.add_argument(name, **arg_dict)
 
 
 def main():
@@ -123,9 +116,7 @@ def main():
 
     # Iterate over the registry to add subcommands
     for subcmd in COMMAND_REGISTRY:
-        subparser = subparsers.add_parser(
-            subcmd.name, aliases=subcmd.aliases, help=subcmd.help
-        )
+        subparser = subparsers.add_parser(subcmd.name, help=subcmd.help)
         add_arguments(subparser, subcmd.arguments)
         subparser.set_defaults(func=subcmd.func)
 

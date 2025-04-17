@@ -15,7 +15,7 @@ def to_lower_str(value: str) -> str:
 
 
 class Argument(BaseModel):
-    name: list[str]
+    name: str
     type: Any
     required: bool
     help: str
@@ -24,7 +24,7 @@ class Argument(BaseModel):
 
 
 PROTOCOL_NAME_ARGUMENT = Argument(
-    name=["--protocol-name", "--protocol_name"],
+    name="--protocol-name",
     type=to_lower_str,  # Normalize protocol name to lower case
     required=True,
     help="Protocol name or identifier.",
@@ -32,7 +32,7 @@ PROTOCOL_NAME_ARGUMENT = Argument(
 
 
 CHAIN_ARGUMENT = Argument(
-    name=["--chain"],
+    name="--chain",
     type=Chain,  # Case-insensitive chain parsing
     required=True,
     help="Blockchain to target.",
@@ -40,7 +40,7 @@ CHAIN_ARGUMENT = Argument(
 
 
 PAYLOAD_ADDRESS_ARGUMENT = Argument(
-    name=["--payload-address", "--payload_address"],
+    name="--payload-address",
     type=lambda s: arg_valid.validate_address(
         s
     ).lower(),  # Normalize address to lower-case
@@ -50,7 +50,7 @@ PAYLOAD_ADDRESS_ARGUMENT = Argument(
 
 
 PROPOSAL_ID_ARGUMENT = Argument(
-    name=["--proposal-id", "--proposal_id"],
+    name="--proposal-id",
     type=int,
     required=True,
     help="Identifier of the proposal.",
@@ -58,7 +58,7 @@ PROPOSAL_ID_ARGUMENT = Argument(
 
 
 CONFIG_ARGUMENT = Argument(
-    name=["--config"],
+    name="--config",
     type=arg_valid.load_config,
     required=True,
     help="Path to the Json config file.",
@@ -66,7 +66,7 @@ CONFIG_ARGUMENT = Argument(
 
 
 TEMPLATE_ARGUMENT = Argument(
-    name=["--template"],
+    name="--template",
     type=Path,
     required=False,
     help="Path to a Jinja2 template file that defines the output report format.",
@@ -75,7 +75,7 @@ TEMPLATE_ARGUMENT = Argument(
 
 
 OUTPUT_PATH_ARGUMENT = Argument(
-    name=["--output-path", "--output_path"],
+    name="--output-path",
     type=Path,
     required=False,
     help="The path to which the report is saved.",
@@ -83,7 +83,7 @@ OUTPUT_PATH_ARGUMENT = Argument(
 
 
 PROMPT_TEMPLATES_ARGUMENT = Argument(
-    name=["--prompt-templates", "--prompt_templates"],
+    name="--prompt-templates",
     type=str,
     required=False,
     help="Jinja templates for prompting the LLM.",
@@ -92,7 +92,7 @@ PROMPT_TEMPLATES_ARGUMENT = Argument(
 )
 
 WORKING_DIR_ARGUMENT = Argument(
-    name=["--working-dir", "--working_dir"],
+    name="--working-dir",
     type=Path,
     required=False,
     help="Specifies the path in which the project will be created. \n Note that all validations will have to run from this directory!",
@@ -101,7 +101,7 @@ WORKING_DIR_ARGUMENT = Argument(
 
 
 FORGE_ROOT_PATH_ARGUMENT = Argument(
-    name=["--forge-root-path", "--forge_root_path"],
+    name="--forge-root-path",
     type=Path,
     required=True,
     help="The path to where the command forge build --contracts <contract_proposal_path> is working.",
@@ -109,7 +109,7 @@ FORGE_ROOT_PATH_ARGUMENT = Argument(
 
 
 CONTRACT_PROPOSAL_PATH_ARGUMENT = Argument(
-    name=["--contract-proposal-path", "--contract_proposal_path"],
+    name="--contract-proposal-path",
     type=Path,
     required=True,
     help="The path to the contract proposal file.",
