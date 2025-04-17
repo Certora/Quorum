@@ -87,7 +87,7 @@ jobs:
 
       - name: Generate Report
         working-directory: workdir
-        run: poetry run quorum generate-report --proposal_id 137
+        run: poetry run quorum generate-report --proposal-id 137
       
       - name: Test Pre-Deployment Mode
         working-directory: workdir
