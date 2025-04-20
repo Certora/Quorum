@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import quorum.utils.pretty_printer as pp
 
 
-def load_env_variables(dotenv_path: Path = Path.cwd()) -> None:
+def load_env_variables(dotenv_path: Path = Path.cwd() / ".env") -> None:
     # Capture the environment variables before loading .env
     env_before = dict(os.environ)
 
