@@ -6,12 +6,12 @@ from dotenv import load_dotenv
 import quorum.utils.pretty_printer as pp
 
 
-def load_env_variables():
+def load_env_variables(dotenv_path: Path = Path.cwd()) -> None:
     # Capture the environment variables before loading .env
     env_before = dict(os.environ)
 
     # Load .env with override=True
-    load_dotenv(dotenv_path=Path.cwd() / ".env", override=True)
+    load_dotenv(dotenv_path=dotenv_path, override=True)
 
     # Capture the environment variables after loading .env
     env_after = dict(os.environ)
