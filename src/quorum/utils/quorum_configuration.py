@@ -38,14 +38,19 @@ class QuorumConfiguration:
         This is called once in __init__ to ensure we have a minimal environment loaded.
         """
         if not self.__env_loaded:
-            # 1. Load .env variables
-            load_env_variables()
-
-            # 2. Main path
+            # 1. Load environment variables from the .env file
             main_path = os.getenv("QUORUM_PATH")
+            if main_path:
+                load_env_variables(Path(main_path).absolute())
+            else:
+                # Load environment variables from the default path
+                load_env_variables()
+                main_path = os.getenv("QUORUM_PATH")
+
             if not main_path:
                 raise ValueError("QUORUM_PATH environment variable not set")
 
+            # 2. Set up the main path and ground truth path
             self.__main_path = Path(main_path).absolute()
             if not self.__main_path.exists():
                 self.__main_path.mkdir(parents=True)
