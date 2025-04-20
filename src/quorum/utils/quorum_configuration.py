@@ -40,39 +40,17 @@ class QuorumConfiguration:
         if not self.__env_loaded:
             # 1. Load environment variables from the .env file
             main_path = os.getenv("QUORUM_PATH")
-            pp.pprint(
-                f"1: QUORUM_PATH environment variable: {main_path}",
-                pp.Colors.INFO,
-            )
             if main_path:
-                pp.pprint(
-                    f"Loading environment variables from {Path(main_path).absolute()}",
-                    pp.Colors.INFO,
-                )
                 load_env_variables(Path(main_path).absolute())
             else:
-                pp.pprint(
-                    "QUORUM_PATH environment variable not set. "
-                    "Loading environment variables from the default path.",
-                    pp.Colors.WARNING,
-                )
                 # Load environment variables from the default path
                 load_env_variables()
                 main_path = os.getenv("QUORUM_PATH")
-
-            pp.pprint(
-                f"2: QUORUM_PATH environment variable: {main_path}",
-                pp.Colors.INFO,
-            )
 
             if not main_path:
                 raise ValueError("QUORUM_PATH environment variable not set")
 
             # 2. Set up the main path and ground truth path
-            pp.pprint(
-                f"3: Setting up main path: {Path(main_path).absolute()}",
-                pp.Colors.INFO,
-            )
             self.__main_path = Path(main_path).absolute()
             if not self.__main_path.exists():
                 self.__main_path.mkdir(parents=True)
