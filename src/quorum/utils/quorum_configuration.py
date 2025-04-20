@@ -7,6 +7,7 @@ import json5 as json
 import quorum.apis.price_feeds as price_feeds
 import quorum.utils.pretty_printer as pp
 from quorum.utils.arg_validations import make_dict_lowercase
+from quorum.utils.change_directory import change_directory
 from quorum.utils.load_env import load_env_variables
 from quorum.utils.singleton import singleton
 
@@ -38,14 +39,21 @@ class QuorumConfiguration:
         This is called once in __init__ to ensure we have a minimal environment loaded.
         """
         if not self.__env_loaded:
-            # 1. Load .env variables
-            load_env_variables()
-
-            # 2. Main path
+            # 1. Load environment variables from the .env file
             main_path = os.getenv("QUORUM_PATH")
+            if main_path:
+                # Load environment variables from the specified path
+                with change_directory(main_path):
+                    load_env_variables()
+            else:
+                # Load environment variables from the default path
+                load_env_variables()
+                main_path = os.getenv("QUORUM_PATH")
+
             if not main_path:
                 raise ValueError("QUORUM_PATH environment variable not set")
 
+            # 2. Set up the main path and ground truth path
             self.__main_path = Path(main_path).absolute()
             if not self.__main_path.exists():
                 self.__main_path.mkdir(parents=True)
