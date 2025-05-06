@@ -114,3 +114,10 @@ CONTRACT_PROPOSAL_PATH_ARGUMENT = Argument(
     required=True,
     help="The path to the contract proposal file.",
 )
+
+CONTRACT_NAME_ARGUMENT = Argument(
+    name="--contract-name",
+    type=arg_valid.validate_contract_name,
+    required=True,
+    help="The name of the contract to be validated (for example, MyContract.sol).",
+)

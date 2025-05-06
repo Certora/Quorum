@@ -60,6 +60,7 @@ COMMAND_REGISTRY = [
             cli_args.PROPOSAL_ID_ARGUMENT,
             cli_args.CHAIN_ARGUMENT,
             cli_args.PAYLOAD_ADDRESS_ARGUMENT,
+            cli_args.CONTRACT_NAME_ARGUMENT,
             cli_args.PROMPT_TEMPLATES_ARGUMENT,
         ],
         func=run_ipfs_validator,

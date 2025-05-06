@@ -66,7 +66,16 @@ def run_ipfs_validator(args: argparse.Namespace):
     source_codes = block_explorer.get_source_code(args.payload_address)
     if not source_codes:
         raise ValueError("No source codes found for the given proposal address.")
-    payload = "\n".join(source_codes[0].file_content)
+    # Extract the CONTRACT_NAME code source from the source codes
+    contract_name = args.contract_name
+    source_code = next(
+        (code for code in source_codes if contract_name in code.file_name),
+        None,
+    )
+    if not source_code:
+        raise ValueError(f"No source code found for the contract name: {contract_name}")
+
+    payload = "\n".join(source_code.file_content)
 
     # Fetch IPFS content
     ipfs = get_raw_ipfs(args.proposal_id)

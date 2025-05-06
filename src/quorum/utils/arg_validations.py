@@ -57,3 +57,21 @@ def load_config(config_path: str) -> dict[str, Any] | None:
             f"Failed to parse given config file {config_path}:\n{e}", pp.Colors.FAILURE
         )
         return None
+
+
+def validate_contract_name(name: str) -> str:
+    """
+    Validate the contract name.
+
+    Args:
+        name (str): The contract name to validate.
+
+    Returns:
+        str: The validated contract name.
+
+    Raises:
+        ArgumentTypeError: If the contract name is invalid.
+    """
+    if not (isinstance(name, str) and name.endswith(".sol")):
+        raise ArgumentTypeError(f"{name} is not a valid contract name.")
+    return name
