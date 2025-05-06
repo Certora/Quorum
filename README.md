@@ -195,7 +195,7 @@ quorum validate-by-id --protocol-name "Aave" --proposal-id 137
 **Purpose:** Validates whether the IPFS description content aligns with the actual on-chain payload. Uses LLM-based analysis.
 
 ```bash
-quorum validate-ipfs --proposal-id 132 --chain "Ethereum" --payload-address "0xAD6..."
+quorum validate-ipfs --proposal-id 132 --contract-name "MyContract.sol" --chain "Ethereum" --payload-address "0xAD6..."
 ```
 
 ### 5. **generate-report**
