@@ -82,7 +82,7 @@ def run_customer_local_validation(
     perform_checks(
         customer=customer,
         chain=chain,
-        proposal_id=payload_contract,
+        proposal_id=payload_contract.removesuffix(".sol"),
         source_codes=source_codes,
         price_feed_providers=price_feed_providers,
         token_providers=token_providers,
