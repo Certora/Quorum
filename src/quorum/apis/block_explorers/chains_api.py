@@ -1,4 +1,5 @@
 import os
+import time
 from json.decoder import JSONDecodeError
 
 import json5 as json
@@ -125,6 +126,7 @@ class ChainAPI:
         Raises:
             ValueError: If the contract address is invalid or no bytecode can be retrieved.
         """
+
         result = ContractAnalysisResult()
 
         try:
@@ -133,6 +135,9 @@ class ChainAPI:
         except ValueError as e:
             result.errors.append(f"Runtime bytecode error: {e!s}")
             raise e
+
+        # Add delay to avoid rate limit errors
+        time.sleep(0.25)  # 0.25s = 4 requests/sec, under the 5/sec limit
 
         try:
             # Get creation bytecode (may fail for some contracts)
