@@ -1,5 +1,4 @@
 import os
-import sys
 from json.decoder import JSONDecodeError
 
 import json5 as json
@@ -292,9 +291,8 @@ class ChainAPI:
             if len(parts) == 2 and parts[1]:
                 return "0x" + parts[1]
 
-        print("Could not reliably extract constructor arguments.", file=sys.stderr)
+        print("Could not reliably extract constructor arguments.")
         print(
-            "This can happen with optimized contracts or those using 'immutable' variables.",
-            file=sys.stderr,
+            "This can happen with optimized contracts or those using 'immutable' variables."
         )
         return ""
