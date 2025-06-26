@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class ContractAnalysisResult(BaseModel):
+class BytecodeAnalysisResult(BaseModel):
     """
     Represents the complete analysis result of a smart contract including
     runtime bytecode, creation bytecode, and constructor arguments.

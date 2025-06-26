@@ -24,7 +24,7 @@ def test_get_complete_contract_analysis():
     api = ChainAPI(Chain.ETH)
 
     # Perform the complete contract analysis
-    analysis = api.get_complete_contract_analysis(address)
+    analysis = api.get_bytecodes_analysis(address)
 
     # Assertions
     assert analysis is not None, "Analysis should not be None"
@@ -55,7 +55,7 @@ def test_get_complete_contract_analysis_properties():
     """
     address = "0x91924f1486b9c5b4c2f4e494fe3162225fa2cd94"
     api = ChainAPI(Chain.ETH)
-    analysis = api.get_complete_contract_analysis(address)
+    analysis = api.get_bytecodes_analysis(address)
 
     # Test helper methods
     assert isinstance(

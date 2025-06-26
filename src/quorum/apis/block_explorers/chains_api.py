@@ -5,7 +5,7 @@ from json.decoder import JSONDecodeError
 import json5 as json
 import requests
 
-from quorum.apis.block_explorers.bytecode import ContractAnalysisResult
+from quorum.apis.block_explorers.bytecode import BytecodeAnalysisResult
 from quorum.apis.block_explorers.source_code import SourceCode
 from quorum.utils.chain_enum import Chain
 
@@ -106,9 +106,7 @@ class ChainAPI:
         ]
         return source_codes
 
-    def get_complete_contract_analysis(
-        self, contract_address: str
-    ) -> ContractAnalysisResult:
+    def get_bytecodes_analysis(self, contract_address: str) -> BytecodeAnalysisResult:
         """
         Performs a complete analysis of a contract including runtime bytecode,
         creation bytecode, and extracted constructor arguments.
@@ -127,14 +125,10 @@ class ChainAPI:
             ValueError: If the contract address is invalid or no bytecode can be retrieved.
         """
 
-        result = ContractAnalysisResult()
+        result = BytecodeAnalysisResult()
 
-        try:
-            # Get runtime bytecode (this should always work for valid contracts)
-            result.runtime_bytecode = self.__get_runtime_bytecode(contract_address)
-        except ValueError as e:
-            result.errors.append(f"Runtime bytecode error: {e!s}")
-            raise e
+        # Get runtime bytecode (this should always work for valid contracts)
+        result.runtime_bytecode = self.__get_runtime_bytecode(contract_address)
 
         # Add delay to avoid rate limit errors
         time.sleep(0.25)  # 0.25s = 4 requests/sec, under the 5/sec limit
@@ -152,6 +146,21 @@ class ChainAPI:
             result.errors.append(f"Creation bytecode error: {e!s}")
 
         return result
+
+    def __handle_api_error(self, data: dict, context: str) -> None:
+        """
+        Handles common API error responses.
+
+        Args:
+            data: The JSON response from the API
+            context: Description of what operation failed (for error message)
+
+        Raises:
+            ValueError: If the API response indicates an error
+        """
+        if data.get("status") == "0" or "error" in data:
+            error_message = data.get("result") or data.get("error", {}).get("message")
+            raise ValueError(f"Error {context}: {error_message}")
 
     def __get_runtime_bytecode(self, contract_address: str) -> str:
         """
@@ -172,9 +181,7 @@ class ChainAPI:
         response.raise_for_status()
         data = response.json()
 
-        if data.get("status") == "0" or "error" in data:
-            error_message = data.get("result") or data.get("error", {}).get("message")
-            raise ValueError(f"Error fetching runtime bytecode: {error_message}")
+        self.__handle_api_error(data, "fetching runtime bytecode")
 
         bytecode = data.get("result", "")
         if bytecode and bytecode != "0x":
@@ -203,13 +210,7 @@ class ChainAPI:
         response.raise_for_status()
         data = response.json()
 
-        if data.get("status") == "0" or "error" in data:
-            error_message = (
-                data.get("result")
-                or data.get("message")
-                or data.get("error", {}).get("message")
-            )
-            raise ValueError(f"Error finding creation transaction: {error_message}")
+        self.__handle_api_error(data, "finding creation transaction")
 
         result = data.get("result", [])
         if not result or not isinstance(result, list) or len(result) == 0:
