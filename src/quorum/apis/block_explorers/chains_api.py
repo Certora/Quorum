@@ -198,44 +198,6 @@ class ChainAPI:
         Raises:
             ValueError: If the API request fails or the creation transaction could not be found.
         """
-        # Step 1: Find the transaction hash that created the contract
-        tx_hash = self.__get_creation_transaction_hash(contract_address)
-        if not tx_hash:
-            raise ValueError(
-                "Could not find creation transaction hash for this contract."
-            )
-
-        # Step 2: Use the transaction hash to get the full transaction details
-        url = f"{self.base_url}&module=proxy&action=eth_getTransactionByHash&txhash={tx_hash}"
-        response = self.session.get(url)
-        response.raise_for_status()
-        data = response.json()
-
-        if data.get("status") == "0" or "error" in data:
-            error_message = data.get("result") or data.get("error", {}).get("message")
-            raise ValueError(f"Error fetching creation transaction: {error_message}")
-
-        creation_bytecode = data.get("result", {}).get("input", "")
-        if not creation_bytecode:
-            raise ValueError("No creation bytecode found in transaction.")
-
-        return creation_bytecode
-
-    def __get_creation_transaction_hash(self, contract_address: str) -> str:
-        """
-        Finds the transaction hash that created the specified contract.
-        NOTE: This uses the 'getcontractcreation' Etherscan Pro endpoint. It may
-        work with a free key for some addresses but is not guaranteed.
-
-        Args:
-            contract_address: The Ethereum address of the smart contract.
-
-        Returns:
-            The creation transaction hash, or an empty string on error.
-
-        Raises:
-            ValueError: If the API request fails or the creation transaction could not be found.
-        """
         url = f"{self.base_url}&module=contract&action=getcontractcreation&contractaddresses={contract_address}"
         response = self.session.get(url)
         response.raise_for_status()
@@ -253,11 +215,11 @@ class ChainAPI:
         if not result or not isinstance(result, list) or len(result) == 0:
             raise ValueError("No creation transaction found for this contract.")
 
-        tx_hash = result[0].get("txHash", "")
-        if not tx_hash:
-            raise ValueError("Creation transaction hash not found in API response.")
+        creation_bytecode = result[0].get("creationBytecode", "")
+        if not creation_bytecode:
+            raise ValueError("Creation bytecode not found in API response.")
 
-        return tx_hash
+        return creation_bytecode
 
     def __extract_raw_constructor_args(
         self, creation_code: str, runtime_code: str
