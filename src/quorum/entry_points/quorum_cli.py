@@ -8,6 +8,7 @@ from pydantic import BaseModel
 
 import quorum
 import quorum.entry_points.cli_arguments as cli_args
+from quorum.entry_points.implementations.check_bytecode import run_bytecode_validation
 from quorum.entry_points.implementations.check_local_proposal import run_local_proposal
 from quorum.entry_points.implementations.check_proposal import run_single
 from quorum.entry_points.implementations.check_proposal_config import run_config
@@ -85,6 +86,17 @@ COMMAND_REGISTRY = [
             cli_args.CONTRACT_PROPOSAL_PATH_ARGUMENT,
         ],
         func=run_local_proposal,
+    ),
+    Command(
+        name="validate-bytecode",
+        help="validate payload bytecode against a local proposal",
+        arguments=[
+            cli_args.CHAIN_ARGUMENT,
+            cli_args.PAYLOAD_ADDRESS_ARGUMENT,
+            cli_args.FORGE_ROOT_PATH_ARGUMENT,
+            cli_args.CONTRACT_PROPOSAL_PATH_ARGUMENT,
+        ],
+        func=run_bytecode_validation,
     ),
 ]
 

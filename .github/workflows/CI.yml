@@ -89,8 +89,14 @@ jobs:
         working-directory: workdir
         run: poetry run quorum generate-report --proposal-id 137
       
+      - name: Clone Proposals Repo
+        working-directory: workdir
+        run: git clone --recursive https://github.com/bgd-labs/aave-proposals-v3.git
+
       - name: Test Pre-Deployment Mode
         working-directory: workdir
-        run: |
-          git clone --recursive https://github.com/bgd-labs/aave-proposals-v3.git
-          poetry run quorum validate-local-payload --protocol-name Aave --chain Ethereum --forge-root-path aave-proposals-v3 --contract-proposal-path src/20250404_AaveV3Ethereum_RequestForBountyPayoutMarch2025/AaveV3Ethereum_RequestForBountyPayoutMarch2025_20250404.sol
+        run: poetry run quorum validate-local-payload --protocol-name Aave --chain Ethereum --forge-root-path aave-proposals-v3 --contract-proposal-path src/20250404_AaveV3Ethereum_RequestForBountyPayoutMarch2025/AaveV3Ethereum_RequestForBountyPayoutMarch2025_20250404.sol
+
+      - name: Test bytecode mode
+        working-directory: workdir
+        run: poetry run quorum validate-bytecode --chain Ethereum --payload-address 0xe690bcd2a4048b3CF9BE0FcaACc6EACE6bEfB41B --forge-root-path aave-proposals-v3 --contract-proposal-path src/20250622_AaveV3Ethereum_AddEURCToAaveV3CoreInstance/AaveV3Ethereum_AddEURCToAaveV3CoreInstance_20250622.sol

@@ -17,8 +17,13 @@ class Colors(StrEnum):
     RESET = "\033[0m"
 
 
-def pprint(message: object, status: Colors, heading: Heading | None = None):
+def pprint(message: object, status: Colors, heading: Heading | str | None = None):
     s = status + str(message) + Colors.RESET
     if heading:
-        s += "\n" + heading * len(message) + "\n"
+        if isinstance(heading, str):
+            # Custom heading string with underline
+            s += "\n" + heading + "\n" + "=" * len(heading) + "\n"
+        else:
+            # Heading enum value - create underline based on message length
+            s += "\n" + heading * len(str(message)) + "\n"
     print(s)
