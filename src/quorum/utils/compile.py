@@ -118,68 +118,6 @@ def get_contract_bytecode_from_artifacts(
     return get_bytecode_from_artifact(artifact_path, bytecode_type)
 
 
-def get_contract_bytecode(
-    forge_root_path: Path,
-    contract_name: str,
-    bytecode_type: BytecodeType = BytecodeType.RUNTIME,
-) -> str:
-    """
-    Extract contract bytecode using forge inspect.
-
-    DEPRECATED: This function is deprecated. Use get_contract_bytecode_from_artifacts()
-    for better performance as it reads from artifacts instead of running forge inspect.
-
-    Args:
-        forge_root_path (Path): Path to the forge root directory.
-        contract_name (str): Name of the contract to inspect.
-        bytecode_type (BytecodeType): Type of bytecode to extract, either 'CREATION' or 'RUNTIME'.
-
-    Returns:
-        str: The contract bytecode as a hex string.
-
-    Raises:
-        ValueError: If bytecode_type is not supported.
-        subprocess.CalledProcessError: If forge inspect command fails.
-        FileNotFoundError: If forge command is not found.
-    """
-    import warnings
-
-    warnings.warn(
-        "get_contract_bytecode is deprecated. Use get_contract_bytecode_from_artifacts for better performance.",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-
-    with change_directory(forge_root_path):
-        try:
-            result = subprocess.run(
-                [
-                    "forge",
-                    "inspect",
-                    contract_name,
-                    bytecode_type,
-                ],
-                check=True,
-                capture_output=True,
-                text=True,
-            )
-            return result.stdout.strip()
-        except subprocess.CalledProcessError as e:
-            pp.pprint(
-                f"Error extracting {bytecode_type}: {e.stderr}",
-                status=pp.Colors.FAILURE,
-                heading="Bytecode Extraction Error",
-            )
-            raise
-        except FileNotFoundError:
-            pp.pprint(
-                "Forge command not found. Please make sure Foundry is installed.",
-                status=pp.Colors.FAILURE,
-                heading="Command Not Found",
-            )
-            raise
-
-
 def _execute_forge_build(
     forge_root_path: Path,
     contract_proposal_path: Path,
