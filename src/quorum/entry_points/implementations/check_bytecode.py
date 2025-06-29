@@ -5,7 +5,7 @@ import quorum.utils.pretty_printer as pp
 from quorum.apis.block_explorers.chains_api import ChainAPI
 from quorum.utils.compile import (
     BytecodeType,
-    compile_source_code_with_artifacts,
+    compile_source_code,
     get_contract_bytecode_from_artifacts,
 )
 
@@ -97,9 +97,7 @@ def run_bytecode_validation(args: argparse.Namespace) -> None:
         )
 
     with tempfile.TemporaryDirectory(dir=forge_root_path) as tmp:
-        out_dir = compile_source_code_with_artifacts(
-            forge_root_path, contract_proposal_path, tmp
-        )
+        _, out_dir = compile_source_code(forge_root_path, contract_proposal_path, tmp)
         # Get the bytecode from the compiled contract artifacts
         runtime_bytecode = get_contract_bytecode_from_artifacts(
             out_dir,

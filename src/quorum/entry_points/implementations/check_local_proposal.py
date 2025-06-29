@@ -62,7 +62,7 @@ def run_local_proposal(args: argparse.Namespace) -> None:
     )
 
     with tempfile.TemporaryDirectory(prefix="quorum-forge-") as tmp:
-        source_file_paths = compile_source_code(
+        source_file_paths, _ = compile_source_code(
             forge_root_path, contract_proposal_path, tmp
         )
         source_codes = get_source_codes(forge_root_path, source_file_paths)

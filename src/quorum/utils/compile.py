@@ -221,7 +221,7 @@ def compile_source_code(
     contract_proposal_path: Path,
     target_dir: str,
     use_default: bool = False,
-) -> list[str]:
+) -> tuple[list[str], Path]:
     """
     Compile the Solidity source code using Forge.
 
@@ -232,36 +232,9 @@ def compile_source_code(
         use_default (bool): If True, use the default forge build command. Defaults to False.
 
     Returns:
-        list[str]: A list of source file paths.
+        tuple[list[str], Path]: A tuple containing a list of source file paths and the output directory path.
 
     """
     out_dir = Path(target_dir) / "out"
     _execute_forge_build(forge_root_path, contract_proposal_path, out_dir, use_default)
-    return _extract_source_files(out_dir)
-
-
-def compile_source_code_with_artifacts(
-    forge_root_path: Path,
-    contract_proposal_path: Path,
-    target_dir: str,
-    use_default: bool = False,
-) -> Path:
-    """
-    Compile the Solidity source code using Forge and return both source files and output directory.
-
-    This function is optimized for bytecode extraction workflows where access to the output
-    directory is needed to read compiled artifacts.
-
-    Args:
-        forge_root_path (Path): Path to the forge root directory.
-        contract_proposal_path (Path): Path to the contract proposal file.
-        target_dir (str): Target directory for the compiled output.
-        use_default (bool): If True, use the default forge build command. Defaults to False.
-
-    Returns:
-        Path: The output directory path.
-
-    """
-    out_dir = Path(target_dir) / "out"
-    _execute_forge_build(forge_root_path, contract_proposal_path, out_dir, use_default)
-    return out_dir
+    return _extract_source_files(out_dir), out_dir
