@@ -59,14 +59,21 @@ def _validate_bytecode(
         diff_positions, diff_percentage = _calculate_bytecode_diff(expected, actual)
 
         pp.pprint(
-            f"{bytecode_type} bytecode mismatch for address {payload_address} on chain {chain}.",
-            f"Expected length: {len(expected)}, Got length: {len(actual)}",
-            f"Difference at positions: {diff_positions[:10]}{'...' if len(diff_positions) > 10 else ''}",
-            f"Diff percentage: {diff_percentage:.2f}%",
+            (
+                f"{bytecode_type.name} bytecode mismatch for address {payload_address} on chain {chain}.\n"
+                f"Expected length: {len(expected)}, Got length: {len(actual)}\n"
+                f"Difference at positions: {diff_positions}\n"
+                f"Diff percentage: {diff_percentage:.2f}%"
+            ),
             status=pp.Colors.FAILURE,
-            heading=f"Bytecode {bytecode_type} Validation Error",
+            heading=f"Bytecode {bytecode_type.name} Validation Error",
         )
         return False
+
+    pp.pprint(
+        f"{bytecode_type.name} bytecode validation successful for address {payload_address} on chain {chain}.",
+        status=pp.Colors.SUCCESS,
+    )
     return True
 
 
