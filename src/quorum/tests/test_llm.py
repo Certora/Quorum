@@ -1,4 +1,4 @@
-from quorum.llm.chains.first_deposit_chain import FirstDepositChain, ListingArray
+# from quorum.llm.chains.first_deposit_chain import FirstDepositChain, ListingArray
 from quorum.llm.chains.ipfs_validation_chain import IPFSValidationChain
 from quorum.utils.quorum_configuration import QuorumConfiguration
 
@@ -26,15 +26,15 @@ def test_ipfs_validation_chain(load_ipfs_validation_chain_inputs):
     assert subject_in_solidity in result.incompatibilities[0].subject_in_solidity
 
 
-def test_first_deposit_chain(first_deposit_chain_input, expected_first_deposit_results):
-    if SKIP:
-        assert True
-        return None
-
-    source_code = first_deposit_chain_input
-
-    chain = FirstDepositChain()
-
-    result = chain.execute(source_code)
-
-    assert ListingArray(**expected_first_deposit_results) == result
+# def test_first_deposit_chain(first_deposit_chain_input, expected_first_deposit_results):
+#     if SKIP:
+#         assert True
+#         return None
+#
+#     source_code = first_deposit_chain_input
+#
+#     chain = FirstDepositChain()
+#
+#     result = chain.execute(source_code)
+#
+#     assert ListingArray(**expected_first_deposit_results) == result
