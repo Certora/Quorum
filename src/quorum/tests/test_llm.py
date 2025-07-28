@@ -1,4 +1,4 @@
-from quorum.llm.chains.first_deposit_chain import FirstDepositChain, ListingArray
+# from quorum.llm.chains.first_deposit_chain import FirstDepositChain, ListingArray
 from quorum.llm.chains.ipfs_validation_chain import IPFSValidationChain
 from quorum.utils.quorum_configuration import QuorumConfiguration
 
