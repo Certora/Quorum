@@ -13,8 +13,7 @@ def test_ipfs_validation_chain(load_ipfs_validation_chain_inputs):
     ipfs_content, source_code = load_ipfs_validation_chain_inputs
     chain = IPFSValidationChain()
     prompt_templates = [
-        "ipfs_validation_prompt_part1.j2",
-        "ipfs_validation_prompt_part2.j2",
+        "ipfs_validation_prompt.j2"
     ]
 
     result = chain.execute(prompt_templates, ipfs_content, source_code)
