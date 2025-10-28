@@ -83,7 +83,8 @@ class ChainAPI:
         Raises:
             ValueError: If the API request fails or the source code could not be retrieved.
         """
-        url = f"{self.base_url}&module=contract&action=getsourcecode&address={proposal_address}"
+        separator = "&" if "?" in self.base_url else "?"
+        url = f"{self.base_url}{separator}module=contract&action=getsourcecode&address={proposal_address}"
         response = self.session.get(url)
         response.raise_for_status()
         data = response.json()
