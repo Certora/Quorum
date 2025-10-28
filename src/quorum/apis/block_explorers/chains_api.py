@@ -27,6 +27,7 @@ class ChainAPI:
         Chain.GNO: 100,
         Chain.OPT: 10,
         Chain.POLY: 137,
+        Chain.PLASMA: 9745,
         Chain.SCROLL: 534352,
         Chain.ZK: 324,
         Chain.LINEA: 59144,

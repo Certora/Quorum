@@ -57,6 +57,9 @@ AAVE_CHAIN_MAPPING = {
         name="Celo", block_explorer_link="https://celo.blockscout.com/address"
     ),
     "146": ChainInfo(name="Sonic", block_explorer_link="https://sonicscan.org/address"),
+    "9745": ChainInfo(
+        name="Plasma", block_explorer_link="https://plasmascan.to/address"
+    ),
 }
 
 
