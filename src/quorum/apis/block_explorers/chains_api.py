@@ -56,6 +56,10 @@ class ChainAPI:
             self.base_url = (
                 "https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan/api"
             )
+        elif chain == Chain.PLASMA:
+            self.base_url = (
+                "https://api.routescan.io/v2/network/mainnet/evm/9745/etherscan/api"
+            )
         else:
             chain_id = self.CHAIN_ID_MAP[chain]
             api_key = os.getenv("ETHSCAN_API_KEY")
