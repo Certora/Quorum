@@ -15,6 +15,7 @@ class Chain(StrEnum):
     MET = "Metis"
     OPT = "Optimism"
     POLY = "Polygon"
+    PLASMA = "Plasma"
     SCROLL = "Scroll"
     ZK = "ZKsync"
     LINEA = "Linea"

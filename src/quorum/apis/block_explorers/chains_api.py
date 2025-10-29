@@ -27,6 +27,7 @@ class ChainAPI:
         Chain.GNO: 100,
         Chain.OPT: 10,
         Chain.POLY: 137,
+        Chain.PLASMA: 9745,
         Chain.SCROLL: 534352,
         Chain.ZK: 324,
         Chain.LINEA: 59144,
@@ -55,6 +56,10 @@ class ChainAPI:
             self.base_url = (
                 "https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan/api"
             )
+        elif chain == Chain.PLASMA:
+            self.base_url = (
+                "https://api.routescan.io/v2/network/mainnet/evm/9745/etherscan/api"
+            )
         else:
             chain_id = self.CHAIN_ID_MAP[chain]
             api_key = os.getenv("ETHSCAN_API_KEY")
@@ -78,7 +83,8 @@ class ChainAPI:
         Raises:
             ValueError: If the API request fails or the source code could not be retrieved.
         """
-        url = f"{self.base_url}&module=contract&action=getsourcecode&address={proposal_address}"
+        separator = "&" if "?" in self.base_url else "?"
+        url = f"{self.base_url}{separator}module=contract&action=getsourcecode&address={proposal_address}"
         response = self.session.get(url)
         response.raise_for_status()
         data = response.json()
