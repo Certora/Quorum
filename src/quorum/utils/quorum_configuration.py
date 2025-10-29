@@ -62,7 +62,7 @@ class QuorumConfiguration:
 
             # 4. Anthropic Model
             self.__anthropic_model = os.getenv(
-                "ANTROPIC_MODEL", "claude-sonnet-4-20250514"
+                "ANTROPIC_MODEL", "claude-3-5-sonnet-20241022"
             )
 
             self.__env_loaded = True
