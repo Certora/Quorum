@@ -1,9 +1,13 @@
+import logging
 from typing import Any
 
 import json5 as json
 from pydantic import BaseModel
 
-from quorum.apis.governance.aave_governance import AaveGovernanceAPI
+from quorum.apis.governance.aave_governance import (
+    AaveGovernanceAPI,
+    ChainNotFoundException,
+)
 from quorum.apis.governance.data_models import (
     BGDProposalData,
     EventData,
@@ -57,6 +61,7 @@ AAVE_CHAIN_MAPPING = {
         name="Celo", block_explorer_link="https://celo.blockscout.com/address"
     ),
     "146": ChainInfo(name="Sonic", block_explorer_link="https://sonicscan.org/address"),
+    "143": ChainInfo(name="Monad", block_explorer_link="https://monadscan.com/address"),
 }
 
 
@@ -91,25 +96,49 @@ def get_aave_tags(proposal_id: int) -> dict[str, Any]:
 
     # Go through each payload in the proposal
     for p in proposal_data.payloads:
-        # For each payload, retrieve the addresses from the API
-        addresses = api.get_payload_addresses(
-            chain_id=p.chain, controller=p.payloads_controller, payload_id=p.payload_id
+        chain_info = AAVE_CHAIN_MAPPING.get(p.chain)
+        if not chain_info:
+            # Unknown chain — can't build explorer links; skip.
+            continue
+
+        seatbelt_link = (
+            f"{SEATBELT_PAYLOADS_URL}/{p.chain}/{p.payloads_controller}/{p.payload_id}.md"
         )
 
-        # For each address, build up the chain/payload references
-        for i, address in enumerate(addresses, 1):
-            chain_info = AAVE_CHAIN_MAPPING.get(p.chain)
-            if not chain_info:
-                # If chain info is missing, skip
-                continue
+        # Retrieve the payload action addresses. Newly activated networks (e.g.
+        # Monad) may not be indexed in BGD's per-payload cache yet even though the
+        # proposal and its seatbelt report already exist — in that case degrade to
+        # the payloads controller + seatbelt link rather than aborting the report.
+        try:
+            addresses = api.get_payload_addresses(
+                chain_id=p.chain,
+                controller=p.payloads_controller,
+                payload_id=p.payload_id,
+            )
+        except ChainNotFoundException:
+            logging.warning(
+                "BGD payload cache miss for chain %s payload %s (%s); "
+                "emitting controller + seatbelt link only.",
+                p.chain,
+                p.payload_id,
+                p.payloads_controller,
+            )
+            addresses = []
 
-            chain_display = chain_info.name + (f" {i}" if i != 1 else "")
-            tags["chain"].append(chain_display)
-
-            block_explorer_link = f"{chain_info.block_explorer_link}/{address}"
-            tags["payload_link"].append(block_explorer_link)
-
-            seatbelt_link = f"{SEATBELT_PAYLOADS_URL}/{p.chain}/{p.payloads_controller}/{p.payload_id}.md"
+        if addresses:
+            # Build chain/payload references per resolved action address.
+            for i, address in enumerate(addresses, 1):
+                chain_display = chain_info.name + (f" {i}" if i != 1 else "")
+                tags["chain"].append(chain_display)
+                tags["payload_link"].append(f"{chain_info.block_explorer_link}/{address}")
+                tags["payload_seatbelt_link"].append(seatbelt_link)
+        else:
+            # No resolved addresses (cache gap) — still surface the chain, the
+            # payloads controller, and the seatbelt report.
+            tags["chain"].append(chain_info.name)
+            tags["payload_link"].append(
+                f"{chain_info.block_explorer_link}/{p.payloads_controller}"
+            )
             tags["payload_seatbelt_link"].append(seatbelt_link)
 
     # Transaction info
