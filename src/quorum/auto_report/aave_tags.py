@@ -81,7 +81,7 @@ def get_aave_tags(proposal_id: int) -> dict[str, Any]:
     # Basic info
     tags["proposal_id"] = str(proposal_id)
     tags["proposal_title"] = ipfs_data.title
-    tags["voting_link"] = f"https://vote.onaave.com/proposal/?proposalId={proposal_id}"
+    tags["voting_link"] = f"https://app.aave.com/governance/v3/proposal/?proposalId={proposal_id}"
     tags["gov_forum_link"] = ipfs_data.discussions
 
     # Multi-chain references
